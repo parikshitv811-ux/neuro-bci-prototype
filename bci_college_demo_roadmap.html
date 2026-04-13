@@ -1,0 +1,161 @@
+
+<style>
+.phase { border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 16px 20px; margin-bottom: 12px; background: var(--color-background-primary); cursor: pointer; transition: border-color 0.15s; }
+.phase:hover { border-color: var(--color-border-primary); }
+.phase-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.phase-badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; white-space: nowrap; }
+.phase-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
+.phase-week { font-size: 12px; color: var(--color-text-secondary); margin-left: auto; }
+.task-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+.dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.budget-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--color-border-tertiary); }
+.budget-chip { font-size: 11px; padding: 3px 10px; border-radius: 12px; background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); }
+.timeline-bar { height: 4px; border-radius: 2px; margin-bottom: 16px; display: flex; gap: 3px; }
+.tbar-seg { flex: 1; border-radius: 2px; }
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+.stat-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 12px; text-align: center; }
+.stat-val { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+.stat-lbl { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
+.demo-box { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 14px 16px; margin-top: 12px; }
+.demo-step { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--color-text-secondary); padding: 5px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+.demo-step:last-child { border-bottom: none; }
+.demo-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; background: var(--color-background-info); color: var(--color-text-info); }
+</style>
+
+<h2 class="sr-only">BCI college demo roadmap — 6-week plan from hardware procurement to live demo day</h2>
+
+<div style="padding: 1rem 0 0.5rem;">
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-val">6</div><div class="stat-lbl">weeks total</div></div>
+    <div class="stat-card"><div class="stat-val">~₹8k</div><div class="stat-lbl">min budget</div></div>
+    <div class="stat-card"><div class="stat-val">4</div><div class="stat-lbl">live commands</div></div>
+    <div class="stat-card"><div class="stat-val">&lt;500ms</div><div class="stat-lbl">target latency</div></div>
+  </div>
+
+  <div class="timeline-bar">
+    <div class="tbar-seg" style="background:#9FE1CB;flex:1"></div>
+    <div class="tbar-seg" style="background:#5DCAA5;flex:1"></div>
+    <div class="tbar-seg" style="background:#1D9E75;flex:1"></div>
+    <div class="tbar-seg" style="background:#AFA9EC;flex:1"></div>
+    <div class="tbar-seg" style="background:#7F77DD;flex:1"></div>
+    <div class="tbar-seg" style="background:#534AB7;flex:1"></div>
+  </div>
+
+  <div class="phase" onclick="sendPrompt('What exact hardware do I need to buy for the BCI demo and where can I get it in India?')">
+    <div class="phase-header">
+      <span class="phase-badge" style="background:#E1F5EE;color:#0F6E56;">Phase 1</span>
+      <span class="phase-title">Hardware procurement + environment setup</span>
+      <span class="phase-week">Week 1</span>
+    </div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Order Muse 2 headband (₹6,500 used / ₹12,000 new) — 4ch EEG, Bluetooth, BrainFlow supported</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Alternative: OpenBCI Cyton (₹28,000) — 8ch, higher quality, needs dongle</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Budget option: Neurosity Crown (rented) or borrow from lab / IEEE chapter</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Set up: Python 3.11, brainflow, torch, pyautogui, anthropic SDK, pygame (SSVEP UI)</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Verify BrainFlow connects and streams data — run the synthetic board test first</span></div>
+    <div class="budget-row">
+      <span class="budget-chip">Muse 2 — best value</span>
+      <span class="budget-chip">BrainFlow board_id=38</span>
+      <span class="budget-chip">Python venv setup</span>
+    </div>
+  </div>
+
+  <div class="phase" onclick="sendPrompt('How do I run the SSVEP paradigm with a Muse 2 headband and pygame? Show me the exact code.')">
+    <div class="phase-header">
+      <span class="phase-badge" style="background:#E1F5EE;color:#085041;">Phase 2</span>
+      <span class="phase-title">Signal pipeline + SSVEP stimulus</span>
+      <span class="phase-week">Week 2</span>
+    </div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Connect real device via BrainFlow — replace SimulatedEEGSource with BrainFlowSource</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Build pygame SSVEP display: 4 flickering boxes at 8, 10, 12, 15 Hz on a laptop screen</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Validate SNR: stare at each box, confirm occipital channel peaks at that frequency</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Tune SSVEPDetector thresholds per subject — 10 min calibration session</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Target: &gt;75% single-trial SSVEP accuracy before moving on</span></div>
+    <div class="budget-row">
+      <span class="budget-chip">pygame SSVEP display</span>
+      <span class="budget-chip">Calibration protocol</span>
+      <span class="budget-chip">SNR validation</span>
+    </div>
+  </div>
+
+  <div class="phase" onclick="sendPrompt('How do I integrate the Claude API into the BCI pipeline so EEG intent triggers real OS actions?')">
+    <div class="phase-header">
+      <span class="phase-badge" style="background:#EEEDFE;color:#3C3489;">Phase 3</span>
+      <span class="phase-title">Claude API + execution engine</span>
+      <span class="phase-week">Week 3</span>
+    </div>
+    <div class="task-row"><div class="dot" style="background:#7F77DD"></div><span>Get Anthropic API key (free tier sufficient for demo — ~200 calls/day)</span></div>
+    <div class="task-row"><div class="dot" style="background:#7F77DD"></div><span>Wire ClaudeIntentAgent: SSVEP label → JSON action plan via claude-sonnet-4-20250514</span></div>
+    <div class="task-row"><div class="dot" style="background:#7F77DD"></div><span>Test 4 demo commands: open browser, scroll, compose email, open terminal</span></div>
+    <div class="task-row"><div class="dot" style="background:#7F77DD"></div><span>Run ExecutionEngine in simulate=True — verify JSON plans look correct</span></div>
+    <div class="task-row"><div class="dot" style="background:#7F77DD"></div><span>Switch to simulate=False on a sandboxed VM first, then real machine</span></div>
+    <div class="budget-row">
+      <span class="budget-chip">Free API tier</span>
+      <span class="budget-chip">4 core commands</span>
+      <span class="budget-chip">Simulate first</span>
+    </div>
+  </div>
+
+  <div class="phase" onclick="sendPrompt('What should the full-screen BCI demo UI look like for a college presentation? What should I show on screen?')">
+    <div class="phase-header">
+      <span class="phase-badge" style="background:#EEEDFE;color:#26215C;">Phase 4</span>
+      <span class="phase-title">Demo UI + feedback indicators</span>
+      <span class="phase-week">Week 4</span>
+    </div>
+    <div class="task-row"><div class="dot" style="background:#534AB7"></div><span>Build the full-screen demo app (the code below) — SSVEP stimuli + live EEG trace + status panel</span></div>
+    <div class="task-row"><div class="dot" style="background:#534AB7"></div><span>Add visual feedback: green flash on detection, confidence bar, action log sidebar</span></div>
+    <div class="task-row"><div class="dot" style="background:#534AB7"></div><span>Add audio beep on confirmed intent (pygame.mixer) — crowd-facing feedback</span></div>
+    <div class="task-row"><div class="dot" style="background:#534AB7"></div><span>Prepare slide deck: problem → architecture → live demo → results → future work</span></div>
+    <div class="task-row"><div class="dot" style="background:#534AB7"></div><span>Record a backup demo video in case hardware fails on stage (always have this!)</span></div>
+    <div class="budget-row">
+      <span class="budget-chip">pygame UI</span>
+      <span class="budget-chip">Backup video</span>
+      <span class="budget-chip">Slide deck</span>
+    </div>
+  </div>
+
+  <div class="phase" onclick="sendPrompt('How do I optimize BCI latency to under 500ms end-to-end and export EEGNet to ONNX?')">
+    <div class="phase-header">
+      <span class="phase-badge" style="background:#E1F5EE;color:#0F6E56;">Phase 5</span>
+      <span class="phase-title">Latency optimization + ONNX export</span>
+      <span class="phase-week">Week 5</span>
+    </div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Profile end-to-end: EEG buffer (250ms) + inference (2ms) + Claude API (200-400ms) + exec (50ms)</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Export EEGNet to ONNX: torch.onnx.export() → onnxruntime inference (~0.5ms)</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Cache Claude responses for repeated intents (LRU cache on intent label + context hash)</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Use asyncio to overlap Claude API call with EEG buffering of next window</span></div>
+    <div class="task-row"><div class="dot" style="background:#1D9E75"></div><span>Measure and display latency live on demo UI — great talking point for judges</span></div>
+    <div class="budget-row">
+      <span class="budget-chip">ONNX runtime</span>
+      <span class="budget-chip">asyncio pipeline</span>
+      <span class="budget-chip">Response cache</span>
+    </div>
+  </div>
+
+  <div class="phase" onclick="sendPrompt('How should I present the BCI demo at my college fest? What should I say to judges and audience?')">
+    <div class="phase-header">
+      <span class="phase-badge" style="background:#FAECE7;color:#712B13;">Phase 6</span>
+      <span class="phase-title">Full rehearsal + demo day</span>
+      <span class="phase-week">Week 6</span>
+    </div>
+    <div class="task-row"><div class="dot" style="background:#D85A30"></div><span>10+ full end-to-end rehearsals — muscle memory for setup, teardown, recovery from failures</span></div>
+    <div class="task-row"><div class="dot" style="background:#D85A30"></div><span>Test in demo room: different lighting, monitor distance, audience noise — SSVEP is sensitive</span></div>
+    <div class="task-row"><div class="dot" style="background:#D85A30"></div><span>Prepare 3 volunteers from the audience: brief them on "stare at the box without blinking"</span></div>
+    <div class="task-row"><div class="dot" style="background:#D85A30"></div><span>Demo script: 2 min intro → 3 min live demo → 2 min Q&A — keep it tight</span></div>
+    <div class="task-row"><div class="dot" style="background:#D85A30"></div><span>Checklist: laptop charged, headband charged, API key active, hotspot ready (no campus WiFi dependency)</span></div>
+    <div class="budget-row">
+      <span class="budget-chip">Mobile hotspot</span>
+      <span class="budget-chip">Backup laptop</span>
+      <span class="budget-chip">Recorded fallback</span>
+    </div>
+  </div>
+
+  <div class="demo-box">
+    <div style="font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 8px;">Live demo script (7 min)</div>
+    <div class="demo-step"><div class="demo-num">1</div><span>Put on headband → show raw EEG trace on screen (30 sec)</span></div>
+    <div class="demo-step"><div class="demo-num">2</div><span>Show SSVEP display → stare at "browser" box → browser opens (60 sec)</span></div>
+    <div class="demo-step"><div class="demo-num">3</div><span>Stare at "email" box → Claude generates email → Gmail opens prefilled (90 sec)</span></div>
+    <div class="demo-step"><div class="demo-num">4</div><span>Show confidence bar + latency counter live — explain what judges are seeing (60 sec)</span></div>
+    <div class="demo-step"><div class="demo-num">5</div><span>Invite volunteer from audience — let them try scroll up/down (90 sec)</span></div>
+    <div class="demo-step"><div class="demo-num">6</div><span>Show Level 3 semantic alignment chart — explain research direction (60 sec)</span></div>
+  </div>
+</div>
