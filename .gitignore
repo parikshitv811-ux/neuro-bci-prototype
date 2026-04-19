@@ -1,4 +1,4 @@
-# Outputs (do not track)
+# Ignore outputs
 tsta_project/outputs/
 *.png
 *.json
