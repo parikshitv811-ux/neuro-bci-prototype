@@ -1,0 +1,11 @@
+# Outputs (do not track)
+tsta_project/outputs/
+*.png
+*.json
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Replit
+.replit
