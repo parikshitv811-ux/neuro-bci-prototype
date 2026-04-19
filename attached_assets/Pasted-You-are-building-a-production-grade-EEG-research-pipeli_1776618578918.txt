@@ -1,0 +1,315 @@
+You are building a production-grade EEG research pipeline in Replit.
+
+CRITICAL PRIORITY ORDER:
+
+1. FIRST fix and complete the synthetic pipeline (must run end-to-end)
+2. THEN integrate real EEG (PhysioNet) as a plug-in data source
+3. DO NOT break or modify the existing TSTA model architecture
+4. Add simulation support for testing (must work without internet)
+
+---
+
+# 📁 PROJECT STRUCTURE (STRICT — FOLLOW EXACTLY)
+
+Create this clean Git-ready structure:
+
+/tsta_project
+│
+├── data/
+│   ├── synthetic/
+│   │   ├── generator.py
+│   │   ├── profiles.py
+│   │   └── __init__.py
+│   │
+│   ├── real/
+│   │   ├── physionet_loader.py
+│   │   └── __init__.py
+│   │
+│   └── preprocess.py
+│
+├── model/
+│   ├── patcher.py
+│   ├── transformer.py
+│   ├── plta.py
+│   ├── trajectory.py
+│   └── tsta_model.py
+│
+├── training/
+│   ├── trainer.py
+│   ├── metrics.py
+│   └── eval.py
+│
+├── viz/
+│   ├── tsne.py
+│   ├── trajectory_plot.py
+│   ├── plta_viz.py
+│   └── dashboard.py
+│
+├── scripts/
+│   ├── run_synthetic.py
+│   ├── run_real.py
+│   ├── run_full_pipeline.py
+│   └── debug.py
+│
+├── outputs/
+│   ├── models/
+│   ├── figures/
+│   └── logs/
+│
+├── config.py
+├── utils.py
+└── README.md
+
+---
+
+# 🚨 PHASE 0 — FIX SYNTHETIC PIPELINE (HIGHEST PRIORITY)
+
+DO NOT move forward until this is 100% stable.
+
+You MUST:
+
+1. Fix and complete synthetic pipeline:
+   - data generation
+   - preprocessing
+   - training
+   - evaluation
+   - visualization
+
+2. Fix missing/broken parts:
+   - move run_all.py → scripts/run_full_pipeline.py
+   - fix ALL imports
+   - ensure compatibility with latest sklearn (TSNE)
+
+3. Validate outputs:
+   - SDAS prints correctly
+   - training runs without crash
+   - plots saved in /outputs/figures/
+
+4. Add logging:
+   - save logs → /outputs/logs/
+   - clean readable console output
+
+5. Save trained model:
+   - /outputs/models/tsta_synthetic.pt
+
+---
+
+# 🧠 PHASE 1 — SYNTHETIC BASELINE (CONTROL EXPERIMENT)
+
+This is the scientific ground truth.
+
+Ensure:
+- SDAS > 0.5 (target)
+- clear class separation
+- trajectory direction visible
+
+scripts/run_synthetic.py must:
+- generate data
+- preprocess
+- train
+- evaluate
+- visualize
+
+---
+
+# 🧪 SYNTHETIC SIMULATION (MANDATORY ADDITION)
+
+Enhance synthetic generator to simulate real EEG conditions:
+
+Include:
+- 64 channels
+- 160 Hz sampling
+- motor imagery patterns
+- temporal drift
+- inter-subject variability
+- noise injection
+- phase shifts
+
+Add:
+SyntheticEEGGenerator.get_dataset()
+
+Output:
+X: (N, C, T)
+y: (N,)
+subjects: (N,)
+
+---
+
+# 🌐 PHASE 2 — REAL EEG INTEGRATION
+
+Create:
+data/real/physionet_loader.py
+
+Use MNE-Python.
+
+Dataset:
+EEG Motor Movement/Imagery Dataset (EEGMMIDB)
+
+Requirements:
+- Load EDF files
+- Apply montage
+- Extract events
+- Create epochs (0–2s)
+
+Run mapping:
+[3,7,11] → navigation  
+[4,8,12] → action  
+[5,9,13] → communication  
+[6,10,14] → selection  
+[1] → idle  
+
+Subjects: 3–5 initially
+
+Output:
+X: (N, C, T)
+y: (N,)
+subjects: (N,)
+
+---
+
+# ⚠️ FALLBACK SYSTEM (MANDATORY)
+
+System must NEVER crash.
+
+Use:
+
+try:
+    ds = load_physionet()
+except Exception as e:
+    print("Falling back to synthetic:", e)
+    ds = SyntheticEEGGenerator().get_dataset()
+
+---
+
+# 🧪 PHASE 3 — REAL EEG PIPELINE
+
+Create:
+scripts/run_real.py
+
+Steps:
+- load EEG
+- preprocess
+- train
+- evaluate
+- visualize
+
+Reuse:
+- same model
+- same trainer
+- same metrics
+
+---
+
+# 🔬 PHASE 4 — TRAINING
+
+Implement:
+
+1. Within-subject training
+2. Cross-subject leave-one-out
+
+Hyperparameters:
+- LR = 3e-4
+- batch = 16–32
+- epochs = 30–50 (reduce if slow)
+
+Log per epoch:
+- loss
+- SDAS
+- accuracy
+
+Save best model (SDAS-based)
+
+---
+
+# 📊 PHASE 5 — EVALUATION
+
+Compute:
+
+- SDAS (primary)
+- top-1 accuracy
+- trajectory consistency
+- antonym separation score
+- cosine similarity (correct vs incorrect)
+
+---
+
+# 📈 PHASE 6 — VISUALIZATION
+
+Save to:
+outputs/figures/
+
+Generate:
+- t-SNE embeddings
+- PCA trajectory plots
+- direction vector compass
+- PLTA gate curves
+
+---
+
+# 🧪 PHASE 7 — NOISE ROBUSTNESS
+
+Add Gaussian noise:
+sigma = [0, 0.25, 0.5, 1.0]
+
+Plot:
+SDAS vs noise
+
+---
+
+# 🧾 FINAL OUTPUT
+
+Print clearly:
+
+SYNTHETIC RESULTS:
+- SDAS
+- accuracy
+
+REAL EEG RESULTS:
+- SDAS
+- accuracy
+
+Check thresholds:
+
+- within-subject SDAS > 0.4
+- cross-subject SDAS > 0.25
+
+---
+
+# 🚀 FINAL GOAL
+
+Prove:
+
+"EEG semantic intent is encoded as trajectory direction in latent space"
+
+---
+
+# ⚠️ ENGINEERING RULES
+
+- Must run fully in Replit (CPU only)
+- No broken imports
+- Clean modular design
+- No duplication between synthetic and real pipelines
+- Synthetic and real MUST be separate subfolders
+- Shared preprocessing ONLY in preprocess.py
+- DO NOT modify TSTA architecture
+
+---
+
+# 🔥 DELIVERABLES
+
+Return:
+
+- complete working codebase
+- fixed scripts
+- logs (/outputs/logs)
+- trained models (/outputs/models)
+- visualizations (/outputs/figures)
+
+---
+
+DO NOT:
+- skip synthetic stabilization
+- jump directly to real EEG
+- modify model internals
+
+EXECUTE IN ORDER.

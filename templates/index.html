@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BCI Prototype — Brain-Computer Interface System</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+    }
+    header {
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .brain-icon { font-size: 2rem; }
+    header h1 { font-size: 1.4rem; font-weight: 600; }
+    header p { color: #8b949e; font-size: 0.9rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .card h2 { font-size: 1rem; font-weight: 600; color: #58a6ff; margin-bottom: 1rem; }
+    .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .metric {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+    }
+    .metric .val { font-size: 1.4rem; font-weight: 700; color: #3fb950; }
+    .metric .lbl { font-size: 0.78rem; color: #8b949e; margin-top: 2px; }
+    .classes-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+    .classes-table th { color: #8b949e; font-weight: 500; text-align: left; padding: 0.4rem 0.5rem; border-bottom: 1px solid #30363d; }
+    .classes-table td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #21262d; }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .badge-blue { background: #1f4068; color: #58a6ff; }
+    .badge-green { background: #1a4731; color: #3fb950; }
+    .badge-purple { background: #2d1f5e; color: #a371f7; }
+    .badge-orange { background: #4a2d0a; color: #f0883e; }
+    .badge-gray { background: #21262d; color: #8b949e; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1.1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary { background: #238636; color: #fff; }
+    .btn-secondary { background: #21262d; color: #e6edf3; border: 1px solid #30363d; }
+    .btn:not(:disabled):hover { opacity: 0.85; }
+    .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .terminal {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 0.8rem;
+      height: 320px;
+      overflow-y: auto;
+      color: #3fb950;
+      line-height: 1.5;
+    }
+    .terminal .prompt { color: #58a6ff; }
+    .terminal .err { color: #f85149; }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+    }
+    .dot-idle { background: #8b949e; }
+    .dot-running { background: #3fb950; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .arch-box {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: #8b949e;
+      line-height: 1.8;
+    }
+    .arch-box .highlight { color: #58a6ff; }
+    .full-width { grid-column: 1 / -1; }
+    .dashboard-img { width: 100%; border-radius: 8px; border: 1px solid #30363d; }
+    #status-bar { font-size: 0.85rem; color: #8b949e; margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brain-icon">🧠</div>
+    <div>
+      <h1>BCI Prototype — Brain-Computer Interface System</h1>
+      <p>EEG signal decoding · EEGNet CNN · 5-class intent classification · Real-time inference</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="grid">
+      <!-- Metrics -->
+      <div class="card">
+        <h2>Pipeline Metrics</h2>
+        <div class="metric-grid">
+          <div class="metric"><div class="val">95.6%</div><div class="lbl">Test Accuracy</div></div>
+          <div class="metric"><div class="val">6,453</div><div class="lbl">Model Parameters</div></div>
+          <div class="metric"><div class="val">~1.6 ms</div><div class="lbl">Median Latency</div></div>
+          <div class="metric"><div class="val">5</div><div class="lbl">Intent Classes</div></div>
+        </div>
+      </div>
+
+      <!-- Intent Classes -->
+      <div class="card">
+        <h2>Classified Brain Intents</h2>
+        <table class="classes-table">
+          <thead>
+            <tr><th>Class</th><th>Intent</th><th>Band</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>open_app</td><td><span class="badge badge-blue">SMR 12–15 Hz</span></td></tr>
+            <tr><td>1</td><td>scroll_down</td><td><span class="badge badge-green">Alpha 8–10 Hz</span></td></tr>
+            <tr><td>2</td><td>scroll_up</td><td><span class="badge badge-purple">Alpha 10–12 Hz</span></td></tr>
+            <tr><td>3</td><td>click</td><td><span class="badge badge-orange">Beta 15–25 Hz</span></td></tr>
+            <tr><td>4</td><td>idle</td><td><span class="badge badge-gray">Theta 2–6 Hz</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Architecture -->
+      <div class="card">
+        <h2>Pipeline Architecture</h2>
+        <div class="arch-box">
+          <span class="highlight">[EEG Wearable 256 Hz — 14 channels]</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+          [Bandpass Filter 1–40 Hz]<br>
+          [ICA Artifact Removal]<br>
+          [Epoch Normalization]<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+          <span class="highlight">[EEGNet CNN — 3 blocks]</span><br>
+          &nbsp;&nbsp;Block 1: Temporal Conv (1×64)<br>
+          &nbsp;&nbsp;Block 2: Depthwise Spatial Conv (14×1)<br>
+          &nbsp;&nbsp;Block 3: Separable Conv + AvgPool<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+          [Softmax → 5 classes]<br>
+          [Confidence threshold &gt; 70%]<br>
+          [Debounce 400 ms]<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;↓<br>
+          <span class="highlight">[Command Router → OS API]</span><br>
+          [RL Feedback Loop]
+        </div>
+      </div>
+
+      <!-- Runner -->
+      <div class="card">
+        <h2>Run Pipeline</h2>
+        <div id="status-bar">
+          <span class="status-dot dot-idle" id="dot"></span>
+          <span id="status-text">Ready</span>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="btn-core" onclick="runScript('bci_core')">▶ Run Core Pipeline</button>
+          <button class="btn btn-secondary" id="btn-bench" onclick="runScript('benchmark')">⏱ Benchmark</button>
+          <button class="btn btn-secondary" id="btn-all" onclick="runScript('run_all')">🔬 TSTA Research</button>
+        </div>
+        <div class="terminal" id="terminal">
+          <span class="prompt">$</span> Select a script above to run it...<br>
+        </div>
+      </div>
+
+      <!-- Dashboard image -->
+      <div class="card full-width">
+        <h2>Dashboard Visualization</h2>
+        <img src="/dashboard.png" alt="BCI Dashboard" class="dashboard-img" onerror="this.style.display='none';document.getElementById('no-img').style.display='block'" />
+        <p id="no-img" style="display:none;color:#8b949e;font-size:0.875rem;">Run the core pipeline and then the visualize script to generate the dashboard.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let polling = null;
+
+    function setRunning(running) {
+      const dot = document.getElementById('dot');
+      const st = document.getElementById('status-text');
+      const btns = ['btn-core','btn-bench','btn-all'];
+      dot.className = 'status-dot ' + (running ? 'dot-running' : 'dot-idle');
+      st.textContent = running ? 'Running...' : 'Ready';
+      btns.forEach(id => document.getElementById(id).disabled = running);
+    }
+
+    async function runScript(name) {
+      const term = document.getElementById('terminal');
+      term.innerHTML = '<span class="prompt">$ python3 ' + name + '.py</span><br>';
+      const res = await fetch('/api/run/' + name, {method: 'POST'});
+      if (!res.ok) { const d = await res.json(); term.innerHTML += '<span class="err">Error: ' + d.error + '</span><br>'; return; }
+      setRunning(true);
+      startPolling();
+    }
+
+    function startPolling() {
+      if (polling) clearInterval(polling);
+      polling = setInterval(pollOutput, 800);
+    }
+
+    let lastLen = 0;
+    async function pollOutput() {
+      const term = document.getElementById('terminal');
+      const res = await fetch('/api/output');
+      const data = await res.json();
+      const lines = data.lines;
+      for (let i = lastLen; i < lines.length; i++) {
+        const line = lines[i];
+        const span = document.createElement('span');
+        span.className = line.startsWith('Error') ? 'err' : '';
+        span.textContent = line;
+        term.appendChild(span);
+        term.appendChild(document.createElement('br'));
+      }
+      lastLen = lines.length;
+      term.scrollTop = term.scrollHeight;
+      if (!data.running && lastLen >= lines.length) {
+        clearInterval(polling);
+        polling = null;
+        lastLen = 0;
+        setRunning(false);
+      }
+    }
+  </script>
+</body>
+</html>
