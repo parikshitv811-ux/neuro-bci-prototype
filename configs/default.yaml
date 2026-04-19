@@ -1,0 +1,42 @@
+# TSTA Default Configuration
+# ===========================
+
+data:
+  n_subjects:  5
+  n_per_class: 48
+  seed:        42
+  source:      synthetic   # synthetic | physionet
+
+model:
+  d_model:     128
+  d_text:      128
+  n_heads:     4
+  n_layers:    3
+  patch_len:   40
+  patch_step:  20
+  temperature: 0.07
+  dropout:     0.1
+
+training:
+  epochs:      40
+  batch_size:  32
+  lr:          3.0e-4
+  weight_decay: 1.0e-4
+
+evaluation:
+  target_within_sdas: 0.4
+  target_cross_sdas:  0.25
+  target_top1:        0.6
+  noise_sigmas:       [0.0, 0.25, 0.5, 1.0, 2.0]
+
+realtime:
+  chunk_s:      0.5
+  overlap:      0.5
+  buffer_size:  16
+  ema_alpha:    0.35
+  stream_duration_s: 15.0
+
+output:
+  save_models:  true
+  save_figures: true
+  save_logs:    true

@@ -1,0 +1,214 @@
+You are transforming a completed EEG TSTA research pipeline into a production-grade, interactive, Neuralink-style research platform.
+
+CRITICAL RULES:
+
+* DO NOT modify core TSTA architecture
+* DO NOT break existing pipeline
+* ONLY add system, UI, and advanced research layers
+
+---
+
+# 🎯 FINAL GOAL
+
+Convert this project into:
+
+1. A research-valid system
+2. A real-time EEG simulation platform
+3. A visually impressive interactive dashboard
+4. A clean, beautiful, GitHub-ready repository
+
+---
+
+# 🧠 PHASE 1 — COMPLETE SCIENTIFIC RIGOR
+
+Ensure fully implemented:
+
+1. Ablation studies
+2. Statistical validation (mean ± std, t-tests)
+3. Strong baselines (CNN, static embedding)
+4. Alternative hypothesis rejection
+
+Save all to:
+outputs/research/
+
+---
+
+# ⚡ PHASE 2 — REAL-TIME EEG SIMULATION (IMPORTANT)
+
+Create:
+
+realtime/
+stream_simulator.py
+realtime_inference.py
+
+Implement:
+
+1. Simulate EEG stream:
+
+   * sliding window over signal
+   * chunk size = 0.5–1 sec
+
+2. Real-time inference:
+
+   * update trajectory step-by-step
+   * output evolving direction vector
+
+3. Maintain buffer:
+
+   * last N embeddings
+   * smooth trajectory
+
+---
+
+# 🎨 PHASE 3 — INTERACTIVE DASHBOARD (KEY FEATURE)
+
+Upgrade UI:
+
+Create tabs:
+
+1. TRAINING
+2. RESEARCH ANALYSIS
+3. REAL-TIME EEG
+4. MODEL EXPLORER
+
+---
+
+## REAL-TIME TAB
+
+Display:
+
+* live EEG signal (scrolling plot)
+* evolving trajectory (2D PCA)
+* direction vector (arrow/compass)
+* predicted class (live)
+
+---
+
+## RESEARCH TAB
+
+Display:
+
+* invariance scores
+* domain shift plots
+* angular separation
+* ablation table
+
+---
+
+## MODEL EXPLORER
+
+Allow:
+
+* select subject
+* select class
+* visualize trajectory
+* compare across subjects
+
+---
+
+# 📊 PHASE 4 — ADVANCED VISUALS
+
+Add:
+
+1. 3D trajectory plot
+2. direction sphere (normalized vectors)
+3. trajectory animation over time
+4. confusion matrix heatmap
+5. noise robustness curves
+
+---
+
+# 🧾 PHASE 5 — EXPERIMENT CONFIG SYSTEM
+
+Create:
+
+configs/
+default.yaml
+fast.yaml
+research.yaml
+
+Allow:
+
+* run experiments via config
+* reproducibility
+
+---
+
+# 📁 PHASE 6 — BEAUTIFUL GIT STRUCTURE
+
+Refactor repo:
+
+* remove duplicate code
+* fix imports
+* consistent naming
+* modular design
+
+Add:
+
+README.md:
+
+* project overview
+* architecture diagram
+* results
+* demo instructions
+
+---
+
+# 🧪 PHASE 7 — ONE-CLICK PIPELINES
+
+Ensure:
+
+scripts/run_full_pipeline.py
+scripts/run_realtime.py
+scripts/run_research.py
+
+All must run independently
+
+---
+
+# 🎥 PHASE 8 — DEMO MODE
+
+Create:
+
+scripts/demo_mode.py
+
+Runs:
+
+* short training
+* auto visualization
+* real-time simulation
+
+Outputs:
+
+* all figures
+* logs
+* dashboard ready
+
+---
+
+# 🚀 FINAL OUTPUT
+
+System must:
+
+✔ run fully in Replit CPU
+✔ show real-time EEG simulation
+✔ produce research-level metrics
+✔ generate publication-quality plots
+✔ look clean and professional
+
+---
+
+# 🔥 FINAL STANDARD
+
+This should look like:
+
+* a research lab tool
+* a startup prototype
+* a publishable system
+
+---
+
+GOAL:
+
+Not just proving a hypothesis,
+but demonstrating a new way to interpret EEG as trajectory dynamics.

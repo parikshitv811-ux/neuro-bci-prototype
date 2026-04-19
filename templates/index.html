@@ -3,353 +3,1003 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TSTA — EEG Semantic Trajectory Research Pipeline</title>
+  <title>TSTA — EEG Research Platform</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0d1117; color: #e6edf3; min-height: 100vh; }
-    header { background: #161b22; border-bottom: 1px solid #30363d; padding: 1rem 2rem; display: flex; align-items: center; gap: 1rem; }
-    .brain { font-size: 2rem; }
-    header h1 { font-size: 1.3rem; font-weight: 600; }
-    header p { color: #8b949e; font-size: 0.85rem; }
-    .container { max-width: 1280px; margin: 0 auto; padding: 1.5rem 2rem; }
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
-    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
-    .full { grid-column: 1 / -1; }
-    .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 1.25rem; }
-    .card h2 { font-size: 0.9rem; font-weight: 600; color: #58a6ff; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.04em; }
-    .metric-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-    .metric { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 0.7rem 0.9rem; }
-    .metric .val { font-size: 1.35rem; font-weight: 700; color: #3fb950; }
-    .metric .lbl { font-size: 0.75rem; color: #8b949e; margin-top: 2px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
-    th { color: #8b949e; font-weight: 500; text-align: left; padding: 0.4rem 0.5rem; border-bottom: 1px solid #30363d; }
-    td { padding: 0.4rem 0.5rem; border-bottom: 1px solid #21262d; }
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 500; }
-    .blue   { background: #1f4068; color: #58a6ff; }
-    .green  { background: #1a4731; color: #3fb950; }
-    .purple { background: #2d1f5e; color: #a371f7; }
-    .orange { background: #4a2d0a; color: #f0883e; }
-    .gray   { background: #21262d; color: #8b949e; }
-    .red    { background: #4a1a1a; color: #f85149; }
-    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 1rem; border: none; border-radius: 8px; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: opacity 0.15s; }
-    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn-green  { background: #238636; color: #fff; }
-    .btn-blue   { background: #1b4f9b; color: #fff; }
-    .btn-gray   { background: #21262d; color: #e6edf3; border: 1px solid #30363d; }
-    .btn-purple { background: #3d2b7a; color: #c9b8ff; }
-    .btn:not(:disabled):hover { opacity: 0.82; }
-    .btn-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.9rem; }
-    .terminal { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 0.9rem 1rem; font-family: "SFMono-Regular", Consolas, monospace; font-size: 0.78rem; height: 300px; overflow-y: auto; color: #3fb950; line-height: 1.55; }
-    .terminal .prompt { color: #58a6ff; }
-    .terminal .err { color: #f85149; }
-    .terminal .dim { color: #8b949e; }
-    .terminal .warn { color: #f0883e; }
-    .terminal .ok { color: #3fb950; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-    .dot-idle { background: #8b949e; }
-    .dot-run  { background: #3fb950; animation: pulse 1s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .arch { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 0.9rem; font-family: monospace; font-size: 0.75rem; color: #8b949e; line-height: 1.85; }
-    .arch .hi { color: #58a6ff; }
-    .arch .hi2 { color: #a371f7; }
-    .arch .hi3 { color: #3fb950; }
-    #status-bar { font-size: 0.82rem; color: #8b949e; margin-bottom: 0.6rem; }
-    .fig-grid { display: flex; flex-wrap: wrap; gap: 1rem; }
-    .fig-item img { width: 100%; border-radius: 8px; border: 1px solid #30363d; cursor: pointer; }
-    .fig-item p { font-size: 0.75rem; color: #8b949e; text-align: center; margin-top: 0.3rem; }
-    .tab-bar { display: flex; gap: 2px; margin-bottom: 1rem; border-bottom: 1px solid #30363d; }
-    .tab { padding: 0.5rem 1rem; font-size: 0.83rem; cursor: pointer; border-bottom: 2px solid transparent; color: #8b949e; background: none; border-top: none; border-left: none; border-right: none; }
-    .tab.active { color: #58a6ff; border-bottom-color: #58a6ff; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    .result-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.5rem; }
-    .result-val { font-weight: 700; color: #3fb950; }
-    .result-miss { color: #f85149; }
-    .sdas-bar { height: 6px; border-radius: 3px; background: #30363d; margin-top: 4px; }
-    .sdas-fill { height: 100%; border-radius: 3px; background: #3fb950; transition: width 0.4s; }
-    .sdas-fill.warn { background: #f0883e; }
+    :root {
+      --bg:       #0a0e1a;
+      --card:     #0f1624;
+      --card2:    #141d2e;
+      --border:   #1e2d45;
+      --blue:     #3b82f6;
+      --green:    #22c55e;
+      --purple:   #a855f7;
+      --orange:   #f97316;
+      --red:      #ef4444;
+      --dim:      #4b6280;
+      --text:     #cdd6e8;
+      --bright:   #e8f0ff;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+           background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+
+    /* ── HEADER ── */
+    .header { background: linear-gradient(135deg,#0a1628 0%,#0f1e38 100%);
+              border-bottom:1px solid var(--border);
+              padding:.85rem 1.8rem; display:flex; align-items:center; gap:1rem;
+              position:sticky; top:0; z-index:100; }
+    .logo { width:36px; height:36px; background:linear-gradient(135deg,var(--blue),var(--purple));
+            border-radius:10px; display:flex; align-items:center; justify-content:center;
+            font-size:1.3rem; flex-shrink:0; }
+    .header-title h1 { font-size:1.1rem; font-weight:700; color:var(--bright); }
+    .header-title p  { font-size:.75rem; color:var(--dim); }
+    .header-badges   { margin-left:auto; display:flex; gap:.5rem; }
+    .badge-sm { padding:2px 9px; border-radius:20px; font-size:.7rem; font-weight:600; }
+    .b-blue   { background:#1e3a5f; color:var(--blue); }
+    .b-green  { background:#14321d; color:var(--green); }
+    .b-purple { background:#2d1a5f; color:var(--purple); }
+    .b-orange { background:#3d2010; color:var(--orange); }
+    .b-red    { background:#3d1010; color:var(--red); }
+    .b-dim    { background:#192030; color:var(--dim); }
+
+    /* ── NAV TABS ── */
+    .nav { display:flex; background:#0a0e1a; border-bottom:1px solid var(--border);
+           padding:0 1.8rem; }
+    .nav-tab { padding:.75rem 1.3rem; font-size:.82rem; font-weight:500; cursor:pointer;
+               border:none; background:none; color:var(--dim); border-bottom:2px solid transparent;
+               transition:all .15s; }
+    .nav-tab:hover { color:var(--text); }
+    .nav-tab.active { color:var(--blue); border-bottom-color:var(--blue); }
+
+    /* ── LAYOUT ── */
+    .page { display:none; padding:1.4rem 1.8rem; max-width:1400px; margin:0 auto; }
+    .page.active { display:block; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; margin-bottom:1.1rem; }
+    .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1.1rem; margin-bottom:1.1rem; }
+    .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.1rem; }
+    .full  { grid-column:1/-1; }
+
+    /* ── CARDS ── */
+    .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.1rem; }
+    .card-title { font-size:.72rem; font-weight:700; color:var(--blue); letter-spacing:.06em;
+                  text-transform:uppercase; margin-bottom:.9rem; }
+
+    /* ── STAT BOXES ── */
+    .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; }
+    .stat { background:#080d18; border:1px solid var(--border); border-radius:8px;
+            padding:.65rem .9rem; }
+    .stat .val { font-size:1.4rem; font-weight:800; color:var(--green); }
+    .stat .lbl { font-size:.7rem; color:var(--dim); margin-top:2px; }
+    .stat .val.blue   { color:var(--blue); }
+    .stat .val.purple { color:var(--purple); }
+    .stat .val.orange { color:var(--orange); }
+
+    /* ── TERMINAL ── */
+    .terminal { background:#060c16; border:1px solid var(--border); border-radius:8px;
+                padding:.9rem 1rem; font-family:"SFMono-Regular",Consolas,monospace;
+                font-size:.76rem; height:280px; overflow-y:auto; color:var(--green);
+                line-height:1.6; }
+    .terminal .ln-dim  { color:var(--dim); }
+    .terminal .ln-ok   { color:var(--green); }
+    .terminal .ln-err  { color:var(--red); }
+    .terminal .ln-warn { color:var(--orange); }
+    .terminal .ln-blue { color:var(--blue); }
+
+    /* ── BUTTONS ── */
+    .btn-row { display:flex; gap:.6rem; flex-wrap:wrap; margin-bottom:.9rem; }
+    .btn { display:inline-flex; align-items:center; gap:.35rem; padding:.42rem .95rem;
+           border:none; border-radius:8px; font-size:.78rem; font-weight:600;
+           cursor:pointer; transition:all .15s; }
+    .btn:disabled { opacity:.35; cursor:not-allowed; }
+    .btn:not(:disabled):hover { filter:brightness(1.15); }
+    .btn-green  { background:#166534; color:#86efac; }
+    .btn-blue   { background:#1e3a6e; color:#93c5fd; }
+    .btn-purple { background:#3b1f6e; color:#c4b5fd; }
+    .btn-orange { background:#7c2d12; color:#fdba74; }
+    .btn-dim    { background:var(--card2); color:var(--text); border:1px solid var(--border); }
+    .btn-red    { background:#7f1d1d; color:#fca5a5; }
+
+    /* ── TABLE ── */
+    table  { width:100%; border-collapse:collapse; font-size:.8rem; }
+    th     { color:var(--dim); font-weight:600; text-align:left;
+             padding:.4rem .5rem; border-bottom:1px solid var(--border); font-size:.72rem; }
+    td     { padding:.38rem .5rem; border-bottom:1px solid #0e1828; }
+    tr:last-child td { border-bottom:none; }
+
+    /* ── PROGRESS BARS ── */
+    .bar-wrap { height:5px; background:#0e1828; border-radius:3px; margin-top:4px; }
+    .bar-fill { height:100%; border-radius:3px; background:var(--green); transition:width .4s; }
+    .bar-fill.warn { background:var(--orange); }
+    .bar-fill.bad  { background:var(--red); }
+
+    /* ── STATUS DOT ── */
+    .dot { width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:5px; }
+    .dot-idle { background:var(--dim); }
+    .dot-run  { background:var(--green); animation:pulse 1s infinite; }
+    .dot-rt   { background:var(--blue); animation:pulse 0.7s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── REAL-TIME CANVAS ── */
+    canvas { border-radius:8px; background:#060c16; border:1px solid var(--border); }
+
+    /* ── CLAIM CARDS ── */
+    .claim-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.7rem; margin-bottom:1rem; }
+    .claim-card { background:#080d18; border:1px solid var(--border); border-radius:10px; padding:.8rem; }
+    .claim-card.ok { border-color:#166534; }
+    .claim-card.fail { border-color:#7f1d1d; }
+    .claim-id { font-size:.68rem; font-weight:700; color:var(--dim); margin-bottom:.3rem; }
+    .claim-verdict { font-size:.8rem; font-weight:700; }
+    .claim-verdict.ok   { color:var(--green); }
+    .claim-verdict.fail { color:var(--red); }
+    .claim-evidence { font-size:.7rem; color:var(--dim); margin-top:.3rem; line-height:1.4; }
+
+    /* ── COMPASS ── */
+    .compass-wrap { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:.6rem; }
+    #compass-canvas { flex-shrink:0; }
+
+    /* ── SIM BAR ── */
+    .sim-bar { display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin-bottom:.7rem; }
+    .intent-badge { padding:3px 10px; border-radius:20px; font-size:.72rem; font-weight:600; transition:all .2s; }
+    .intent-badge.active { transform:scale(1.12); }
+    .i0 { background:#1e3a5f; color:var(--blue); }
+    .i1 { background:#14321d; color:var(--green); }
+    .i2 { background:#2d1a5f; color:var(--purple); }
+    .i3 { background:#3d2010; color:var(--orange); }
+    .i4 { background:#192030; color:var(--dim); }
+
+    /* ── EXPLORER ── */
+    .select-row { display:flex; gap:.8rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem; }
+    select { background:var(--card2); border:1px solid var(--border); color:var(--text);
+             padding:.38rem .7rem; border-radius:7px; font-size:.8rem; }
+
+    /* ── ARCH BLOCK ── */
+    .arch { background:#060c16; border:1px solid var(--border); border-radius:8px;
+            padding:.9rem 1.1rem; font-family:monospace; font-size:.74rem;
+            color:var(--dim); line-height:1.9; }
+    .arch .hi  { color:var(--blue); }
+    .arch .hi2 { color:var(--purple); }
+    .arch .hi3 { color:var(--green); }
+
+    .fig-grid { display:flex; flex-wrap:wrap; gap:.9rem; }
+    .fig-item { width:calc(50% - .45rem); }
+    .fig-item img { width:100%; border-radius:8px; border:1px solid var(--border); cursor:zoom-in; }
+    .fig-item p   { font-size:.7rem; color:var(--dim); text-align:center; margin-top:.3rem; }
+
+    .divider { border:none; border-top:1px solid var(--border); margin:.9rem 0; }
   </style>
 </head>
 <body>
-  <header>
-    <div class="brain">🧠</div>
-    <div>
-      <h1>TSTA — Temporal Semantic Trajectory Alignment</h1>
-      <p>Production-grade EEG research pipeline &nbsp;·&nbsp; 64-channel synthetic &amp; PhysioNet real EEG &nbsp;·&nbsp; InfoNCE + trajectory direction encoding</p>
+
+<!-- ── HEADER ─────────────────────────────────────────────────────────────── -->
+<div class="header">
+  <div class="logo">🧠</div>
+  <div class="header-title">
+    <h1>TSTA — Temporal Semantic Trajectory Alignment</h1>
+    <p>EEG research platform &nbsp;·&nbsp; InfoNCE trajectory direction encoding &nbsp;·&nbsp; 64-channel synthetic &amp; real EEG</p>
+  </div>
+  <div class="header-badges">
+    <span class="badge-sm b-green">SDAS &gt; 0.4</span>
+    <span class="badge-sm b-blue">5 Classes</span>
+    <span class="badge-sm b-purple">9-Phase Analysis</span>
+    <span class="badge-sm b-dim" id="hdr-status">Ready</span>
+  </div>
+</div>
+
+<!-- ── NAV ────────────────────────────────────────────────────────────────── -->
+<div class="nav">
+  <button class="nav-tab active" onclick="switchPage('training', this)">⚡ Training</button>
+  <button class="nav-tab" onclick="switchPage('research', this)">🔬 Research Analysis</button>
+  <button class="nav-tab" onclick="switchPage('realtime', this)">📡 Real-Time EEG</button>
+  <button class="nav-tab" onclick="switchPage('explorer', this)">🗺️ Model Explorer</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 1 — TRAINING                                                         -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-training" class="page active">
+
+  <!-- Top stat row -->
+  <div class="grid4">
+    <div class="stat"><div class="val">&gt; 0.4</div><div class="lbl">Within-subject SDAS</div></div>
+    <div class="stat"><div class="val blue">&gt; 0.25</div><div class="lbl">Cross-subject SDAS</div></div>
+    <div class="stat"><div class="val purple">&gt; 60%</div><div class="lbl">Top-1 accuracy</div></div>
+    <div class="stat"><div class="val orange">5</div><div class="lbl">Semantic classes</div></div>
+  </div>
+
+  <div class="grid2">
+    <!-- Pipeline runner -->
+    <div class="card">
+      <div class="card-title">Run Pipeline</div>
+      <div class="btn-row">
+        <button class="btn btn-dim" id="btn-debug" onclick="run('debug')">🔍 Debug</button>
+        <button class="btn btn-green" id="btn-synthetic" onclick="run('synthetic')">▶ Synthetic</button>
+        <button class="btn btn-blue" id="btn-real" onclick="run('real')">🌐 Real EEG</button>
+        <button class="btn btn-purple" id="btn-demo" onclick="run('demo')">🎬 Demo Mode</button>
+        <button class="btn btn-dim" id="btn-full" onclick="run('full')">🚀 Full Pipeline</button>
+      </div>
+      <div style="font-size:.78rem;color:var(--dim);margin-bottom:.6rem;">
+        <span class="dot dot-idle" id="run-dot"></span>
+        <span id="run-status">Ready</span>
+      </div>
+      <div id="terminal" class="terminal">
+        <span class="ln-dim">$ Select a pipeline above to begin...</span><br>
+      </div>
     </div>
-  </header>
 
-  <div class="container">
-
-    <!-- Top row: metrics + categories + architecture -->
-    <div class="grid3">
-      <!-- Key metrics -->
-      <div class="card">
-        <h2>SDAS Targets</h2>
-        <div class="metric-grid">
-          <div class="metric"><div class="val">&gt; 0.4</div><div class="lbl">Within-subject SDAS</div></div>
-          <div class="metric"><div class="val">&gt; 0.25</div><div class="lbl">Cross-subject SDAS</div></div>
-          <div class="metric"><div class="val">&gt; 60%</div><div class="lbl">Top-1 accuracy</div></div>
-          <div class="metric"><div class="val">5</div><div class="lbl">Semantic classes</div></div>
-        </div>
+    <!-- Results -->
+    <div class="card">
+      <div class="card-title">Latest Results</div>
+      <div id="train-results-area">
+        <p style="color:var(--dim);font-size:.8rem;">Run synthetic or demo pipeline to populate results.</p>
       </div>
+      <hr class="divider">
+      <button class="btn btn-dim" onclick="loadResults()" style="font-size:.73rem;">↻ Refresh</button>
+    </div>
+  </div>
 
-      <!-- Semantic categories -->
-      <div class="card">
-        <h2>Semantic Categories</h2>
-        <table>
-          <thead><tr><th>ID</th><th>Intent</th><th>Band</th><th>ERP</th></tr></thead>
-          <tbody>
-            <tr><td>0</td><td>communication</td><td><span class="badge blue">8–12 Hz</span></td><td>300ms</td></tr>
-            <tr><td>1</td><td>navigation</td><td><span class="badge green">12–18 Hz</span></td><td>250ms</td></tr>
-            <tr><td>2</td><td>action</td><td><span class="badge purple">15–25 Hz</span></td><td>200ms</td></tr>
-            <tr><td>3</td><td>selection</td><td><span class="badge orange">10–15 Hz</span></td><td>350ms</td></tr>
-            <tr><td>4</td><td>idle</td><td><span class="badge gray">6–9 Hz</span></td><td>—</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Architecture -->
-      <div class="card">
-        <h2>Model Architecture</h2>
-        <div class="arch">
+  <div class="grid2">
+    <!-- Architecture -->
+    <div class="card">
+      <div class="card-title">Model Architecture</div>
+      <div class="arch">
 <span class="hi">EEG (B, C=64, T=320)</span><br>
-&nbsp;&nbsp;→ <span class="hi">EEGPatcher</span>  <span class="dim">(B, 15, 128)</span><br>
-&nbsp;&nbsp;→ <span class="hi">TemporalTransformer</span> <span class="dim">3-layer Pre-LN</span><br>
-&nbsp;&nbsp;→ <span class="hi2">PLTA</span>  <span class="dim">P2/N2/P3 gates</span><br>
-&nbsp;&nbsp;→ <span class="hi2">TrajectoryHead</span>  <span class="dim">displacement attn</span><br>
-&nbsp;&nbsp;→ <span class="hi3">direction vector (B, 128)</span><br>
+ → <span class="hi">EEGPatcher</span>    <span style="color:#253850">patch_len=40, step=20 → (B,15,128)</span><br>
+ → <span class="hi">TemporalTransformer</span>  <span style="color:#253850">Pre-LN, 3 layers, 4 heads</span><br>
+ → <span class="hi2">PLTA</span>          <span style="color:#253850">P2/N2/P3 ERP gates → context (B,128)</span><br>
+ → <span class="hi2">TrajectoryHead</span> <span style="color:#253850">displacement attention</span><br>
+ → <span class="hi3">direction (B,128)</span>   <span style="color:#253850">L2-normalized unit vector</span><br>
 <br>
-<span class="dim">InfoNCE ↕</span><br>
+<span style="color:#253850">── InfoNCE ──────────────────────────────</span><br>
 <br>
-<span class="hi">TextEmbedder</span>  <span class="dim">orthogonal init</span><br>
-&nbsp;&nbsp;→ <span class="hi3">text embedding (B, 128)</span>
-        </div>
+<span class="hi">TextEmbedder</span>   <span style="color:#253850">class_id → orthogonal init → proj</span><br>
+ → <span class="hi3">text embedding (B,128)</span>  <span style="color:#253850">L2-normalized</span>
       </div>
     </div>
 
-    <!-- Runner + terminal -->
-    <div class="grid2">
-      <div class="card">
-        <h2>Run Pipeline</h2>
-        <div id="status-bar">
-          <span class="dot dot-idle" id="dot"></span>
-          <span id="status-text">Ready</span>
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-gray" id="btn-debug"     onclick="run('debug')">🔍 Debug Check</button>
-          <button class="btn btn-green" id="btn-synthetic" onclick="run('synthetic')">▶ Synthetic Pipeline</button>
-          <button class="btn btn-blue" id="btn-real"      onclick="run('real')">🌐 Real EEG Pipeline</button>
-          <button class="btn btn-purple" id="btn-full"    onclick="run('full')">🚀 Full Pipeline</button>
-          <button class="btn btn-gray" id="btn-bci"       onclick="run('bci_core')">⚡ BCI Core</button>
-          <button class="btn btn-purple" id="btn-advanced" onclick="run('advanced')" style="background:#5a1e96;">🔬 Advanced Research (9 Phases)</button>
-        </div>
-        <div id="terminal" class="terminal">
-          <span class="prompt">$</span><span class="dim"> Choose a script above to run...</span><br>
-        </div>
-      </div>
-
-      <!-- Results panel -->
-      <div class="card">
-        <h2>Latest Results</h2>
-        <div class="tab-bar">
-          <button class="tab active" onclick="showTab('tab-syn', event)">Synthetic</button>
-          <button class="tab" onclick="showTab('tab-real', event)">Real EEG</button>
-          <button class="tab" onclick="showTab('tab-adv', event)">Research</button>
-        </div>
-        <div id="tab-syn" class="tab-content active">
-          <div id="syn-results"><p style="color:#8b949e;font-size:0.83rem;">Run the synthetic pipeline to see results.</p></div>
-        </div>
-        <div id="tab-real" class="tab-content">
-          <div id="real-results"><p style="color:#8b949e;font-size:0.83rem;">Run the real EEG pipeline to see results.</p></div>
-        </div>
-        <div id="tab-adv" class="tab-content">
-          <div id="adv-results"><p style="color:#8b949e;font-size:0.83rem;">Run Advanced Research (9 Phases) to see results.</p></div>
-        </div>
-        <div style="margin-top:1rem;">
-          <button class="btn btn-gray" onclick="loadResults()" style="font-size:0.75rem;">↻ Refresh Results</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Figures -->
-    <div class="card full">
-      <h2>Validation Figures <span style="color:#8b949e;font-weight:400;font-size:0.75rem;">(generated in outputs/figures/)</span></h2>
-      <div id="fig-grid" class="fig-grid">
-        <p style="color:#8b949e;font-size:0.83rem;">Run a pipeline script to generate figures. They will appear here automatically.</p>
-      </div>
-      <button class="btn btn-gray" onclick="loadFigures()" style="font-size:0.75rem;margin-top:0.75rem;">↻ Refresh Figures</button>
-    </div>
-
-    <!-- Pipeline steps reference -->
-    <div class="card full" style="margin-top:1.25rem;">
-      <h2>Pipeline Phases</h2>
+    <!-- Semantic classes -->
+    <div class="card">
+      <div class="card-title">Semantic Classes</div>
       <table>
-        <thead><tr><th>Phase</th><th>Script</th><th>Description</th></tr></thead>
+        <thead><tr><th>ID</th><th>Intent</th><th>Band</th><th>ERP</th><th>Laterality</th></tr></thead>
         <tbody>
-          <tr><td><span class="badge gray">0</span></td><td><code>debug</code></td><td>Sanity checks — data, model forward pass, loss, SDAS</td></tr>
-          <tr><td><span class="badge green">1</span></td><td><code>synthetic</code></td><td>Synthetic baseline: 5 subj × 48 trials × 5 classes, within-subject SDAS</td></tr>
-          <tr><td><span class="badge blue">2+3</span></td><td><code>real</code></td><td>PhysioNet EEGMMIDB (auto-fallback to synthetic) + cross-subject LOO</td></tr>
-          <tr><td><span class="badge purple">Full</span></td><td><code>full</code></td><td>All phases: synthetic → real → ablation → noise robustness → dashboards</td></tr>
-          <tr><td><span class="badge" style="background:#2d0a5c;color:#c9b8ff;">Adv</span></td><td><code>advanced</code></td><td>9-phase deep research: invariance, geometry, causality, failure modes, visualisation</td></tr>
+          <tr><td>0</td><td><span class="badge-sm b-blue">communication</span></td><td>8–12 Hz</td><td>300ms</td><td>bilateral</td></tr>
+          <tr><td>1</td><td><span class="badge-sm b-green">navigation</span></td><td>12–18 Hz</td><td>250ms</td><td>parietal</td></tr>
+          <tr><td>2</td><td><span class="badge-sm b-purple">action</span></td><td>15–25 Hz</td><td>200ms</td><td>left</td></tr>
+          <tr><td>3</td><td><span class="badge-sm b-orange">selection</span></td><td>10–15 Hz</td><td>350ms</td><td>right</td></tr>
+          <tr><td>4</td><td><span class="badge-sm b-dim">idle</span></td><td>6–9 Hz</td><td>—</td><td>none</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Figures gallery -->
+  <div class="card">
+    <div class="card-title">Figure Gallery <span style="color:var(--dim);font-weight:400;font-size:.7rem;">(outputs/figures/)</span></div>
+    <div id="fig-grid" class="fig-grid">
+      <p style="color:var(--dim);font-size:.8rem;">Figures appear here after running a pipeline.</p>
+    </div>
+    <button class="btn btn-dim" onclick="loadFigures()" style="font-size:.73rem;margin-top:.8rem;">↻ Refresh Figures</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 2 — RESEARCH ANALYSIS                                                 -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-research" class="page">
+
+  <div class="btn-row">
+    <button class="btn btn-purple" id="btn-advanced" onclick="run('advanced')">🔬 Advanced Analysis (9 Phases)</button>
+    <button class="btn btn-orange" id="btn-research" onclick="run('research')">📊 Full Research Suite</button>
+    <button class="btn btn-dim" onclick="loadResults()" style="font-size:.73rem;">↻ Refresh</button>
+    <div style="margin-left:auto;font-size:.78rem;color:var(--dim);">
+      <span class="dot dot-idle" id="res-dot"></span><span id="res-status">Ready</span>
+    </div>
+  </div>
+
+  <!-- 5 claim cards -->
+  <div class="claim-grid" id="claim-cards">
+    <div class="claim-card"><div class="claim-id">C1</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Amplitude invariance — direction ≠ magnitude</div></div>
+    <div class="claim-card"><div class="claim-id">C2</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Cross-subject direction consistency (CDAS)</div></div>
+    <div class="claim-card"><div class="claim-id">C3</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Domain shift robustness (DT-SDAS)</div></div>
+    <div class="claim-card"><div class="claim-id">C4</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Temporal causality (time-reversal TRE)</div></div>
+    <div class="claim-card"><div class="claim-id">C5</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Geometric structure (k-Means ARI, inter-class angle)</div></div>
+  </div>
+
+  <div class="grid2">
+    <!-- Metric breakdown -->
+    <div class="card">
+      <div class="card-title">Research Metrics</div>
+      <table id="research-metrics-table">
+        <tbody>
+          <tr><td style="color:var(--dim)">CDAS (cross-subject)</td><td>—</td></tr>
+          <tr><td style="color:var(--dim)">AIS (amplitude)</td><td>—</td></tr>
+          <tr><td style="color:var(--dim)">TRE (causality)</td><td>—</td></tr>
+          <tr><td style="color:var(--dim)">Inter-class angle</td><td>—</td></tr>
+          <tr><td style="color:var(--dim)">k-Means ARI</td><td>—</td></tr>
+          <tr><td style="color:var(--dim)">Smoothness ratio</td><td>—</td></tr>
+          <tr><td style="color:var(--dim)">cos-sim @ 25% signal</td><td>—</td></tr>
+          <tr><td style="color:var(--dim)">DT-SDAS (domain shift)</td><td>—</td></tr>
         </tbody>
       </table>
     </div>
 
+    <!-- Research terminal -->
+    <div class="card">
+      <div class="card-title">Analysis Terminal</div>
+      <div id="res-terminal" class="terminal">
+        <span class="ln-dim">$ Run Advanced Analysis or Full Research Suite above...</span><br>
+      </div>
+    </div>
   </div>
 
-  <script>
-    const BTNS = ['btn-debug','btn-synthetic','btn-real','btn-full','btn-bci','btn-advanced'];
-    let polling = null, lastLen = 0;
+  <!-- Advanced figures -->
+  <div class="card">
+    <div class="card-title">Advanced Visualisation Figures</div>
+    <div id="adv-fig-grid" class="fig-grid">
+      <p style="color:var(--dim);font-size:.8rem;">Figures appear after running the advanced analysis.</p>
+    </div>
+  </div>
+</div>
 
-    function setRunning(r) {
-      const dot = document.getElementById('dot');
-      dot.className = 'dot ' + (r ? 'dot-run' : 'dot-idle');
-      document.getElementById('status-text').textContent = r ? 'Running...' : 'Ready';
-      BTNS.forEach(id => document.getElementById(id).disabled = r);
-    }
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 3 — REAL-TIME EEG                                                    -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-realtime" class="page">
 
-    async function run(name) {
-      const term = document.getElementById('terminal');
-      term.innerHTML = `<span class="prompt">$ python -m tsta_project.scripts.${name}</span><br>`;
-      lastLen = 0;
-      const res = await fetch('/api/run/' + name, {method:'POST'});
-      if (!res.ok) {
-        const d = await res.json();
-        term.innerHTML += `<span class="err">Error: ${d.error}</span><br>`;
-        return;
-      }
-      setRunning(true);
-      if (polling) clearInterval(polling);
-      polling = setInterval(pollOutput, 700);
-    }
+  <div class="grid2">
+    <!-- Controls + live class indicator -->
+    <div class="card">
+      <div class="card-title">Real-Time EEG Simulation</div>
+      <div class="btn-row">
+        <button class="btn btn-green" id="rt-start-btn" onclick="startRT()">▶ Start Stream</button>
+        <button class="btn btn-red"   id="rt-stop-btn"  onclick="stopRT()" disabled>■ Stop</button>
+      </div>
+      <div class="sim-bar">
+        <span style="font-size:.72rem;color:var(--dim);">Intent:</span>
+        <span class="intent-badge i0" id="ib-0">communication</span>
+        <span class="intent-badge i1" id="ib-1">navigation</span>
+        <span class="intent-badge i2" id="ib-2">action</span>
+        <span class="intent-badge i3" id="ib-3">selection</span>
+        <span class="intent-badge i4" id="ib-4">idle</span>
+      </div>
+      <div class="stat-grid">
+        <div class="stat"><div class="val" id="rt-pred">—</div><div class="lbl">Predicted Intent</div></div>
+        <div class="stat"><div class="val blue" id="rt-conf">—</div><div class="lbl">Confidence</div></div>
+        <div class="stat"><div class="val purple" id="rt-step">0</div><div class="lbl">Stream Steps</div></div>
+        <div class="stat"><div class="val" id="rt-acc" style="color:var(--orange)">—</div><div class="lbl">Live Accuracy</div></div>
+      </div>
+      <!-- Similarity bars -->
+      <div style="margin-top:.9rem;">
+        <div class="card-title" style="margin-bottom:.5rem;">Class Similarities</div>
+        <div id="sim-bars"></div>
+      </div>
+    </div>
 
-    async function pollOutput() {
-      const term = document.getElementById('terminal');
-      const res  = await fetch('/api/output');
-      const data = await res.json();
-      for (let i = lastLen; i < data.lines.length; i++) {
-        const line = data.lines[i];
-        const span = document.createElement('span');
-        if (line.includes('✓') || line.includes('PASSED') || line.includes('target met'))
-          span.className = 'ok';
-        else if (line.includes('✗') || line.includes('Error') || line.includes('error'))
-          span.className = 'err';
-        else if (line.startsWith('  [') || line.startsWith('===') || line.startsWith('───'))
-          span.className = 'dim';
-        span.textContent = line;
-        term.appendChild(span);
-        term.appendChild(document.createElement('br'));
-      }
-      lastLen = data.lines.length;
-      term.scrollTop = term.scrollHeight;
-      if (!data.running) {
-        clearInterval(polling);
-        polling = null;
-        setRunning(false);
-        loadResults();
-        loadFigures();
-      }
-    }
+    <!-- Compass + trajectory -->
+    <div class="card">
+      <div class="card-title">Direction Compass &amp; Trajectory</div>
+      <div style="display:flex;gap:1rem;height:100%;align-items:flex-start;">
+        <canvas id="compass-canvas" width="200" height="200"></canvas>
+        <canvas id="traj-canvas"    width="220" height="200"></canvas>
+      </div>
+    </div>
+  </div>
 
-    function showTab(id, evt) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      if (evt && evt.target) evt.target.classList.add('active');
-    }
+  <!-- EEG scrolling waveform -->
+  <div class="card">
+    <div class="card-title">Live EEG Signal (8 representative channels)</div>
+    <canvas id="eeg-canvas" width="1200" height="180" style="width:100%;height:180px;"></canvas>
+  </div>
+</div>
 
-    function sdas_bar(val, target) {
-      const pct = Math.min(100, Math.max(0, (val / (target * 2)) * 100));
-      const cls = val >= target ? '' : 'warn';
-      return `<div class="sdas-bar"><div class="sdas-fill ${cls}" style="width:${pct}%"></div></div>`;
-    }
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE 4 — MODEL EXPLORER                                                   -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-explorer" class="page">
 
-    async function loadResults() {
-      const res  = await fetch('/api/results');
-      const data = await res.json();
-      if (data.synthetic && data.synthetic.within_subject) {
-        const w = data.synthetic.within_subject;
-        document.getElementById('syn-results').innerHTML = `
-          <table style="font-size:0.82rem;">
-            <tr><td style="color:#8b949e;">SDAS (mean)</td>
-                <td><span class="${w.mean_sdas >= 0.4 ? 'result-val' : 'result-miss'}">${w.mean_sdas.toFixed(4)}</span>
-                    ${sdas_bar(w.mean_sdas, 0.4)}</td></tr>
-            <tr><td style="color:#8b949e;">Std</td><td>${w.std_sdas?.toFixed(4) ?? '—'}</td></tr>
-            <tr><td style="color:#8b949e;">Top-1 acc</td><td>${(w.mean_top1 * 100).toFixed(1)}%</td></tr>
-            <tr><td style="color:#8b949e;">Target > 0.4</td>
-                <td><span class="${w.target_met ? 'badge green' : 'badge red'}">${w.target_met ? '✓ MET' : '✗ PENDING'}</span></td></tr>
-          </table>`;
-      }
-      if (data.real) {
-        const w = data.real.within_subject || {};
-        const c = data.real.cross_subject  || {};
-        document.getElementById('real-results').innerHTML = `
-          <table style="font-size:0.82rem;">
-            <tr><td style="color:#8b949e;">Source</td><td><span class="badge blue">${data.real.pipeline ?? '—'}</span></td></tr>
-            <tr><td style="color:#8b949e;">Within SDAS</td>
-                <td><span class="${(w.mean_sdas||0) >= 0.4 ? 'result-val' : 'result-miss'}">${(w.mean_sdas||0).toFixed(4)}</span>
-                    ${sdas_bar(w.mean_sdas||0, 0.4)}</td></tr>
-            <tr><td style="color:#8b949e;">Cross SDAS</td>
-                <td><span class="${(c.mean_sdas||0) >= 0.25 ? 'result-val' : 'result-miss'}">${(c.mean_sdas||0).toFixed(4)}</span>
-                    ${sdas_bar(c.mean_sdas||0, 0.25)}</td></tr>
-            <tr><td style="color:#8b949e;">Top-1 acc</td><td>${((w.mean_top1||0)*100).toFixed(1)}%</td></tr>
-          </table>`;
-      }
-      if (data.research_report && data.research_report.claim_verdicts) {
-        const cv = data.research_report.claim_verdicts;
-        const claims = {
-          'C1': 'Amplitude invariance',
-          'C2': 'Cross-subject invariance',
-          'C3': 'Domain shift robustness',
-          'C4': 'Temporal causality',
-          'C5': 'Geometric structure',
-        };
-        const n_sup = data.research_report.n_claims_supported;
-        const n_tot = data.research_report.n_claims_total;
-        let rows = Object.entries(claims).map(([cid, name]) => {
-          const v = cv[cid];
-          if (!v) return '';
-          const ok = v.verdict;
-          return `<tr>
-            <td><span class="badge ${ok?'green':'red'}">${ok?'✓':'✗'}</span></td>
-            <td style="color:#e6edf3;font-size:0.8rem;">${name}</td>
-            <td style="color:#8b949e;font-size:0.75rem;">${v.evidence||''}</td>
-          </tr>`;
-        }).join('');
-        document.getElementById('adv-results').innerHTML = `
-          <div style="margin-bottom:0.6rem;">
-            <span style="color:#3fb950;font-weight:700;font-size:1.1rem;">${n_sup}/${n_tot}</span>
-            <span style="color:#8b949e;font-size:0.82rem;"> claims supported</span>
-          </div>
-          <table style="font-size:0.82rem;width:100%;">
-            <thead><tr><th></th><th>Claim</th><th>Evidence</th></tr></thead>
-            <tbody>${rows}</tbody>
-          </table>`;
-      } else if (data.advanced) {
-        document.getElementById('adv-results').innerHTML =
-          `<p style="color:#3fb950;font-size:0.83rem;">Advanced results loaded. Refresh to see full report.</p>`;
-      }
-    }
+  <div class="card" style="margin-bottom:1.1rem;">
+    <div class="card-title">Select Subject &amp; Class</div>
+    <div class="select-row">
+      <label style="font-size:.8rem;color:var(--dim);">Subject:</label>
+      <select id="sel-subj">
+        <option value="1">Subject 1</option>
+        <option value="2">Subject 2</option>
+        <option value="3">Subject 3</option>
+        <option value="4">Subject 4</option>
+        <option value="5">Subject 5</option>
+      </select>
+      <label style="font-size:.8rem;color:var(--dim);">Intent Class:</label>
+      <select id="sel-cls">
+        <option value="0">communication</option>
+        <option value="1">navigation</option>
+        <option value="2">action</option>
+        <option value="3">selection</option>
+        <option value="4">idle</option>
+      </select>
+      <button class="btn btn-blue" onclick="loadTrajectory()">🔍 Explore Trajectory</button>
+    </div>
+    <p style="font-size:.74rem;color:var(--dim);">Requires saved model (run Synthetic pipeline first).</p>
+  </div>
 
-    async function loadFigures() {
-      const res  = await fetch('/api/figures');
-      const figs = await res.json();
-      const grid = document.getElementById('fig-grid');
-      if (figs.length === 0) {
-        grid.innerHTML = '<p style="color:#8b949e;font-size:0.83rem;">No figures yet. Run a pipeline script to generate them.</p>';
-        return;
-      }
-      grid.innerHTML = figs.map(f => `
-        <div class="fig-item" style="width:calc(50% - 0.5rem)">
-          <img src="/figures/${f}" alt="${f}" onclick="window.open('/figures/${f}')" />
-          <p>${f}</p>
-        </div>`).join('');
-    }
+  <div class="grid2">
+    <!-- Trajectory plot -->
+    <div class="card">
+      <div class="card-title">Patch Trajectory (2D)</div>
+      <canvas id="exp-traj-canvas" width="400" height="300" style="width:100%;height:300px;"></canvas>
+    </div>
 
-    // Initial load
+    <!-- Direction + sims -->
+    <div class="card">
+      <div class="card-title">Direction Vector &amp; Class Similarities</div>
+      <div id="exp-sims-area">
+        <p style="color:var(--dim);font-size:.8rem;">Select a subject and class, then click Explore.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison: multiple classes same subject -->
+  <div class="card">
+    <div class="card-title">Direction Comparison — All Classes (Subject <span id="exp-subj-lbl">1</span>)</div>
+    <canvas id="exp-compare-canvas" width="900" height="200" style="width:100%;height:200px;background:#060c16;border-radius:8px;border:1px solid var(--border);"></canvas>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT                                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<script>
+// ── Global state ──────────────────────────────────────────────────────────────
+const ALL_BTNS   = ['btn-debug','btn-synthetic','btn-real','btn-demo','btn-full',
+                    'btn-advanced','btn-research'];
+let   polling    = null;
+let   lastLen    = 0;
+let   activeTermId = 'terminal';
+let   rtES       = null;
+let   rtCorrect  = 0, rtTotal = 0;
+const INTENTS    = ['communication','navigation','action','selection','idle'];
+const CLR        = ['#3b82f6','#22c55e','#a855f7','#f97316','#4b6280'];
+
+// EEG canvas state
+const EEG_CH   = 8;
+let   eegBuf   = Array.from({length: EEG_CH}, () => []);
+const EEG_MAX  = 200;
+
+// ── Page switching ─────────────────────────────────────────────────────────────
+function switchPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  el.classList.add('active');
+  if (id === 'training')  activeTermId = 'terminal';
+  if (id === 'research')  { activeTermId = 'res-terminal'; loadResearch(); }
+  if (id === 'realtime')  initRTCanvases();
+  if (id === 'explorer')  initExplorer();
+}
+
+// ── Pipeline runner ────────────────────────────────────────────────────────────
+function setRunning(r) {
+  ALL_BTNS.forEach(id => { const b = document.getElementById(id); if(b) b.disabled=r; });
+  ['run-dot','res-dot'].forEach(id => {
+    const d = document.getElementById(id);
+    if(d) d.className = 'dot ' + (r ? 'dot-run' : 'dot-idle');
+  });
+  ['run-status','res-status'].forEach(id => {
+    const s = document.getElementById(id);
+    if(s) s.textContent = r ? 'Running...' : 'Ready';
+  });
+  document.getElementById('hdr-status').textContent = r ? '● Running' : 'Ready';
+}
+
+async function run(name) {
+  const termEl = document.getElementById(activeTermId) || document.getElementById('terminal');
+  termEl.innerHTML = `<span class="ln-blue">$ python -m tsta_project.scripts.${name}</span><br>`;
+  lastLen = 0;
+  const res = await fetch('/api/run/' + name, {method:'POST'});
+  if (!res.ok) {
+    const d = await res.json();
+    termEl.innerHTML += `<span class="ln-err">Error: ${d.error}</span><br>`;
+    return;
+  }
+  setRunning(true);
+  if (polling) clearInterval(polling);
+  polling = setInterval(pollOutput, 600);
+}
+
+async function pollOutput() {
+  const termEl = document.getElementById(activeTermId) || document.getElementById('terminal');
+  const res  = await fetch('/api/output');
+  const data = await res.json();
+  for (let i = lastLen; i < data.lines.length; i++) {
+    const line = data.lines[i];
+    const span = document.createElement('span');
+    if      (line.includes('✓') || line.includes('target met') || line.includes('PASSED'))
+      span.className = 'ln-ok';
+    else if (line.includes('✗') || line.includes('Error') || line.includes('Traceback'))
+      span.className = 'ln-err';
+    else if (line.startsWith('  [') || line.startsWith('===') || line.includes('──'))
+      span.className = 'ln-dim';
+    span.textContent = line;
+    termEl.appendChild(span);
+    termEl.appendChild(document.createElement('br'));
+  }
+  lastLen = data.lines.length;
+  termEl.scrollTop = termEl.scrollHeight;
+  if (!data.running) {
+    clearInterval(polling); polling = null;
+    setRunning(false);
     loadResults();
     loadFigures();
-  </script>
+  }
+}
+
+// ── Results loader ─────────────────────────────────────────────────────────────
+async function loadResults() {
+  const res  = await fetch('/api/results');
+  const data = await res.json();
+
+  // Training tab
+  const area = document.getElementById('train-results-area');
+  const src  = data.demo || data.synthetic;
+  if (src) {
+    const ws  = src.within_subject || {};
+    const ms  = ws.mean_sdas || src.sdas_mean || 0;
+    const t1  = ws.mean_top1 || src.top1_mean || 0;
+    const met = ms >= 0.4;
+    area.innerHTML = `
+      <div class="stat-grid" style="margin-bottom:.7rem;">
+        <div class="stat"><div class="val ${met?'':'orange'}">${ms.toFixed(4)}</div><div class="lbl">Within-subject SDAS</div></div>
+        <div class="stat"><div class="val blue">${(t1*100).toFixed(1)}%</div><div class="lbl">Top-1 accuracy</div></div>
+        <div class="stat"><div class="val purple">${src.sdas_std ? ('±'+src.sdas_std.toFixed(4)) : (ws.std_sdas ? '±'+ws.std_sdas.toFixed(4) : '—')}</div><div class="lbl">SDAS std-dev</div></div>
+        <div class="stat"><div class="val ${met?'':'orange'}">${met?'✓ MET':'✗ TBD'}</div><div class="lbl">Target &gt; 0.4</div></div>
+      </div>`;
+    if (src.rt_accuracy != null) {
+      area.innerHTML += `<div style="font-size:.78rem;color:var(--dim);">RT accuracy: <span style="color:var(--green)">${(src.rt_accuracy*100).toFixed(1)}%</span></div>`;
+    }
+  }
+
+  // Research tab — claims
+  if (data.research_report && data.research_report.claim_verdicts) {
+    updateClaimCards(data.research_report.claim_verdicts);
+    updateResearchMetrics(data);
+  }
+}
+
+function updateClaimCards(cv) {
+  const desc = {
+    C1: 'Amplitude invariance', C2: 'Cross-subject consistency',
+    C3: 'Domain shift robust',  C4: 'Temporal causality',
+    C5: 'Geometric structure',
+  };
+  const container = document.getElementById('claim-cards');
+  container.innerHTML = '';
+  for (const [cid, v] of Object.entries(cv)) {
+    const ok  = v.verdict;
+    const div = document.createElement('div');
+    div.className = `claim-card ${ok?'ok':'fail'}`;
+    div.innerHTML = `<div class="claim-id">${cid}</div>
+      <div class="claim-verdict ${ok?'ok':'fail'}">${ok?'✓ SUPPORTED':'✗ NOT SUPPORTED'}</div>
+      <div class="claim-evidence">${desc[cid] || ''}<br><span style="color:var(--dim)">${v.evidence||''}</span></div>`;
+    container.appendChild(div);
+  }
+}
+
+function updateResearchMetrics(data) {
+  const adv = data.advanced || {};
+  const rr  = data.research_report || {};
+  const sec = (rr.sections || {});
+  const metrics = [
+    ['CDAS (cross-subject)', ((adv.direction_invariance||{}).cdas || (((sec.INVARIANCE||{})['Cross-subject CDAS'])))||'—'],
+    ['AIS (amplitude)',      ((adv.amplitude_invariance||{}).ais_random || (sec.INVARIANCE||{})['Amplitude AIS (random)'])||'—'],
+    ['TRE (causality)',      ((adv.time_reversal||{}).tre || (sec.CAUSALITY||{})['Time Reversal Effect (TRE)'])||'—'],
+    ['Inter-class angle',    ((adv.geometric_structure||{}).inter_class_angle_deg || (sec.GEOMETRY||{})['Inter-class angle (°)'])||'—'],
+    ['k-Means ARI',          ((adv.geometric_structure||{}).kmeans_ari || (sec.GEOMETRY||{})['k-Means ARI'])||'—'],
+    ['Smoothness ratio',     ((adv.temporal_smoothness||{}).smoothness_ratio || (sec.TEMPORAL||{})['Smoothness ratio'])||'—'],
+    ['cos-sim @ 25% signal', ((((adv.partial_signal||{}).per_fraction||{})['0.25']||{}).cos_sim)||(sec['EARLY DETECTION']||{})['cos-sim at 25% signal']||'—'],
+    ['DT-SDAS (domain shift)',((adv.domain_shift||{}).mean_dt_sdas)||(sec.ROBUSTNESS||{})['Domain transfer SDAS']||'—'],
+  ];
+  const tbody = document.querySelector('#research-metrics-table tbody');
+  tbody.innerHTML = metrics.map(([k, v]) => {
+    const fv   = typeof v === 'number' ? v.toFixed(4) : v;
+    const clr  = typeof v === 'number' && v > 0 ? 'color:var(--green)' : '';
+    return `<tr><td style="color:var(--dim)">${k}</td><td style="${clr}">${fv}</td></tr>`;
+  }).join('');
+}
+
+async function loadResearch() {
+  await loadResults();
+  await loadFigures();
+}
+
+// ── Figures ────────────────────────────────────────────────────────────────────
+async function loadFigures() {
+  const res  = await fetch('/api/figures');
+  const figs = await res.json();
+  if (!figs.length) return;
+
+  const all    = figs.map(f => `<div class="fig-item"><img src="/figures/${f}" alt="${f}" onclick="window.open('/figures/${f}')"><p>${f}</p></div>`).join('');
+  const adv    = figs.filter(f => f.startsWith('adv_')).map(f =>
+    `<div class="fig-item"><img src="/figures/${f}" alt="${f}" onclick="window.open('/figures/${f}')"><p>${f}</p></div>`).join('');
+
+  const g1 = document.getElementById('fig-grid');
+  if (g1) g1.innerHTML = all || '<p style="color:var(--dim);font-size:.8rem;">No figures yet.</p>';
+  const g2 = document.getElementById('adv-fig-grid');
+  if (g2) g2.innerHTML = adv || '<p style="color:var(--dim);font-size:.8rem;">Run Advanced Analysis to generate figures.</p>';
+}
+
+// ── Real-time EEG ──────────────────────────────────────────────────────────────
+function initRTCanvases() {
+  drawCompass(null);
+  drawTraj([]);
+  drawEEG([]);
+}
+
+async function startRT() {
+  rtCorrect = 0; rtTotal = 0;
+  eegBuf = Array.from({length: EEG_CH}, () => []);
+  document.getElementById('rt-step').textContent = '0';
+  document.getElementById('rt-acc').textContent  = '—';
+  document.getElementById('rt-pred').textContent = '—';
+  document.getElementById('rt-conf').textContent = '—';
+  renderSimBars(null);
+
+  await fetch('/api/realtime/stop', {method:'POST'});
+  const res = await fetch('/api/realtime/start', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({duration_s: 20.0, intent_seq:[0,1,2,3,4,0,1,2,3,4]})
+  });
+  if (!res.ok) { alert('Could not start real-time stream.'); return; }
+
+  document.getElementById('rt-start-btn').disabled = true;
+  document.getElementById('rt-stop-btn').disabled  = false;
+  document.querySelector('.dot.dot-idle, .dot.dot-rt') &&
+    (document.getElementById('hdr-status').textContent = '📡 Streaming');
+
+  if (rtES) rtES.close();
+  rtES = new EventSource('/api/realtime/stream');
+  rtES.onmessage = (e) => {
+    const d = JSON.parse(e.data);
+    if (d.heartbeat) return;
+    if (d.status === 'done' || d.status === 'error') {
+      stopRT();
+      if (d.status === 'error') console.error('RT error:', d.msg);
+      return;
+    }
+    if (d.status === 'training') {
+      document.getElementById('rt-pred').textContent = 'Training...';
+      return;
+    }
+    updateRTDisplay(d);
+  };
+}
+
+function stopRT() {
+  fetch('/api/realtime/stop', {method:'POST'});
+  if (rtES) { rtES.close(); rtES = null; }
+  document.getElementById('rt-start-btn').disabled = false;
+  document.getElementById('rt-stop-btn').disabled  = true;
+  document.getElementById('hdr-status').textContent = 'Ready';
+}
+
+function updateRTDisplay(d) {
+  document.getElementById('rt-step').textContent = d.step;
+  document.getElementById('rt-pred').textContent = d.pred_intent;
+  document.getElementById('rt-conf').textContent = (d.confidence * 100).toFixed(1) + '%';
+
+  if (d.correct !== null) {
+    rtTotal   += 1;
+    rtCorrect += d.correct ? 1 : 0;
+    document.getElementById('rt-acc').textContent =
+      (rtCorrect / rtTotal * 100).toFixed(1) + '%';
+  }
+
+  // Highlight active intent badge
+  for (let i = 0; i < 5; i++) {
+    const b = document.getElementById('ib-' + i);
+    if (!b) continue;
+    b.classList.toggle('active', i === d.true_label);
+    b.style.boxShadow = (i === d.pred_class)
+      ? `0 0 0 2px ${CLR[i]}55` : '';
+  }
+
+  renderSimBars(d.all_sims);
+  drawCompass(d.smooth_dir);
+  drawTraj(d.trajectory || []);
+  if (d.eeg_disp) appendEEG(d.eeg_disp);
+}
+
+function renderSimBars(sims) {
+  const el = document.getElementById('sim-bars');
+  if (!el) return;
+  if (!sims) { el.innerHTML = ''; return; }
+  el.innerHTML = INTENTS.map((name, i) => {
+    const v   = sims[i] || 0;
+    const pct = Math.max(0, Math.min(100, (v + 0.3) / 0.6 * 100));
+    return `<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;">
+      <span style="font-size:.7rem;color:${CLR[i]};width:90px;flex-shrink:0">${name}</span>
+      <div class="bar-wrap" style="flex:1"><div class="bar-fill" style="width:${pct}%;background:${CLR[i]}"></div></div>
+      <span style="font-size:.7rem;color:var(--dim);width:45px;text-align:right">${v.toFixed(3)}</span>
+    </div>`;
+  }).join('');
+}
+
+function drawCompass(dir8) {
+  const c  = document.getElementById('compass-canvas');
+  if (!c) return;
+  const cx = c.width/2, cy = c.height/2, r = 85;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+
+  // Background circle
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle='#1e2d45'; ctx.lineWidth=1.5; ctx.stroke();
+
+  // Tick marks
+  for (let i=0;i<12;i++){
+    const a=i/12*Math.PI*2, l=i%3===0?10:5;
+    ctx.beginPath();
+    ctx.moveTo(cx+(r-l)*Math.cos(a), cy+(r-l)*Math.sin(a));
+    ctx.lineTo(cx+r*Math.cos(a),     cy+r*Math.sin(a));
+    ctx.strokeStyle='#1e2d45'; ctx.lineWidth=1; ctx.stroke();
+  }
+
+  // Labels N/S/E/W
+  ctx.fillStyle='#253850'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('N',cx,cy-r-6); ctx.fillText('S',cx,cy+r+14);
+  ctx.fillText('E',cx+r+8,cy+4); ctx.fillText('W',cx-r-8,cy+4);
+
+  if (!dir8) return;
+
+  // Arrow from first 2 dims as angle
+  const dx = dir8[0], dy = dir8[1];
+  const angle = Math.atan2(dy, dx);
+  const len   = r * 0.72;
+
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.lineTo(cx+len*Math.cos(angle), cy+len*Math.sin(angle));
+  ctx.strokeStyle='#3b82f6'; ctx.lineWidth=2.5;
+  ctx.lineCap='round'; ctx.stroke();
+
+  // Arrowhead
+  const ah=12, aw=6;
+  const ex=cx+len*Math.cos(angle), ey=cy+len*Math.sin(angle);
+  ctx.beginPath();
+  ctx.moveTo(ex, ey);
+  ctx.lineTo(ex-ah*Math.cos(angle-0.3), ey-ah*Math.sin(angle-0.3));
+  ctx.lineTo(ex-ah*Math.cos(angle+0.3), ey-ah*Math.sin(angle+0.3));
+  ctx.closePath();
+  ctx.fillStyle='#3b82f6'; ctx.fill();
+
+  // Confidence ring
+  ctx.beginPath();
+  ctx.arc(cx,cy,8,0,Math.PI*2);
+  ctx.fillStyle='#3b82f620'; ctx.fill();
+  ctx.strokeStyle='#3b82f6'; ctx.lineWidth=1; ctx.stroke();
+}
+
+function drawTraj(traj) {
+  const c = document.getElementById('traj-canvas');
+  if (!c) return;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  if (traj.length < 2) {
+    ctx.fillStyle='#1e2d45'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('Trajectory', c.width/2, c.height/2);
+    return;
+  }
+
+  // Auto-scale
+  const xs = traj.map(p=>p[0]), ys = traj.map(p=>p[1]);
+  const pad=20, W=c.width-pad*2, H=c.height-pad*2;
+  const mnx=Math.min(...xs), mxx=Math.max(...xs), mny=Math.min(...ys), mxy=Math.max(...ys);
+  const rngx=mxx-mnx||1, rngy=mxy-mny||1;
+  const sx=p=>pad+(p[0]-mnx)/rngx*W, sy=p=>pad+(p[1]-mny)/rngy*H;
+
+  // Grid
+  ctx.strokeStyle='#1e2d45'; ctx.lineWidth=0.5;
+  for (let i=0;i<=4;i++){
+    const x=pad+i/4*W; ctx.beginPath();ctx.moveTo(x,pad);ctx.lineTo(x,pad+H);ctx.stroke();
+    const y=pad+i/4*H; ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(pad+W,y);ctx.stroke();
+  }
+
+  // Trail with gradient
+  for (let i=1;i<traj.length;i++) {
+    const t   = i/traj.length;
+    const alpha = 0.2 + t*0.8;
+    ctx.beginPath();
+    ctx.moveTo(sx(traj[i-1]), sy(traj[i-1]));
+    ctx.lineTo(sx(traj[i]),   sy(traj[i]));
+    ctx.strokeStyle = `rgba(59,130,246,${alpha})`;
+    ctx.lineWidth   = 1 + t*1.5;
+    ctx.stroke();
+  }
+
+  // Latest point
+  const lp = traj[traj.length-1];
+  ctx.beginPath(); ctx.arc(sx(lp),sy(lp),5,0,Math.PI*2);
+  ctx.fillStyle='#3b82f6'; ctx.fill();
+  ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.stroke();
+
+  ctx.fillStyle='#4b6280'; ctx.font='9px sans-serif'; ctx.textAlign='left';
+  ctx.fillText('Trajectory',pad,pad-4);
+}
+
+function appendEEG(eegData) {
+  for (let ch=0;ch<Math.min(EEG_CH,eegData.length);ch++) {
+    eegBuf[ch].push(...eegData[ch]);
+    if (eegBuf[ch].length > EEG_MAX) eegBuf[ch] = eegBuf[ch].slice(-EEG_MAX);
+  }
+  drawEEG(eegBuf);
+}
+
+function drawEEG(buf) {
+  const c   = document.getElementById('eeg-canvas');
+  if (!c) return;
+  c.width   = c.offsetWidth * (window.devicePixelRatio||1);
+  c.height  = 180;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+
+  const nCh = EEG_CH, H=c.height, W=c.width;
+  const rowH = H / nCh;
+
+  for (let ch=0;ch<nCh;ch++){
+    const chBuf = (buf[ch]||[]);
+    const y0    = ch*rowH + rowH/2;
+    const scale = rowH * 0.38;
+
+    // Separator
+    ctx.beginPath(); ctx.moveTo(0,ch*rowH); ctx.lineTo(W,ch*rowH);
+    ctx.strokeStyle='#0e1828'; ctx.lineWidth=1; ctx.stroke();
+
+    // Zero line
+    ctx.beginPath(); ctx.moveTo(0,y0); ctx.lineTo(W,y0);
+    ctx.strokeStyle='#1e2d45'; ctx.lineWidth=0.5; ctx.stroke();
+
+    // Label
+    ctx.fillStyle='#253850'; ctx.font='9px monospace'; ctx.textAlign='left';
+    ctx.fillText(`ch${ch}`, 4, y0-2);
+
+    if (!chBuf.length) continue;
+    const step = W / EEG_MAX;
+    ctx.beginPath();
+    ctx.moveTo(0, y0 - chBuf[0]*scale);
+    for (let i=1;i<chBuf.length;i++) {
+      const x = (i - chBuf.length + EEG_MAX) * step;
+      if (x < 0) continue;
+      ctx.lineTo(x, y0 - chBuf[i]*scale);
+    }
+    ctx.strokeStyle = CLR[ch % CLR.length] + 'cc';
+    ctx.lineWidth   = 1; ctx.stroke();
+  }
+}
+
+// ── Model Explorer ─────────────────────────────────────────────────────────────
+function initExplorer() {}
+
+async function loadTrajectory() {
+  const subj = parseInt(document.getElementById('sel-subj').value);
+  const cls  = parseInt(document.getElementById('sel-cls').value);
+  document.getElementById('exp-subj-lbl').textContent = subj;
+  document.getElementById('exp-sims-area').innerHTML =
+    '<p style="color:var(--dim);font-size:.8rem;">Loading...</p>';
+
+  const res  = await fetch('/api/explorer/trajectory', {
+    method: 'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({subject: subj, cls: cls}),
+  });
+  if (!res.ok) {
+    const d = await res.json();
+    document.getElementById('exp-sims-area').innerHTML =
+      `<p style="color:var(--red);font-size:.8rem;">${d.error}</p>`;
+    return;
+  }
+  const data = await res.json();
+  drawExplorerTraj(data.trajectory_2d, data.intent);
+  renderExplorerSims(data.all_sims, data.pred_cls, data.intent);
+  await drawCompareAll(subj);
+}
+
+function drawExplorerTraj(traj2d, intent) {
+  const c   = document.getElementById('exp-traj-canvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+
+  const xs=traj2d.map(p=>p[0]),ys=traj2d.map(p=>p[1]);
+  const pad=30,W=c.width-pad*2,H=c.height-pad*2;
+  const mnx=Math.min(...xs),mxx=Math.max(...xs),mny=Math.min(...ys),mxy=Math.max(...ys);
+  const rngx=mxx-mnx||1, rngy=mxy-mny||1;
+  const sx=p=>pad+(p[0]-mnx)/rngx*W, sy=p=>pad+(p[1]-mny)/rngy*H;
+
+  // Grid
+  ctx.strokeStyle='#1e2d45';ctx.lineWidth=0.5;
+  for(let i=0;i<=4;i++){
+    ctx.beginPath();ctx.moveTo(pad+i/4*W,pad);ctx.lineTo(pad+i/4*W,pad+H);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(pad,pad+i/4*H);ctx.lineTo(pad+W,pad+i/4*H);ctx.stroke();
+  }
+
+  // Trajectory patches
+  for (let i=1;i<traj2d.length;i++) {
+    const t=i/traj2d.length;
+    ctx.beginPath();
+    ctx.moveTo(sx(traj2d[i-1]),sy(traj2d[i-1]));
+    ctx.lineTo(sx(traj2d[i]),  sy(traj2d[i]));
+    ctx.strokeStyle=`rgba(168,85,247,${0.3+t*0.7})`;
+    ctx.lineWidth=2+t*2; ctx.stroke();
+    ctx.beginPath();ctx.arc(sx(traj2d[i]),sy(traj2d[i]),3,0,Math.PI*2);
+    ctx.fillStyle=`rgba(168,85,247,${0.4+t*0.6})`;ctx.fill();
+  }
+
+  // Arrow from first to last
+  const fp=traj2d[0],lp=traj2d[traj2d.length-1];
+  const angle=Math.atan2(sy(lp)-sy(fp),sx(lp)-sx(fp));
+  ctx.beginPath();ctx.moveTo(sx(fp),sy(fp));ctx.lineTo(sx(lp),sy(lp));
+  ctx.strokeStyle='#a855f7';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.fillStyle='#a855f7';ctx.font='10px sans-serif';ctx.textAlign='center';
+  ctx.fillText(`${intent} (${traj2d.length} patches)`,c.width/2,c.height-8);
+}
+
+function renderExplorerSims(sims, predCls, intent) {
+  const el = document.getElementById('exp-sims-area');
+  el.innerHTML = `<p style="margin-bottom:.6rem;font-size:.78rem;color:var(--dim);">
+    Class: <span style="color:var(--purple)">${intent}</span></p>` +
+    INTENTS.map((name,i)=>{
+      const v=sims[i]||0;
+      const pct=Math.max(0,Math.min(100,(v+0.3)/0.6*100));
+      return `<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem;">
+        <span style="font-size:.72rem;color:${CLR[i]};width:100px;flex-shrink:0">${name}</span>
+        <div class="bar-wrap" style="flex:1"><div class="bar-fill" style="width:${pct}%;background:${CLR[i]}"></div></div>
+        <span style="font-size:.72rem;color:var(--dim);width:50px;text-align:right">${v.toFixed(4)}</span>
+      </div>`;
+    }).join('');
+}
+
+async function drawCompareAll(subj) {
+  const c   = document.getElementById('exp-compare-canvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle='#4b6280';ctx.font='11px sans-serif';ctx.textAlign='center';
+  ctx.fillText('Querying all classes...', c.width/2, c.height/2);
+
+  const dirs = [];
+  for (let cls=0; cls<5; cls++){
+    try {
+      const res = await fetch('/api/explorer/trajectory',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({subject:subj, cls})});
+      if(res.ok) { const d=await res.json(); dirs.push({cls,dir:d.direction,intent:d.intent}); }
+    } catch(e){}
+  }
+
+  ctx.clearRect(0,0,c.width,c.height);
+  if (!dirs.length) { ctx.fillText('No data', c.width/2, c.height/2); return; }
+
+  const W=c.width, H=c.height;
+  const slotW = W/dirs.length;
+  dirs.forEach(({cls,dir,intent},idx)=>{
+    const cx=idx*slotW+slotW/2, cy=H/2, r=Math.min(slotW,H)*0.35;
+    // Circle
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.strokeStyle=CLR[cls]+'44';ctx.lineWidth=1;ctx.stroke();
+    // Direction arrow from first 2 dims
+    const angle=Math.atan2(dir[1],dir[0]);
+    ctx.beginPath();ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+r*0.8*Math.cos(angle),cy+r*0.8*Math.sin(angle));
+    ctx.strokeStyle=CLR[cls];ctx.lineWidth=3;ctx.lineCap='round';ctx.stroke();
+    ctx.fillStyle=CLR[cls];ctx.font='10px sans-serif';ctx.textAlign='center';
+    ctx.fillText(intent,cx,cy+r+16);
+    ctx.fillStyle='#4b6280';ctx.font='9px sans-serif';
+    ctx.fillText(`(${dir[0].toFixed(2)}, ${dir[1].toFixed(2)})`,cx,cy+r+28);
+  });
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+loadResults();
+loadFigures();
+</script>
 </body>
 </html>
