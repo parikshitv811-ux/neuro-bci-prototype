@@ -1,0 +1,277 @@
+You are extending a working TSTA EEG pipeline into a high-impact research system.
+
+CURRENT STATUS:
+
+* Pipeline works end-to-end (synthetic + real EEG)
+* Trajectory-based metrics and validation exist
+* Baseline comparison exists
+
+NOW YOUR GOAL:
+Push beyond standard validation and attempt to prove deeper, harder claims about EEG representation.
+
+DO NOT modify core TSTA architecture.
+ONLY add advanced analysis, experiments, and evaluation layers.
+
+---
+
+# 🚨 RESEARCH LEVEL OBJECTIVES (HARD / NEAR-IMPOSSIBLE CLAIMS)
+
+You must attempt to validate:
+
+1. Trajectory direction is invariant across subjects
+2. Trajectory encodes semantics independent of signal amplitude
+3. Trajectory is transferable across datasets (domain shift)
+4. Trajectory evolves smoothly over time (not random jumps)
+5. Direction space has geometric structure (not arbitrary)
+
+---
+
+# 🧠 PHASE 1 — DIRECTION INVARIANCE TEST (CROSS-SUBJECT GEOMETRY)
+
+Goal:
+Check if same class directions align across subjects.
+
+Steps:
+
+* compute direction vectors per sample
+* group by class and subject
+
+Compute:
+
+* mean direction per class per subject
+* cosine similarity across subjects
+
+Add metric:
+"Cross-subject direction alignment score"
+
+Expected:
+Same class → high alignment across subjects
+
+---
+
+# ⚖️ PHASE 2 — AMPLITUDE INVARIANCE TEST
+
+Goal:
+Prove trajectory encodes meaning, not magnitude.
+
+Steps:
+
+* scale EEG signals randomly:
+  scale ∈ [0.5, 2.0]
+
+* recompute embeddings
+
+Check:
+
+* direction similarity before vs after scaling
+
+Metric:
+"Amplitude invariance score"
+
+Expected:
+Direction remains stable despite amplitude change
+
+---
+
+# 🌐 PHASE 3 — DOMAIN SHIFT SIMULATION (HARD)
+
+Simulate new dataset:
+
+* change noise profile
+* shift frequency bands
+* introduce channel dropout
+
+Test:
+Train on original synthetic / real
+Test on modified version
+
+Metric:
+"Domain transfer SDAS"
+
+Expected:
+Trajectory still meaningful under shift
+
+---
+
+# 🧪 PHASE 4 — TEMPORAL SMOOTHNESS ANALYSIS
+
+Goal:
+Check if trajectory is physically meaningful.
+
+Steps:
+
+* compute displacement between consecutive time steps
+
+Measure:
+
+* smoothness = mean ||e_t+1 - e_t||
+
+Also compute:
+
+* trajectory curvature
+
+Expected:
+
+* smooth trajectories for same class
+* chaotic for wrong predictions
+
+---
+
+# 📐 PHASE 5 — GEOMETRIC STRUCTURE OF DIRECTION SPACE
+
+Goal:
+Check if directions form structured space.
+
+Steps:
+
+* cluster direction vectors
+* compute:
+
+  * intra-class variance
+  * inter-class angle separation
+
+Perform:
+
+* PCA / UMAP on direction vectors
+
+Test:
+Are classes forming consistent angular regions?
+
+Metric:
+"Angular separability score"
+
+---
+
+# 🧪 PHASE 6 — TIME REVERSAL TEST (VERY HARD)
+
+Goal:
+Check if direction encodes temporal causality.
+
+Steps:
+
+* reverse EEG signal in time
+
+Run model again
+
+Check:
+
+* does direction invert?
+
+Expected:
+True trajectory model → direction flips
+
+---
+
+# 🧪 PHASE 7 — PARTIAL SIGNAL ROBUSTNESS
+
+Goal:
+Check if early EEG contains directional signal.
+
+Steps:
+
+* use only first 25%, 50%, 75% of signal
+
+Check:
+
+* direction similarity vs full signal
+
+Metric:
+"Early intent detectability"
+
+---
+
+# 📊 PHASE 8 — FAILURE MODE ANALYSIS
+
+Identify:
+
+* where trajectory fails
+
+Log:
+
+* misclassified samples
+* noisy trajectories
+* inconsistent directions
+
+Plot:
+
+* correct vs incorrect trajectories
+
+---
+
+# 📈 PHASE 9 — ADVANCED VISUALIZATION
+
+Add:
+
+1. Direction sphere plot (normalize vectors)
+2. Angular histogram per class
+3. Trajectory curvature plots
+4. Time-reversal comparison plots
+
+---
+
+# 🧾 FINAL OUTPUT
+
+Print structured report:
+
+INVARIANCE:
+
+* cross-subject alignment
+* amplitude invariance
+
+ROBUSTNESS:
+
+* noise impact
+* domain shift SDAS
+
+TEMPORAL:
+
+* smoothness score
+* curvature
+
+GEOMETRY:
+
+* angular separation
+* clustering quality
+
+CAUSALITY:
+
+* time reversal effect
+
+---
+
+# 🚀 FINAL CLAIMS TO TEST
+
+Attempt to prove:
+
+1. EEG meaning lies in direction, not magnitude
+2. Direction is consistent across humans
+3. Direction persists under noise and domain shift
+4. Direction encodes temporal causality
+5. Direction forms a structured latent space
+
+---
+
+# ⚠️ RULES
+
+* DO NOT change model architecture
+* Only add analysis modules
+* Keep everything modular
+* Save all outputs to /outputs/
+* Must run in Replit CPU
+
+---
+
+# 🔥 DELIVERABLES
+
+Return:
+
+* new advanced analysis module
+* new metrics
+* new plots
+* structured experimental logs
+
+---
+
+FOCUS:
+Not just improving performance,
+but proving deep properties of trajectory representation.

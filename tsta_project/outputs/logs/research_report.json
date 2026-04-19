@@ -1,0 +1,70 @@
+{
+  "claim_verdicts": {
+    "C1": {
+      "verdict": true,
+      "evidence": "AIS (random scale) = 0.9937  (threshold > 0.85)"
+    },
+    "C2": {
+      "verdict": false,
+      "evidence": "CDAS = 0.0240  (threshold > 0.05)"
+    },
+    "C3": {
+      "verdict": true,
+      "evidence": "Mean domain-transfer SDAS = 0.2678"
+    },
+    "C4": {
+      "verdict": true,
+      "evidence": "TRE = 0.6765  angular shift = 70.8\u00b0  (threshold TRE > 0.3)"
+    },
+    "C5": {
+      "verdict": true,
+      "evidence": "k-Means ARI = 0.8771  inter-class angle = 73.0\u00b0"
+    }
+  },
+  "n_claims_supported": 4,
+  "n_claims_total": 5,
+  "sections": {
+    "INVARIANCE": {
+      "Cross-subject CDAS": 0.024,
+      "Amplitude AIS (random)": 0.9937
+    },
+    "ROBUSTNESS": {
+      "Domain transfer SDAS": 0.2678
+    },
+    "TEMPORAL": {
+      "Smoothness (correct)": 11.874706,
+      "Smoothness (incorrect)": 13.739893,
+      "Smoothness ratio": 1.1571
+    },
+    "GEOMETRY": {
+      "Angular separability (ASS)": 0.4314,
+      "Inter-class angle (\u00b0)": 72.96,
+      "k-Means ARI": 0.8771,
+      "Cluster purity": 0.95
+    },
+    "CAUSALITY": {
+      "Time Reversal Effect (TRE)": 0.6765,
+      "Mean angular change (\u00b0)": 70.84,
+      "Direction flip rate": 0.0333
+    },
+    "EARLY DETECTION": {
+      "cos-sim at 25% signal": 0.6198,
+      "First fraction at SDAS target": null
+    },
+    "FAILURE MODES": {
+      "Accuracy": 0.95,
+      "Confidence (correct)": 0.3856,
+      "Confidence (incorrect)": 0.223
+    }
+  },
+  "raw_results_keys": [
+    "direction_invariance",
+    "amplitude_invariance",
+    "domain_shift",
+    "temporal_smoothness",
+    "geometric_structure",
+    "time_reversal",
+    "partial_signal",
+    "failure_modes"
+  ]
+}

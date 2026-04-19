@@ -33,7 +33,7 @@ class TSTATrainer:
         n_val = max(1, int(len(y) * val_ratio))
         val_idx, tr_idx = idx[:n_val], idx[n_val:]
 
-        def _mk(indices):
+        def _mk(indices, drop_last: bool = True):
             ds = TensorDataset(
                 torch.tensor(X[indices], dtype=torch.float32),
                 torch.tensor(y[indices], dtype=torch.long),
@@ -42,10 +42,10 @@ class TSTATrainer:
                 ds,
                 batch_size=self.cfg.BATCH_SIZE,
                 shuffle=True,
-                drop_last=True,
+                drop_last=drop_last,
             )
 
-        return _mk(tr_idx), _mk(val_idx)
+        return _mk(tr_idx, drop_last=True), _mk(val_idx, drop_last=False)
 
     def train(self,
               X:      np.ndarray,

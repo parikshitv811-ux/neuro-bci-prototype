@@ -26,6 +26,7 @@ ALLOWED_SCRIPTS = {
     "synthetic":  ("python3", "-m", "tsta_project.scripts.run_synthetic"),
     "real":       ("python3", "-m", "tsta_project.scripts.run_real"),
     "full":       ("python3", "-m", "tsta_project.scripts.run_full_pipeline"),
+    "advanced":   ("python3", "-m", "tsta_project.scripts.run_advanced"),
 }
 
 
@@ -92,6 +93,16 @@ def get_results():
     if os.path.exists(real_path):
         with open(real_path) as f:
             results["real"] = json.load(f)
+    # Load advanced results
+    adv_path = "tsta_project/outputs/logs/advanced_results.json"
+    if os.path.exists(adv_path):
+        with open(adv_path) as f:
+            results["advanced"] = json.load(f)
+    # Load research report
+    rpt_path = "tsta_project/outputs/logs/research_report.json"
+    if os.path.exists(rpt_path):
+        with open(rpt_path) as f:
+            results["research_report"] = json.load(f)
     # Legacy
     if os.path.exists("tsta_results.json"):
         with open("tsta_results.json") as f:

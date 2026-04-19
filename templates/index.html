@@ -142,6 +142,7 @@
           <button class="btn btn-blue" id="btn-real"      onclick="run('real')">🌐 Real EEG Pipeline</button>
           <button class="btn btn-purple" id="btn-full"    onclick="run('full')">🚀 Full Pipeline</button>
           <button class="btn btn-gray" id="btn-bci"       onclick="run('bci_core')">⚡ BCI Core</button>
+          <button class="btn btn-purple" id="btn-advanced" onclick="run('advanced')" style="background:#5a1e96;">🔬 Advanced Research (9 Phases)</button>
         </div>
         <div id="terminal" class="terminal">
           <span class="prompt">$</span><span class="dim"> Choose a script above to run...</span><br>
@@ -152,14 +153,18 @@
       <div class="card">
         <h2>Latest Results</h2>
         <div class="tab-bar">
-          <button class="tab active" onclick="showTab('tab-syn')">Synthetic</button>
-          <button class="tab" onclick="showTab('tab-real')">Real EEG</button>
+          <button class="tab active" onclick="showTab('tab-syn', event)">Synthetic</button>
+          <button class="tab" onclick="showTab('tab-real', event)">Real EEG</button>
+          <button class="tab" onclick="showTab('tab-adv', event)">Research</button>
         </div>
         <div id="tab-syn" class="tab-content active">
           <div id="syn-results"><p style="color:#8b949e;font-size:0.83rem;">Run the synthetic pipeline to see results.</p></div>
         </div>
         <div id="tab-real" class="tab-content">
           <div id="real-results"><p style="color:#8b949e;font-size:0.83rem;">Run the real EEG pipeline to see results.</p></div>
+        </div>
+        <div id="tab-adv" class="tab-content">
+          <div id="adv-results"><p style="color:#8b949e;font-size:0.83rem;">Run Advanced Research (9 Phases) to see results.</p></div>
         </div>
         <div style="margin-top:1rem;">
           <button class="btn btn-gray" onclick="loadResults()" style="font-size:0.75rem;">↻ Refresh Results</button>
@@ -186,6 +191,7 @@
           <tr><td><span class="badge green">1</span></td><td><code>synthetic</code></td><td>Synthetic baseline: 5 subj × 48 trials × 5 classes, within-subject SDAS</td></tr>
           <tr><td><span class="badge blue">2+3</span></td><td><code>real</code></td><td>PhysioNet EEGMMIDB (auto-fallback to synthetic) + cross-subject LOO</td></tr>
           <tr><td><span class="badge purple">Full</span></td><td><code>full</code></td><td>All phases: synthetic → real → ablation → noise robustness → dashboards</td></tr>
+          <tr><td><span class="badge" style="background:#2d0a5c;color:#c9b8ff;">Adv</span></td><td><code>advanced</code></td><td>9-phase deep research: invariance, geometry, causality, failure modes, visualisation</td></tr>
         </tbody>
       </table>
     </div>
@@ -193,7 +199,7 @@
   </div>
 
   <script>
-    const BTNS = ['btn-debug','btn-synthetic','btn-real','btn-full','btn-bci'];
+    const BTNS = ['btn-debug','btn-synthetic','btn-real','btn-full','btn-bci','btn-advanced'];
     let polling = null, lastLen = 0;
 
     function setRunning(r) {
@@ -246,11 +252,11 @@
       }
     }
 
-    function showTab(id) {
+    function showTab(id, evt) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      event.target.classList.add('active');
+      if (evt && evt.target) evt.target.classList.add('active');
     }
 
     function sdas_bar(val, target) {
@@ -289,6 +295,40 @@
                     ${sdas_bar(c.mean_sdas||0, 0.25)}</td></tr>
             <tr><td style="color:#8b949e;">Top-1 acc</td><td>${((w.mean_top1||0)*100).toFixed(1)}%</td></tr>
           </table>`;
+      }
+      if (data.research_report && data.research_report.claim_verdicts) {
+        const cv = data.research_report.claim_verdicts;
+        const claims = {
+          'C1': 'Amplitude invariance',
+          'C2': 'Cross-subject invariance',
+          'C3': 'Domain shift robustness',
+          'C4': 'Temporal causality',
+          'C5': 'Geometric structure',
+        };
+        const n_sup = data.research_report.n_claims_supported;
+        const n_tot = data.research_report.n_claims_total;
+        let rows = Object.entries(claims).map(([cid, name]) => {
+          const v = cv[cid];
+          if (!v) return '';
+          const ok = v.verdict;
+          return `<tr>
+            <td><span class="badge ${ok?'green':'red'}">${ok?'✓':'✗'}</span></td>
+            <td style="color:#e6edf3;font-size:0.8rem;">${name}</td>
+            <td style="color:#8b949e;font-size:0.75rem;">${v.evidence||''}</td>
+          </tr>`;
+        }).join('');
+        document.getElementById('adv-results').innerHTML = `
+          <div style="margin-bottom:0.6rem;">
+            <span style="color:#3fb950;font-weight:700;font-size:1.1rem;">${n_sup}/${n_tot}</span>
+            <span style="color:#8b949e;font-size:0.82rem;"> claims supported</span>
+          </div>
+          <table style="font-size:0.82rem;width:100%;">
+            <thead><tr><th></th><th>Claim</th><th>Evidence</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>`;
+      } else if (data.advanced) {
+        document.getElementById('adv-results').innerHTML =
+          `<p style="color:#3fb950;font-size:0.83rem;">Advanced results loaded. Refresh to see full report.</p>`;
       }
     }
 

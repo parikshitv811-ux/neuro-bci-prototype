@@ -47,6 +47,31 @@ tsta_project/
     └── logs/                  # JSON results
 ```
 
+## Analysis Package — `tsta_project/analysis/`
+```
+analysis/
+├── __init__.py
+├── direction_invariance.py   # P1: Cross-subject direction CDAS
+├── amplitude_invariance.py   # P2: Amplitude scaling AIS
+├── domain_shift.py           # P3: Noise/freq-shift/dropout domain transfer
+├── temporal_smoothness.py    # P4: Patch-level trajectory curvature & smoothness
+├── geometric_structure.py    # P5: Angular separability, k-Means ARI, PCA
+├── time_reversal.py          # P6: Causality via time-reversed EEG (TRE)
+├── partial_signal.py         # P7: Early intent detectability at 25/50/75%
+├── failure_modes.py          # P8: Confusion matrix, per-class precision/recall
+├── advanced_viz.py           # P9: 8 publication-quality figures
+└── research_report.py        # Structured claim verdict report
+```
+
+### 5 Deep Claims Tested
+| Claim | Description | Metric |
+|-------|-------------|--------|
+| C1 | Direction ≠ amplitude | AIS (random scale) > 0.85 |
+| C2 | Cross-subject consistency | CDAS > 0.05 |
+| C3 | Domain shift robustness | DT-SDAS > 0.5×target |
+| C4 | Temporal causality | TRE > 0.3 |
+| C5 | Geometric structure | k-Means ARI > 0.3, inter-class angle > 10° |
+
 ## Running the Project
 - Workflow: `python3 app.py` on port 5000
 - Via UI: click pipeline buttons in the web interface
