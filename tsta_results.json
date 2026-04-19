@@ -1,0 +1,12 @@
+{
+  "hypothesis": "EEG temporal dynamics encode semantic direction",
+  "metric": "SDAS (Semantic Direction Alignment Score)",
+  "target": 0.3,
+  "train_sdas": 0.8865,
+  "test_sdas": 0.883,
+  "train_top1": 1.0,
+  "test_top1": 1.0,
+  "antonym_sep": 0.449,
+  "n_params": 902658,
+  "milestone_met": true
+}
