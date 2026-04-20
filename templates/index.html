@@ -6,307 +6,401 @@
   <title>TSTA — EEG Research Platform</title>
   <style>
     :root {
-      --bg:       #0a0e1a;
-      --card:     #0f1624;
-      --card2:    #141d2e;
-      --border:   #1e2d45;
+      --bg:       #070b16;
+      --card:     #0d1421;
+      --card2:    #111926;
+      --border:   #1a2840;
       --blue:     #3b82f6;
       --green:    #22c55e;
       --purple:   #a855f7;
       --orange:   #f97316;
       --red:      #ef4444;
-      --dim:      #4b6280;
-      --text:     #cdd6e8;
-      --bright:   #e8f0ff;
+      --cyan:     #06b6d4;
+      --yellow:   #eab308;
+      --dim:      #3d5470;
+      --text:     #c8d8f0;
+      --bright:   #e8f2ff;
     }
     * { box-sizing:border-box; margin:0; padding:0; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-           background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+           background:var(--bg); color:var(--text); min-height:100vh; }
 
-    /* ── HEADER ── */
-    .header { background: linear-gradient(135deg,#0a1628 0%,#0f1e38 100%);
+    /* HEADER */
+    .header { background:linear-gradient(135deg,#080f20 0%,#0c1a30 100%);
               border-bottom:1px solid var(--border);
-              padding:.85rem 1.8rem; display:flex; align-items:center; gap:1rem;
+              padding:.8rem 1.6rem; display:flex; align-items:center; gap:1rem;
               position:sticky; top:0; z-index:100; }
-    .logo { width:36px; height:36px; background:linear-gradient(135deg,var(--blue),var(--purple));
-            border-radius:10px; display:flex; align-items:center; justify-content:center;
-            font-size:1.3rem; flex-shrink:0; }
-    .header-title h1 { font-size:1.1rem; font-weight:700; color:var(--bright); }
-    .header-title p  { font-size:.75rem; color:var(--dim); }
-    .header-badges   { margin-left:auto; display:flex; gap:.5rem; }
-    .badge-sm { padding:2px 9px; border-radius:20px; font-size:.7rem; font-weight:600; }
-    .b-blue   { background:#1e3a5f; color:var(--blue); }
-    .b-green  { background:#14321d; color:var(--green); }
-    .b-purple { background:#2d1a5f; color:var(--purple); }
-    .b-orange { background:#3d2010; color:var(--orange); }
-    .b-red    { background:#3d1010; color:var(--red); }
-    .b-dim    { background:#192030; color:var(--dim); }
+    .logo { width:34px; height:34px; background:linear-gradient(135deg,var(--blue),var(--purple));
+            border-radius:9px; display:flex; align-items:center; justify-content:center;
+            font-size:1.25rem; flex-shrink:0; }
+    .header-title h1 { font-size:1.05rem; font-weight:700; color:var(--bright); }
+    .header-title p  { font-size:.72rem; color:var(--dim); }
+    .header-badges { margin-left:auto; display:flex; gap:.4rem; align-items:center; }
+    .badge { padding:2px 9px; border-radius:20px; font-size:.68rem; font-weight:600; }
+    .b-blue   { background:#1a3358; color:var(--blue); }
+    .b-green  { background:#112a1a; color:var(--green); }
+    .b-purple { background:#27145a; color:var(--purple); }
+    .b-cyan   { background:#0a2430; color:var(--cyan); }
+    .b-orange { background:#361a08; color:var(--orange); }
+    .b-dim    { background:#151f2e; color:var(--dim); }
+    .b-red    { background:#331010; color:var(--red); }
 
-    /* ── NAV TABS ── */
-    .nav { display:flex; background:#0a0e1a; border-bottom:1px solid var(--border);
-           padding:0 1.8rem; }
-    .nav-tab { padding:.75rem 1.3rem; font-size:.82rem; font-weight:500; cursor:pointer;
-               border:none; background:none; color:var(--dim); border-bottom:2px solid transparent;
-               transition:all .15s; }
-    .nav-tab:hover { color:var(--text); }
+    /* NAV */
+    .nav { display:flex; background:var(--bg); border-bottom:1px solid var(--border); padding:0 1.6rem; }
+    .nav-tab { padding:.7rem 1.2rem; font-size:.8rem; font-weight:500; cursor:pointer;
+               border:none; background:none; color:var(--dim);
+               border-bottom:2px solid transparent; transition:all .15s; }
+    .nav-tab:hover  { color:var(--text); }
     .nav-tab.active { color:var(--blue); border-bottom-color:var(--blue); }
 
-    /* ── LAYOUT ── */
-    .page { display:none; padding:1.4rem 1.8rem; max-width:1400px; margin:0 auto; }
+    /* LAYOUT */
+    .page { display:none; padding:1.2rem 1.6rem; max-width:1440px; margin:0 auto; }
     .page.active { display:block; }
-    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; margin-bottom:1.1rem; }
-    .grid3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1.1rem; margin-bottom:1.1rem; }
-    .grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:1.1rem; }
-    .full  { grid-column:1/-1; }
+    .g2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; }
+    .g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-bottom:1rem; }
+    .g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:.8rem; margin-bottom:1rem; }
+    .g5 { display:grid; grid-template-columns:repeat(5,1fr); gap:.8rem; margin-bottom:1rem; }
+    .full { grid-column:1/-1; }
 
-    /* ── CARDS ── */
-    .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.1rem; }
-    .card-title { font-size:.72rem; font-weight:700; color:var(--blue); letter-spacing:.06em;
-                  text-transform:uppercase; margin-bottom:.9rem; }
+    /* CARD */
+    .card { background:var(--card); border:1px solid var(--border); border-radius:11px; padding:1rem; }
+    .card-title { font-size:.68rem; font-weight:700; color:var(--blue); letter-spacing:.06em;
+                  text-transform:uppercase; margin-bottom:.8rem; }
 
-    /* ── STAT BOXES ── */
-    .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; }
-    .stat { background:#080d18; border:1px solid var(--border); border-radius:8px;
-            padding:.65rem .9rem; }
-    .stat .val { font-size:1.4rem; font-weight:800; color:var(--green); }
-    .stat .lbl { font-size:.7rem; color:var(--dim); margin-top:2px; }
+    /* STAT BOXES */
+    .stat { background:#060a13; border:1px solid var(--border); border-radius:8px; padding:.6rem .85rem; }
+    .stat .val { font-size:1.35rem; font-weight:800; color:var(--green); }
+    .stat .lbl { font-size:.67rem; color:var(--dim); margin-top:1px; }
     .stat .val.blue   { color:var(--blue); }
     .stat .val.purple { color:var(--purple); }
     .stat .val.orange { color:var(--orange); }
+    .stat .val.cyan   { color:var(--cyan); }
+    .stat .val.red    { color:var(--red); }
 
-    /* ── TERMINAL ── */
-    .terminal { background:#060c16; border:1px solid var(--border); border-radius:8px;
-                padding:.9rem 1rem; font-family:"SFMono-Regular",Consolas,monospace;
-                font-size:.76rem; height:280px; overflow-y:auto; color:var(--green);
-                line-height:1.6; }
-    .terminal .ln-dim  { color:var(--dim); }
-    .terminal .ln-ok   { color:var(--green); }
-    .terminal .ln-err  { color:var(--red); }
-    .terminal .ln-warn { color:var(--orange); }
-    .terminal .ln-blue { color:var(--blue); }
+    /* TERMINAL */
+    .terminal { background:#040810; border:1px solid var(--border); border-radius:8px;
+                padding:.8rem 1rem; font-family:"SFMono-Regular",Consolas,monospace;
+                font-size:.72rem; height:260px; overflow-y:auto; color:var(--green); line-height:1.65; }
+    .ln-dim  { color:var(--dim); }
+    .ln-ok   { color:var(--green); }
+    .ln-err  { color:var(--red); }
+    .ln-warn { color:var(--orange); }
+    .ln-blue { color:var(--blue); }
+    .ln-cyan { color:var(--cyan); }
 
-    /* ── BUTTONS ── */
-    .btn-row { display:flex; gap:.6rem; flex-wrap:wrap; margin-bottom:.9rem; }
-    .btn { display:inline-flex; align-items:center; gap:.35rem; padding:.42rem .95rem;
-           border:none; border-radius:8px; font-size:.78rem; font-weight:600;
-           cursor:pointer; transition:all .15s; }
-    .btn:disabled { opacity:.35; cursor:not-allowed; }
-    .btn:not(:disabled):hover { filter:brightness(1.15); }
-    .btn-green  { background:#166534; color:#86efac; }
-    .btn-blue   { background:#1e3a6e; color:#93c5fd; }
-    .btn-purple { background:#3b1f6e; color:#c4b5fd; }
-    .btn-orange { background:#7c2d12; color:#fdba74; }
+    /* BUTTONS */
+    .btn-row { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:.8rem; }
+    .btn { display:inline-flex; align-items:center; gap:.3rem; padding:.38rem .9rem;
+           border:none; border-radius:7px; font-size:.75rem; font-weight:600; cursor:pointer;
+           transition:all .15s; }
+    .btn:disabled { opacity:.3; cursor:not-allowed; }
+    .btn:not(:disabled):hover { filter:brightness(1.2); }
+    .btn-green  { background:#0f4023; color:#86efac; }
+    .btn-blue   { background:#18305e; color:#93c5fd; }
+    .btn-purple { background:#311860; color:#c4b5fd; }
+    .btn-orange { background:#6b2710; color:#fdba74; }
+    .btn-cyan   { background:#092232; color:#67e8f9; }
+    .btn-red    { background:#6b1a1a; color:#fca5a5; }
     .btn-dim    { background:var(--card2); color:var(--text); border:1px solid var(--border); }
-    .btn-red    { background:#7f1d1d; color:#fca5a5; }
+    .btn-yellow { background:#3f2e00; color:#fde68a; }
 
-    /* ── TABLE ── */
-    table  { width:100%; border-collapse:collapse; font-size:.8rem; }
-    th     { color:var(--dim); font-weight:600; text-align:left;
-             padding:.4rem .5rem; border-bottom:1px solid var(--border); font-size:.72rem; }
-    td     { padding:.38rem .5rem; border-bottom:1px solid #0e1828; }
+    /* TABLE */
+    table { width:100%; border-collapse:collapse; font-size:.77rem; }
+    th { color:var(--dim); font-weight:600; text-align:left; padding:.38rem .5rem;
+         border-bottom:1px solid var(--border); font-size:.69rem; }
+    td { padding:.35rem .5rem; border-bottom:1px solid #080f1c; }
     tr:last-child td { border-bottom:none; }
 
-    /* ── PROGRESS BARS ── */
-    .bar-wrap { height:5px; background:#0e1828; border-radius:3px; margin-top:4px; }
+    /* BAR */
+    .bar-wrap { height:5px; background:#080f1c; border-radius:3px; margin-top:3px; }
     .bar-fill { height:100%; border-radius:3px; background:var(--green); transition:width .4s; }
-    .bar-fill.warn { background:var(--orange); }
-    .bar-fill.bad  { background:var(--red); }
 
-    /* ── STATUS DOT ── */
+    /* DOT */
     .dot { width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:5px; }
     .dot-idle { background:var(--dim); }
     .dot-run  { background:var(--green); animation:pulse 1s infinite; }
-    .dot-rt   { background:var(--blue); animation:pulse 0.7s infinite; }
+    .dot-rt   { background:var(--blue); animation:pulse .7s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-    /* ── REAL-TIME CANVAS ── */
-    canvas { border-radius:8px; background:#060c16; border:1px solid var(--border); }
+    /* ALIGNMENT PANEL */
+    .align-panel { border-radius:11px; border:2px solid var(--border); padding:1rem; background:var(--card); }
+    .align-panel.pass { border-color:#166534; background:#050e09; }
+    .align-panel.fail { border-color:#7f1d1d; background:#0d0808; }
+    .align-score { font-size:2.4rem; font-weight:900; text-align:center; margin:.4rem 0; }
+    .align-verdict { text-align:center; font-size:.85rem; font-weight:700; padding:.3rem .8rem;
+                      border-radius:20px; display:inline-block; }
+    .verdict-pass { background:#0f4023; color:var(--green); }
+    .verdict-fail { background:#3d1010; color:var(--red); }
+    .verdict-pend { background:#1a2030; color:var(--dim); }
 
-    /* ── CLAIM CARDS ── */
-    .claim-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.7rem; margin-bottom:1rem; }
-    .claim-card { background:#080d18; border:1px solid var(--border); border-radius:10px; padding:.8rem; }
-    .claim-card.ok { border-color:#166534; }
+    /* CLAIM CARDS */
+    .claim-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:.6rem; margin-bottom:1rem; }
+    .claim-card { background:#060a13; border:1px solid var(--border); border-radius:9px; padding:.75rem; }
+    .claim-card.ok   { border-color:#166534; }
     .claim-card.fail { border-color:#7f1d1d; }
-    .claim-id { font-size:.68rem; font-weight:700; color:var(--dim); margin-bottom:.3rem; }
-    .claim-verdict { font-size:.8rem; font-weight:700; }
+    .claim-id      { font-size:.65rem; font-weight:700; color:var(--dim); margin-bottom:.25rem; }
+    .claim-verdict { font-size:.76rem; font-weight:700; }
     .claim-verdict.ok   { color:var(--green); }
     .claim-verdict.fail { color:var(--red); }
-    .claim-evidence { font-size:.7rem; color:var(--dim); margin-top:.3rem; line-height:1.4; }
+    .claim-evidence     { font-size:.67rem; color:var(--dim); margin-top:.25rem; line-height:1.4; }
 
-    /* ── COMPASS ── */
-    .compass-wrap { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:.6rem; }
-    #compass-canvas { flex-shrink:0; }
+    /* INTENT BADGES */
+    .intent-badge { padding:2px 9px; border-radius:20px; font-size:.7rem; font-weight:600; transition:all .2s; }
+    .intent-badge.active { transform:scale(1.12); box-shadow:0 0 0 2px currentColor; }
+    .i0 { background:#1a3358; color:var(--blue); }
+    .i1 { background:#112a1a; color:var(--green); }
+    .i2 { background:#27145a; color:var(--purple); }
+    .i3 { background:#361a08; color:var(--orange); }
+    .i4 { background:#151f2e; color:var(--dim); }
 
-    /* ── SIM BAR ── */
-    .sim-bar { display:flex; gap:.5rem; align-items:center; flex-wrap:wrap; margin-bottom:.7rem; }
-    .intent-badge { padding:3px 10px; border-radius:20px; font-size:.72rem; font-weight:600; transition:all .2s; }
-    .intent-badge.active { transform:scale(1.12); }
-    .i0 { background:#1e3a5f; color:var(--blue); }
-    .i1 { background:#14321d; color:var(--green); }
-    .i2 { background:#2d1a5f; color:var(--purple); }
-    .i3 { background:#3d2010; color:var(--orange); }
-    .i4 { background:#192030; color:var(--dim); }
+    canvas { border-radius:8px; background:#040810; border:1px solid var(--border); }
 
-    /* ── EXPLORER ── */
-    .select-row { display:flex; gap:.8rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem; }
-    select { background:var(--card2); border:1px solid var(--border); color:var(--text);
-             padding:.38rem .7rem; border-radius:7px; font-size:.8rem; }
+    /* STABILITY METER */
+    .stability-ring { position:relative; width:100px; height:100px; }
+    .stability-ring svg { width:100%; height:100%; transform:rotate(-90deg); }
+    .stability-label { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+                       text-align:center; }
+    .stability-val { font-size:1rem; font-weight:800; }
+    .stability-lbl { font-size:.6rem; color:var(--dim); }
 
-    /* ── ARCH BLOCK ── */
-    .arch { background:#060c16; border:1px solid var(--border); border-radius:8px;
-            padding:.9rem 1.1rem; font-family:monospace; font-size:.74rem;
+    /* SPHERE canvas */
+    #sphere-canvas { display:block; margin:0 auto; }
+
+    .arch { background:#040810; border:1px solid var(--border); border-radius:8px;
+            padding:.85rem 1rem; font-family:monospace; font-size:.72rem;
             color:var(--dim); line-height:1.9; }
-    .arch .hi  { color:var(--blue); }
-    .arch .hi2 { color:var(--purple); }
-    .arch .hi3 { color:var(--green); }
+    .hi  { color:var(--blue); }
+    .hi2 { color:var(--purple); }
+    .hi3 { color:var(--green); }
 
-    .fig-grid { display:flex; flex-wrap:wrap; gap:.9rem; }
-    .fig-item { width:calc(50% - .45rem); }
-    .fig-item img { width:100%; border-radius:8px; border:1px solid var(--border); cursor:zoom-in; }
-    .fig-item p   { font-size:.7rem; color:var(--dim); text-align:center; margin-top:.3rem; }
+    .fig-grid { display:flex; flex-wrap:wrap; gap:.8rem; }
+    .fig-item { width:calc(50% - .4rem); }
+    .fig-item img { width:100%; border-radius:7px; border:1px solid var(--border); cursor:zoom-in; }
+    .fig-item p   { font-size:.67rem; color:var(--dim); text-align:center; margin-top:.25rem; }
 
-    .divider { border:none; border-top:1px solid var(--border); margin:.9rem 0; }
+    .divider { border:none; border-top:1px solid var(--border); margin:.8rem 0; }
+
+    select { background:var(--card2); border:1px solid var(--border); color:var(--text);
+             padding:.35rem .65rem; border-radius:7px; font-size:.78rem; }
+    .select-row { display:flex; gap:.7rem; align-items:center; flex-wrap:wrap; margin-bottom:1rem; }
   </style>
 </head>
 <body>
 
-<!-- ── HEADER ─────────────────────────────────────────────────────────────── -->
+<!-- HEADER -->
 <div class="header">
   <div class="logo">🧠</div>
   <div class="header-title">
     <h1>TSTA — Temporal Semantic Trajectory Alignment</h1>
-    <p>EEG research platform &nbsp;·&nbsp; InfoNCE trajectory direction encoding &nbsp;·&nbsp; 64-channel synthetic &amp; real EEG</p>
+    <p>EEG research platform &nbsp;·&nbsp; InfoNCE + direction alignment &nbsp;·&nbsp; 64-ch synthetic &amp; real EEG</p>
   </div>
   <div class="header-badges">
-    <span class="badge-sm b-green">SDAS &gt; 0.4</span>
-    <span class="badge-sm b-blue">5 Classes</span>
-    <span class="badge-sm b-purple">9-Phase Analysis</span>
-    <span class="badge-sm b-dim" id="hdr-status">Ready</span>
+    <span class="badge b-green">SDAS &gt; 0.4</span>
+    <span class="badge b-blue">5 Classes</span>
+    <span class="badge b-purple">CDAS Target &gt; 0.12</span>
+    <span class="badge b-cyan">9-Phase</span>
+    <span class="badge b-dim" id="hdr-status">Ready</span>
   </div>
 </div>
 
-<!-- ── NAV ────────────────────────────────────────────────────────────────── -->
+<!-- NAV -->
 <div class="nav">
   <button class="nav-tab active" onclick="switchPage('training', this)">⚡ Training</button>
+  <button class="nav-tab" onclick="switchPage('alignment', this)">🎯 Alignment Lab</button>
   <button class="nav-tab" onclick="switchPage('research', this)">🔬 Research Analysis</button>
   <button class="nav-tab" onclick="switchPage('realtime', this)">📡 Real-Time EEG</button>
   <button class="nav-tab" onclick="switchPage('explorer', this)">🗺️ Model Explorer</button>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<!-- PAGE 1 — TRAINING                                                         -->
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 1 — TRAINING                                                           -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
 <div id="page-training" class="page active">
-
-  <!-- Top stat row -->
-  <div class="grid4">
+  <div class="g4">
     <div class="stat"><div class="val">&gt; 0.4</div><div class="lbl">Within-subject SDAS</div></div>
-    <div class="stat"><div class="val blue">&gt; 0.25</div><div class="lbl">Cross-subject SDAS</div></div>
+    <div class="stat"><div class="val blue">&gt; 0.12</div><div class="lbl">CDAS target</div></div>
     <div class="stat"><div class="val purple">&gt; 60%</div><div class="lbl">Top-1 accuracy</div></div>
     <div class="stat"><div class="val orange">5</div><div class="lbl">Semantic classes</div></div>
   </div>
 
-  <div class="grid2">
-    <!-- Pipeline runner -->
+  <div class="g2">
     <div class="card">
       <div class="card-title">Run Pipeline</div>
       <div class="btn-row">
-        <button class="btn btn-dim" id="btn-debug" onclick="run('debug')">🔍 Debug</button>
-        <button class="btn btn-green" id="btn-synthetic" onclick="run('synthetic')">▶ Synthetic</button>
-        <button class="btn btn-blue" id="btn-real" onclick="run('real')">🌐 Real EEG</button>
-        <button class="btn btn-purple" id="btn-demo" onclick="run('demo')">🎬 Demo Mode</button>
-        <button class="btn btn-dim" id="btn-full" onclick="run('full')">🚀 Full Pipeline</button>
+        <button class="btn btn-dim"    id="btn-debug"    onclick="run('debug')">🔍 Debug</button>
+        <button class="btn btn-green"  id="btn-synthetic" onclick="run('synthetic')">▶ Synthetic</button>
+        <button class="btn btn-blue"   id="btn-real"     onclick="run('real')">🌐 Real EEG</button>
+        <button class="btn btn-purple" id="btn-demo"     onclick="run('demo')">🎬 Demo</button>
+        <button class="btn btn-dim"    id="btn-full"     onclick="run('full')">🚀 Full Pipeline</button>
       </div>
-      <div style="font-size:.78rem;color:var(--dim);margin-bottom:.6rem;">
-        <span class="dot dot-idle" id="run-dot"></span>
-        <span id="run-status">Ready</span>
+      <div style="font-size:.75rem;color:var(--dim);margin-bottom:.5rem;">
+        <span class="dot dot-idle" id="run-dot"></span><span id="run-status">Ready</span>
       </div>
       <div id="terminal" class="terminal">
-        <span class="ln-dim">$ Select a pipeline above to begin...</span><br>
+        <span class="ln-dim">$ Select a pipeline above...</span><br>
       </div>
     </div>
 
-    <!-- Results -->
     <div class="card">
       <div class="card-title">Latest Results</div>
-      <div id="train-results-area">
-        <p style="color:var(--dim);font-size:.8rem;">Run synthetic or demo pipeline to populate results.</p>
+      <div id="train-results-area" style="color:var(--dim);font-size:.8rem;">
+        Run Synthetic or Demo pipeline to see results.
       </div>
       <hr class="divider">
-      <button class="btn btn-dim" onclick="loadResults()" style="font-size:.73rem;">↻ Refresh</button>
+      <button class="btn btn-dim" onclick="loadResults()" style="font-size:.7rem;">↻ Refresh</button>
     </div>
   </div>
 
-  <div class="grid2">
-    <!-- Architecture -->
+  <div class="g2">
     <div class="card">
       <div class="card-title">Model Architecture</div>
       <div class="arch">
 <span class="hi">EEG (B, C=64, T=320)</span><br>
- → <span class="hi">EEGPatcher</span>    <span style="color:#253850">patch_len=40, step=20 → (B,15,128)</span><br>
- → <span class="hi">TemporalTransformer</span>  <span style="color:#253850">Pre-LN, 3 layers, 4 heads</span><br>
- → <span class="hi2">PLTA</span>          <span style="color:#253850">P2/N2/P3 ERP gates → context (B,128)</span><br>
- → <span class="hi2">TrajectoryHead</span> <span style="color:#253850">displacement attention</span><br>
- → <span class="hi3">direction (B,128)</span>   <span style="color:#253850">L2-normalized unit vector</span><br>
+ → <span class="hi">EEGPatcher</span>    <span style="color:#1e3048">patch_len=40, step=20 → (B,15,128)</span><br>
+ → <span class="hi">TemporalTransformer</span>  <span style="color:#1e3048">Pre-LN, 3 layers, 4 heads</span><br>
+ → <span class="hi2">PLTA</span>          <span style="color:#1e3048">P2/N2/P3 gates → context (B,128)</span><br>
+ → <span class="hi2">TrajectoryHead</span> <span style="color:#1e3048">displacement attention</span><br>
+ → <span class="hi3">direction (B,128)</span>  L2-normalized<br>
 <br>
-<span style="color:#253850">── InfoNCE ──────────────────────────────</span><br>
+<span style="color:#1e3048">── Subject-Invariant Objective ──────────</span><br>
 <br>
-<span class="hi">TextEmbedder</span>   <span style="color:#253850">class_id → orthogonal init → proj</span><br>
- → <span class="hi3">text embedding (B,128)</span>  <span style="color:#253850">L2-normalized</span>
+InfoNCE + <span class="hi3">DirectionAlignmentLoss</span><br>
+       + <span class="hi2">PrototypeField</span>  (slow EMA)<br>
+       + <span class="hi">AdversarialSubjectLoss</span>  (GRL)<br>
+       + <span style="color:var(--cyan)">SmartBatch</span>  (same class × multiple subjects)
       </div>
     </div>
 
-    <!-- Semantic classes -->
     <div class="card">
       <div class="card-title">Semantic Classes</div>
       <table>
-        <thead><tr><th>ID</th><th>Intent</th><th>Band</th><th>ERP</th><th>Laterality</th></tr></thead>
+        <thead><tr><th>ID</th><th>Intent</th><th>Band</th><th>ERP</th><th>Role</th></tr></thead>
         <tbody>
-          <tr><td>0</td><td><span class="badge-sm b-blue">communication</span></td><td>8–12 Hz</td><td>300ms</td><td>bilateral</td></tr>
-          <tr><td>1</td><td><span class="badge-sm b-green">navigation</span></td><td>12–18 Hz</td><td>250ms</td><td>parietal</td></tr>
-          <tr><td>2</td><td><span class="badge-sm b-purple">action</span></td><td>15–25 Hz</td><td>200ms</td><td>left</td></tr>
-          <tr><td>3</td><td><span class="badge-sm b-orange">selection</span></td><td>10–15 Hz</td><td>350ms</td><td>right</td></tr>
-          <tr><td>4</td><td><span class="badge-sm b-dim">idle</span></td><td>6–9 Hz</td><td>—</td><td>none</td></tr>
+          <tr><td>0</td><td><span class="badge b-blue">communication</span></td><td>8–12 Hz</td><td>300ms</td><td>bilateral</td></tr>
+          <tr><td>1</td><td><span class="badge b-green">navigation</span></td><td>12–18 Hz</td><td>250ms</td><td>parietal</td></tr>
+          <tr><td>2</td><td><span class="badge b-purple">action</span></td><td>15–25 Hz</td><td>200ms</td><td>left-lat.</td></tr>
+          <tr><td>3</td><td><span class="badge b-orange">selection</span></td><td>10–15 Hz</td><td>350ms</td><td>right-lat.</td></tr>
+          <tr><td>4</td><td><span class="badge b-dim">idle</span></td><td>6–9 Hz</td><td>—</td><td>none</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- Figures gallery -->
   <div class="card">
-    <div class="card-title">Figure Gallery <span style="color:var(--dim);font-weight:400;font-size:.7rem;">(outputs/figures/)</span></div>
+    <div class="card-title">Figure Gallery</div>
     <div id="fig-grid" class="fig-grid">
-      <p style="color:var(--dim);font-size:.8rem;">Figures appear here after running a pipeline.</p>
+      <p style="color:var(--dim);font-size:.78rem;">Figures appear here after running a pipeline.</p>
     </div>
-    <button class="btn btn-dim" onclick="loadFigures()" style="font-size:.73rem;margin-top:.8rem;">↻ Refresh Figures</button>
+    <button class="btn btn-dim" onclick="loadFigures()" style="font-size:.7rem;margin-top:.7rem;">↻ Refresh Figures</button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<!-- PAGE 2 — RESEARCH ANALYSIS                                                 -->
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 2 — ALIGNMENT LAB                                                      -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="page-alignment" class="page">
+
+  <div class="btn-row">
+    <button class="btn btn-yellow" id="btn-alignment" onclick="run('alignment')">🎯 Run Alignment Experiment</button>
+    <button class="btn btn-dim" onclick="loadAlignment()" style="font-size:.7rem;">↻ Refresh</button>
+    <div style="margin-left:auto;font-size:.75rem;color:var(--dim);">
+      <span class="dot dot-idle" id="al-dot"></span><span id="al-status">Ready</span>
+    </div>
+  </div>
+
+  <!-- CDAS STATUS ROW -->
+  <div class="g3" style="margin-bottom:1rem;">
+    <!-- Main alignment panel -->
+    <div class="align-panel" id="cdas-panel">
+      <div class="card-title">C2 — CROSS-SUBJECT ALIGNMENT (CDAS)</div>
+      <div class="align-score" id="cdas-score" style="color:var(--dim)">—</div>
+      <div style="text-align:center;margin-bottom:.6rem;">
+        <span class="align-verdict verdict-pend" id="cdas-verdict">Pending experiment</span>
+      </div>
+      <div style="display:flex;justify-content:space-around;font-size:.72rem;color:var(--dim);">
+        <div style="text-align:center;"><div id="cdas-same" style="color:var(--text)">—</div><div>Same-class cos</div></div>
+        <div style="text-align:center;"><div id="cdas-diff" style="color:var(--text)">—</div><div>Diff-class cos</div></div>
+        <div style="text-align:center;"><div id="cdas-worst" style="color:var(--orange)">—</div><div>Worst case</div></div>
+      </div>
+    </div>
+
+    <!-- Angular variance panel -->
+    <div class="card">
+      <div class="card-title">Angular Variance</div>
+      <div style="text-align:center;margin:.6rem 0;">
+        <div style="font-size:2rem;font-weight:800;" id="ang-var-val">—</div>
+        <div style="font-size:.7rem;color:var(--dim);">Mean angular variance</div>
+        <div class="badge" id="ang-var-badge" style="margin-top:.4rem;">Target &lt; 25°</div>
+      </div>
+      <div id="ang-var-per-class"></div>
+    </div>
+
+    <!-- Stability panel -->
+    <div class="card">
+      <div class="card-title">RT Stability &amp; Generalization</div>
+      <div style="display:flex;flex-direction:column;gap:.5rem;">
+        <div class="stat"><div class="val cyan" id="stab-score">—</div><div class="lbl">Stability Score</div></div>
+        <div class="stat"><div class="val" id="pred-stab">—</div><div class="lbl">Prediction Stability</div></div>
+        <div class="stat"><div class="val blue" id="zeroshot-sdas">—</div><div class="lbl">Zero-Shot SDAS</div></div>
+        <div class="stat"><div class="val purple" id="zeroshot-top1">—</div><div class="lbl">Zero-Shot Top-1</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Per-class alignment bars -->
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">Per-Class Cross-Subject Alignment</div>
+      <div id="per-class-bars">
+        <p style="color:var(--dim);font-size:.78rem;">Run alignment experiment to populate.</p>
+      </div>
+    </div>
+
+    <!-- Subject overlay view -->
+    <div class="card">
+      <div class="card-title">Subject Direction Overlay (same class)</div>
+      <canvas id="subject-overlay-canvas" width="400" height="200" style="width:100%;height:200px;"></canvas>
+    </div>
+  </div>
+
+  <!-- 3D Direction Sphere -->
+  <div class="card">
+    <div class="card-title">Direction Sphere — Normalized Class Prototypes</div>
+    <canvas id="sphere-canvas" width="900" height="220" style="width:100%;height:220px;background:#040810;border-radius:8px;border:1px solid var(--border);"></canvas>
+  </div>
+
+  <!-- Alignment terminal -->
+  <div class="card">
+    <div class="card-title">Alignment Terminal</div>
+    <div id="al-terminal" class="terminal">
+      <span class="ln-dim">$ Run alignment experiment to prove C2...</span><br>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 3 — RESEARCH ANALYSIS                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
 <div id="page-research" class="page">
 
   <div class="btn-row">
-    <button class="btn btn-purple" id="btn-advanced" onclick="run('advanced')">🔬 Advanced Analysis (9 Phases)</button>
+    <button class="btn btn-purple" id="btn-advanced" onclick="run('advanced')">🔬 9-Phase Analysis</button>
     <button class="btn btn-orange" id="btn-research" onclick="run('research')">📊 Full Research Suite</button>
-    <button class="btn btn-dim" onclick="loadResults()" style="font-size:.73rem;">↻ Refresh</button>
-    <div style="margin-left:auto;font-size:.78rem;color:var(--dim);">
+    <button class="btn btn-dim" onclick="loadResearch()" style="font-size:.7rem;">↻ Refresh</button>
+    <div style="margin-left:auto;font-size:.75rem;color:var(--dim);">
       <span class="dot dot-idle" id="res-dot"></span><span id="res-status">Ready</span>
     </div>
   </div>
 
-  <!-- 5 claim cards -->
   <div class="claim-grid" id="claim-cards">
     <div class="claim-card"><div class="claim-id">C1</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Amplitude invariance — direction ≠ magnitude</div></div>
-    <div class="claim-card"><div class="claim-id">C2</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Cross-subject direction consistency (CDAS)</div></div>
-    <div class="claim-card"><div class="claim-id">C3</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Domain shift robustness (DT-SDAS)</div></div>
-    <div class="claim-card"><div class="claim-id">C4</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Temporal causality (time-reversal TRE)</div></div>
-    <div class="claim-card"><div class="claim-id">C5</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Geometric structure (k-Means ARI, inter-class angle)</div></div>
+    <div class="claim-card"><div class="claim-id">C2</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Cross-subject direction CDAS &gt; 0.08</div></div>
+    <div class="claim-card"><div class="claim-id">C3</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Domain shift robustness</div></div>
+    <div class="claim-card"><div class="claim-id">C4</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">Temporal causality (TRE)</div></div>
+    <div class="claim-card"><div class="claim-id">C5</div><div class="claim-verdict" style="color:var(--dim)">Pending</div><div class="claim-evidence">k-Means ARI + inter-class angle</div></div>
   </div>
 
-  <div class="grid2">
-    <!-- Metric breakdown -->
+  <div class="g2">
     <div class="card">
       <div class="card-title">Research Metrics</div>
       <table id="research-metrics-table">
@@ -317,152 +411,152 @@
           <tr><td style="color:var(--dim)">Inter-class angle</td><td>—</td></tr>
           <tr><td style="color:var(--dim)">k-Means ARI</td><td>—</td></tr>
           <tr><td style="color:var(--dim)">Smoothness ratio</td><td>—</td></tr>
-          <tr><td style="color:var(--dim)">cos-sim @ 25% signal</td><td>—</td></tr>
           <tr><td style="color:var(--dim)">DT-SDAS (domain shift)</td><td>—</td></tr>
+          <tr><td style="color:var(--dim)">Zero-shot SDAS</td><td>—</td></tr>
         </tbody>
       </table>
     </div>
-
-    <!-- Research terminal -->
     <div class="card">
       <div class="card-title">Analysis Terminal</div>
       <div id="res-terminal" class="terminal">
-        <span class="ln-dim">$ Run Advanced Analysis or Full Research Suite above...</span><br>
+        <span class="ln-dim">$ Run analysis suite above...</span><br>
       </div>
     </div>
   </div>
 
-  <!-- Advanced figures -->
   <div class="card">
-    <div class="card-title">Advanced Visualisation Figures</div>
+    <div class="card-title">Advanced Figures</div>
     <div id="adv-fig-grid" class="fig-grid">
-      <p style="color:var(--dim);font-size:.8rem;">Figures appear after running the advanced analysis.</p>
+      <p style="color:var(--dim);font-size:.78rem;">Run 9-Phase Analysis to generate figures.</p>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<!-- PAGE 3 — REAL-TIME EEG                                                    -->
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 4 — REAL-TIME EEG                                                      -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
 <div id="page-realtime" class="page">
-
-  <div class="grid2">
-    <!-- Controls + live class indicator -->
+  <div class="g2">
     <div class="card">
       <div class="card-title">Real-Time EEG Simulation</div>
       <div class="btn-row">
         <button class="btn btn-green" id="rt-start-btn" onclick="startRT()">▶ Start Stream</button>
         <button class="btn btn-red"   id="rt-stop-btn"  onclick="stopRT()" disabled>■ Stop</button>
       </div>
-      <div class="sim-bar">
-        <span style="font-size:.72rem;color:var(--dim);">Intent:</span>
-        <span class="intent-badge i0" id="ib-0">communication</span>
-        <span class="intent-badge i1" id="ib-1">navigation</span>
+      <div style="display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;margin-bottom:.7rem;">
+        <span style="font-size:.7rem;color:var(--dim);">Intent:</span>
+        <span class="intent-badge i0" id="ib-0">comm.</span>
+        <span class="intent-badge i1" id="ib-1">nav.</span>
         <span class="intent-badge i2" id="ib-2">action</span>
-        <span class="intent-badge i3" id="ib-3">selection</span>
+        <span class="intent-badge i3" id="ib-3">select.</span>
         <span class="intent-badge i4" id="ib-4">idle</span>
       </div>
-      <div class="stat-grid">
+      <div class="g2" style="gap:.5rem;margin-bottom:.7rem;">
         <div class="stat"><div class="val" id="rt-pred">—</div><div class="lbl">Predicted Intent</div></div>
         <div class="stat"><div class="val blue" id="rt-conf">—</div><div class="lbl">Confidence</div></div>
-        <div class="stat"><div class="val purple" id="rt-step">0</div><div class="lbl">Stream Steps</div></div>
-        <div class="stat"><div class="val" id="rt-acc" style="color:var(--orange)">—</div><div class="lbl">Live Accuracy</div></div>
+        <div class="stat"><div class="val purple" id="rt-step">0</div><div class="lbl">Steps</div></div>
+        <div class="stat"><div class="val orange" id="rt-acc">—</div><div class="lbl">Live Accuracy</div></div>
       </div>
       <!-- Similarity bars -->
-      <div style="margin-top:.9rem;">
-        <div class="card-title" style="margin-bottom:.5rem;">Class Similarities</div>
-        <div id="sim-bars"></div>
+      <div class="card-title" style="margin-bottom:.4rem;">Class Similarities</div>
+      <div id="sim-bars"></div>
+
+      <!-- Stability meter -->
+      <div class="card-title" style="margin:.7rem 0 .4rem;">Direction Stability</div>
+      <div style="display:flex;align-items:center;gap:1rem;">
+        <div class="stability-ring">
+          <svg viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="40" stroke="#1a2840" stroke-width="8" fill="none"/>
+            <circle id="stab-ring" cx="50" cy="50" r="40" stroke="var(--cyan)" stroke-width="8" fill="none"
+                    stroke-dasharray="251.2" stroke-dashoffset="251.2" stroke-linecap="round"/>
+          </svg>
+          <div class="stability-label">
+            <div class="stability-val" id="rt-stab-val" style="color:var(--cyan)">—</div>
+            <div class="stability-lbl">stability</div>
+          </div>
+        </div>
+        <div style="flex:1;font-size:.72rem;color:var(--dim);">
+          <div>Drift: <span id="rt-drift" style="color:var(--text)">—</span></div>
+          <div style="margin-top:.3rem;">Pred stable: <span id="rt-pred-stab" style="color:var(--text)">—</span></div>
+        </div>
       </div>
     </div>
 
-    <!-- Compass + trajectory -->
     <div class="card">
       <div class="card-title">Direction Compass &amp; Trajectory</div>
-      <div style="display:flex;gap:1rem;height:100%;align-items:flex-start;">
-        <canvas id="compass-canvas" width="200" height="200"></canvas>
-        <canvas id="traj-canvas"    width="220" height="200"></canvas>
+      <div style="display:flex;gap:.8rem;align-items:flex-start;">
+        <canvas id="compass-canvas" width="190" height="190"></canvas>
+        <canvas id="traj-canvas"    width="210" height="190"></canvas>
       </div>
     </div>
   </div>
 
-  <!-- EEG scrolling waveform -->
   <div class="card">
     <div class="card-title">Live EEG Signal (8 representative channels)</div>
-    <canvas id="eeg-canvas" width="1200" height="180" style="width:100%;height:180px;"></canvas>
+    <canvas id="eeg-canvas" width="1200" height="160" style="width:100%;height:160px;"></canvas>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
-<!-- PAGE 4 — MODEL EXPLORER                                                   -->
-<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 5 — MODEL EXPLORER                                                      -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
 <div id="page-explorer" class="page">
-
-  <div class="card" style="margin-bottom:1.1rem;">
+  <div class="card" style="margin-bottom:1rem;">
     <div class="card-title">Select Subject &amp; Class</div>
     <div class="select-row">
-      <label style="font-size:.8rem;color:var(--dim);">Subject:</label>
+      <label style="font-size:.78rem;color:var(--dim);">Subject:</label>
       <select id="sel-subj">
-        <option value="1">Subject 1</option>
-        <option value="2">Subject 2</option>
-        <option value="3">Subject 3</option>
-        <option value="4">Subject 4</option>
+        <option value="1">Subject 1</option><option value="2">Subject 2</option>
+        <option value="3">Subject 3</option><option value="4">Subject 4</option>
         <option value="5">Subject 5</option>
       </select>
-      <label style="font-size:.8rem;color:var(--dim);">Intent Class:</label>
+      <label style="font-size:.78rem;color:var(--dim);">Intent:</label>
       <select id="sel-cls">
-        <option value="0">communication</option>
-        <option value="1">navigation</option>
-        <option value="2">action</option>
-        <option value="3">selection</option>
+        <option value="0">communication</option><option value="1">navigation</option>
+        <option value="2">action</option><option value="3">selection</option>
         <option value="4">idle</option>
       </select>
-      <button class="btn btn-blue" onclick="loadTrajectory()">🔍 Explore Trajectory</button>
+      <button class="btn btn-blue" onclick="loadTrajectory()">🔍 Explore</button>
     </div>
-    <p style="font-size:.74rem;color:var(--dim);">Requires saved model (run Synthetic pipeline first).</p>
+    <p style="font-size:.72rem;color:var(--dim);">Requires saved model — run Synthetic pipeline first.</p>
   </div>
 
-  <div class="grid2">
-    <!-- Trajectory plot -->
+  <div class="g2">
     <div class="card">
       <div class="card-title">Patch Trajectory (2D)</div>
-      <canvas id="exp-traj-canvas" width="400" height="300" style="width:100%;height:300px;"></canvas>
+      <canvas id="exp-traj-canvas" width="400" height="280" style="width:100%;height:280px;"></canvas>
     </div>
-
-    <!-- Direction + sims -->
     <div class="card">
       <div class="card-title">Direction Vector &amp; Class Similarities</div>
       <div id="exp-sims-area">
-        <p style="color:var(--dim);font-size:.8rem;">Select a subject and class, then click Explore.</p>
+        <p style="color:var(--dim);font-size:.78rem;">Select subject and class, then click Explore.</p>
       </div>
     </div>
   </div>
 
-  <!-- Comparison: multiple classes same subject -->
   <div class="card">
     <div class="card-title">Direction Comparison — All Classes (Subject <span id="exp-subj-lbl">1</span>)</div>
-    <canvas id="exp-compare-canvas" width="900" height="200" style="width:100%;height:200px;background:#060c16;border-radius:8px;border:1px solid var(--border);"></canvas>
+    <canvas id="exp-compare-canvas" width="900" height="180" style="width:100%;height:180px;background:#040810;border-radius:8px;border:1px solid var(--border);"></canvas>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════ -->
-<!-- JAVASCRIPT                                                                  -->
-<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- JAVASCRIPT -->
 <script>
-// ── Global state ──────────────────────────────────────────────────────────────
-const ALL_BTNS   = ['btn-debug','btn-synthetic','btn-real','btn-demo','btn-full',
-                    'btn-advanced','btn-research'];
-let   polling    = null;
-let   lastLen    = 0;
-let   activeTermId = 'terminal';
-let   rtES       = null;
-let   rtCorrect  = 0, rtTotal = 0;
-const INTENTS    = ['communication','navigation','action','selection','idle'];
-const CLR        = ['#3b82f6','#22c55e','#a855f7','#f97316','#4b6280'];
+// ── Constants ──────────────────────────────────────────────────────────────────
+const INTENTS = ['communication','navigation','action','selection','idle'];
+const CLR     = ['#3b82f6','#22c55e','#a855f7','#f97316','#4b6280'];
+const ALL_BTNS = ['btn-debug','btn-synthetic','btn-real','btn-demo','btn-full',
+                  'btn-advanced','btn-research','btn-alignment'];
 
-// EEG canvas state
-const EEG_CH   = 8;
-let   eegBuf   = Array.from({length: EEG_CH}, () => []);
-const EEG_MAX  = 200;
+// ── State ──────────────────────────────────────────────────────────────────────
+let polling = null, lastLen = 0, activeTermId = 'terminal';
+let rtES = null, rtCorrect = 0, rtTotal = 0;
+const EEG_CH = 8, EEG_MAX = 200;
+let eegBuf = Array.from({length: EEG_CH}, () => []);
+let rtDrifts = [], rtStabPreds = [];
+
+// Sphere rotation
+let sphereAngle = 0, sphereProtos = null, sphereAnim = null;
 
 // ── Page switching ─────────────────────────────────────────────────────────────
 function switchPage(id, el) {
@@ -470,20 +564,21 @@ function switchPage(id, el) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   el.classList.add('active');
-  if (id === 'training')  activeTermId = 'terminal';
-  if (id === 'research')  { activeTermId = 'res-terminal'; loadResearch(); }
-  if (id === 'realtime')  initRTCanvases();
-  if (id === 'explorer')  initExplorer();
+  const termMap = {training:'terminal', alignment:'al-terminal', research:'res-terminal'};
+  activeTermId = termMap[id] || 'terminal';
+  if (id === 'alignment') { loadAlignment(); }
+  if (id === 'research')  { loadResearch(); }
+  if (id === 'realtime')  { initRTCanvases(); }
 }
 
 // ── Pipeline runner ────────────────────────────────────────────────────────────
 function setRunning(r) {
-  ALL_BTNS.forEach(id => { const b = document.getElementById(id); if(b) b.disabled=r; });
-  ['run-dot','res-dot'].forEach(id => {
+  ALL_BTNS.forEach(id => { const b = document.getElementById(id); if(b) b.disabled = r; });
+  ['run-dot','res-dot','al-dot'].forEach(id => {
     const d = document.getElementById(id);
     if(d) d.className = 'dot ' + (r ? 'dot-run' : 'dot-idle');
   });
-  ['run-status','res-status'].forEach(id => {
+  ['run-status','res-status','al-status'].forEach(id => {
     const s = document.getElementById(id);
     if(s) s.textContent = r ? 'Running...' : 'Ready';
   });
@@ -495,11 +590,7 @@ async function run(name) {
   termEl.innerHTML = `<span class="ln-blue">$ python -m tsta_project.scripts.${name}</span><br>`;
   lastLen = 0;
   const res = await fetch('/api/run/' + name, {method:'POST'});
-  if (!res.ok) {
-    const d = await res.json();
-    termEl.innerHTML += `<span class="ln-err">Error: ${d.error}</span><br>`;
-    return;
-  }
+  if (!res.ok) { const d=await res.json(); termEl.innerHTML += `<span class="ln-err">Error: ${d.error}</span><br>`; return; }
   setRunning(true);
   if (polling) clearInterval(polling);
   polling = setInterval(pollOutput, 600);
@@ -512,10 +603,12 @@ async function pollOutput() {
   for (let i = lastLen; i < data.lines.length; i++) {
     const line = data.lines[i];
     const span = document.createElement('span');
-    if      (line.includes('✓') || line.includes('target met') || line.includes('PASSED'))
+    if      (line.includes('✓') || line.includes('PASSED') || line.includes('supported'))
       span.className = 'ln-ok';
     else if (line.includes('✗') || line.includes('Error') || line.includes('Traceback'))
       span.className = 'ln-err';
+    else if (line.includes('C2') || line.includes('CDAS') || line.includes('ALIGNMENT'))
+      span.className = 'ln-cyan';
     else if (line.startsWith('  [') || line.startsWith('===') || line.includes('──'))
       span.className = 'ln-dim';
     span.textContent = line;
@@ -527,17 +620,14 @@ async function pollOutput() {
   if (!data.running) {
     clearInterval(polling); polling = null;
     setRunning(false);
-    loadResults();
-    loadFigures();
+    loadResults(); loadFigures(); loadAlignment();
   }
 }
 
-// ── Results loader ─────────────────────────────────────────────────────────────
+// ── Results ────────────────────────────────────────────────────────────────────
 async function loadResults() {
   const res  = await fetch('/api/results');
   const data = await res.json();
-
-  // Training tab
   const area = document.getElementById('train-results-area');
   const src  = data.demo || data.synthetic;
   if (src) {
@@ -545,20 +635,14 @@ async function loadResults() {
     const ms  = ws.mean_sdas || src.sdas_mean || 0;
     const t1  = ws.mean_top1 || src.top1_mean || 0;
     const met = ms >= 0.4;
-    area.innerHTML = `
-      <div class="stat-grid" style="margin-bottom:.7rem;">
-        <div class="stat"><div class="val ${met?'':'orange'}">${ms.toFixed(4)}</div><div class="lbl">Within-subject SDAS</div></div>
-        <div class="stat"><div class="val blue">${(t1*100).toFixed(1)}%</div><div class="lbl">Top-1 accuracy</div></div>
-        <div class="stat"><div class="val purple">${src.sdas_std ? ('±'+src.sdas_std.toFixed(4)) : (ws.std_sdas ? '±'+ws.std_sdas.toFixed(4) : '—')}</div><div class="lbl">SDAS std-dev</div></div>
-        <div class="stat"><div class="val ${met?'':'orange'}">${met?'✓ MET':'✗ TBD'}</div><div class="lbl">Target &gt; 0.4</div></div>
-      </div>`;
-    if (src.rt_accuracy != null) {
-      area.innerHTML += `<div style="font-size:.78rem;color:var(--dim);">RT accuracy: <span style="color:var(--green)">${(src.rt_accuracy*100).toFixed(1)}%</span></div>`;
-    }
+    area.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.6rem;">
+      <div class="stat"><div class="val ${met?'':'orange'}">${ms.toFixed(4)}</div><div class="lbl">Within-subject SDAS</div></div>
+      <div class="stat"><div class="val blue">${(t1*100).toFixed(1)}%</div><div class="lbl">Top-1</div></div>
+      <div class="stat"><div class="val purple">${src.sdas_std ? '±'+src.sdas_std.toFixed(4) : '—'}</div><div class="lbl">SDAS ± std</div></div>
+      <div class="stat"><div class="val ${met?'':'orange'}">${met?'✓ MET':'—'}</div><div class="lbl">Target &gt; 0.4</div></div>
+    </div>`;
   }
-
-  // Research tab — claims
-  if (data.research_report && data.research_report.claim_verdicts) {
+  if (data.research_report?.claim_verdicts) {
     updateClaimCards(data.research_report.claim_verdicts);
     updateResearchMetrics(data);
   }
@@ -566,9 +650,8 @@ async function loadResults() {
 
 function updateClaimCards(cv) {
   const desc = {
-    C1: 'Amplitude invariance', C2: 'Cross-subject consistency',
-    C3: 'Domain shift robust',  C4: 'Temporal causality',
-    C5: 'Geometric structure',
+    C1:'Amplitude invariance',C2:'Cross-subject CDAS &gt; 0.08',
+    C3:'Domain shift robust',C4:'Temporal causality',C5:'Geometric structure'
   };
   const container = document.getElementById('claim-cards');
   container.innerHTML = '';
@@ -578,36 +661,226 @@ function updateClaimCards(cv) {
     div.className = `claim-card ${ok?'ok':'fail'}`;
     div.innerHTML = `<div class="claim-id">${cid}</div>
       <div class="claim-verdict ${ok?'ok':'fail'}">${ok?'✓ SUPPORTED':'✗ NOT SUPPORTED'}</div>
-      <div class="claim-evidence">${desc[cid] || ''}<br><span style="color:var(--dim)">${v.evidence||''}</span></div>`;
+      <div class="claim-evidence">${desc[cid]||''}<br><span style="color:var(--dim)">${v.evidence||''}</span></div>`;
     container.appendChild(div);
   }
 }
 
 function updateResearchMetrics(data) {
-  const adv = data.advanced || {};
-  const rr  = data.research_report || {};
-  const sec = (rr.sections || {});
-  const metrics = [
-    ['CDAS (cross-subject)', ((adv.direction_invariance||{}).cdas || (((sec.INVARIANCE||{})['Cross-subject CDAS'])))||'—'],
-    ['AIS (amplitude)',      ((adv.amplitude_invariance||{}).ais_random || (sec.INVARIANCE||{})['Amplitude AIS (random)'])||'—'],
-    ['TRE (causality)',      ((adv.time_reversal||{}).tre || (sec.CAUSALITY||{})['Time Reversal Effect (TRE)'])||'—'],
-    ['Inter-class angle',    ((adv.geometric_structure||{}).inter_class_angle_deg || (sec.GEOMETRY||{})['Inter-class angle (°)'])||'—'],
-    ['k-Means ARI',          ((adv.geometric_structure||{}).kmeans_ari || (sec.GEOMETRY||{})['k-Means ARI'])||'—'],
-    ['Smoothness ratio',     ((adv.temporal_smoothness||{}).smoothness_ratio || (sec.TEMPORAL||{})['Smoothness ratio'])||'—'],
-    ['cos-sim @ 25% signal', ((((adv.partial_signal||{}).per_fraction||{})['0.25']||{}).cos_sim)||(sec['EARLY DETECTION']||{})['cos-sim at 25% signal']||'—'],
-    ['DT-SDAS (domain shift)',((adv.domain_shift||{}).mean_dt_sdas)||(sec.ROBUSTNESS||{})['Domain transfer SDAS']||'—'],
+  const adv = data.advanced || {}, sec = (data.research_report?.sections)||{};
+  const rows = [
+    ['CDAS (cross-subject)', (adv.direction_invariance?.cdas)||(sec.INVARIANCE?.['Cross-subject CDAS'])||'—'],
+    ['AIS (amplitude)',      (adv.amplitude_invariance?.ais_random)||(sec.INVARIANCE?.['Amplitude AIS (random)'])||'—'],
+    ['TRE (causality)',      (adv.time_reversal?.tre)||(sec.CAUSALITY?.['Time Reversal Effect (TRE)'])||'—'],
+    ['Inter-class angle',   (adv.geometric_structure?.inter_class_angle_deg)||'—'],
+    ['k-Means ARI',         (adv.geometric_structure?.kmeans_ari)||'—'],
+    ['Smoothness ratio',    (adv.temporal_smoothness?.smoothness_ratio)||'—'],
+    ['DT-SDAS (domain)',    (adv.domain_shift?.mean_dt_sdas)||'—'],
+    ['Zero-shot SDAS',      data.generalization?.zero_shot_sdas||'—'],
   ];
   const tbody = document.querySelector('#research-metrics-table tbody');
-  tbody.innerHTML = metrics.map(([k, v]) => {
-    const fv   = typeof v === 'number' ? v.toFixed(4) : v;
-    const clr  = typeof v === 'number' && v > 0 ? 'color:var(--green)' : '';
+  tbody.innerHTML = rows.map(([k,v]) => {
+    const fv  = typeof v === 'number' ? v.toFixed(4) : v;
+    const clr = typeof v === 'number' && v > 0 ? 'color:var(--green)' : '';
     return `<tr><td style="color:var(--dim)">${k}</td><td style="${clr}">${fv}</td></tr>`;
   }).join('');
 }
 
-async function loadResearch() {
-  await loadResults();
-  await loadFigures();
+async function loadResearch() { await loadResults(); await loadFigures(); }
+
+// ── Alignment Lab ──────────────────────────────────────────────────────────────
+async function loadAlignment() {
+  const res = await fetch('/api/alignment');
+  if (!res.ok) return;
+  const data = await res.json();
+  const cr = data.cdas_result || {};
+
+  // CDAS panel
+  const cdas = cr.cdas || 0;
+  const panel = document.getElementById('cdas-panel');
+  const score = document.getElementById('cdas-score');
+  const verdict = document.getElementById('cdas-verdict');
+  score.textContent = cdas.toFixed(4);
+  if (cdas >= 0.12) {
+    score.style.color = 'var(--green)';
+    panel.className = 'align-panel pass';
+    verdict.textContent = '★ STRONG — Publishable'; verdict.className = 'align-verdict verdict-pass';
+  } else if (cdas >= 0.08) {
+    score.style.color = 'var(--green)';
+    panel.className = 'align-panel pass';
+    verdict.textContent = '✓ MEETS TARGET (> 0.08)'; verdict.className = 'align-verdict verdict-pass';
+  } else if (cdas > 0) {
+    score.style.color = 'var(--orange)';
+    panel.className = 'align-panel';
+    verdict.textContent = '→ Positive — needs more epochs'; verdict.className = 'align-verdict verdict-pend';
+  } else {
+    score.style.color = 'var(--red)';
+    panel.className = 'align-panel fail';
+    verdict.textContent = '✗ Below threshold'; verdict.className = 'align-verdict verdict-fail';
+  }
+
+  const safeNum = (v, dec=4) => typeof v === 'number' ? v.toFixed(dec) : '—';
+  document.getElementById('cdas-same').textContent  = safeNum(cr.same_class_mean_cos);
+  document.getElementById('cdas-diff').textContent  = safeNum(cr.diff_class_mean_cos);
+  document.getElementById('cdas-worst').textContent = safeNum(cr.worst_case_alignment);
+
+  // Angular variance
+  const av = cr.mean_angular_variance_deg || 0;
+  document.getElementById('ang-var-val').textContent = av.toFixed(1) + '°';
+  const avBadge = document.getElementById('ang-var-badge');
+  avBadge.textContent = av < 25 ? '✓ < 25° Target met' : '✗ ≥ 25°';
+  avBadge.className = 'badge ' + (av < 25 ? 'b-green' : 'b-red');
+
+  // Per-class variance
+  const pcv = cr.per_class_angular_var_deg || {};
+  document.getElementById('ang-var-per-class').innerHTML = INTENTS.map((name, i) => {
+    const v = pcv[i] || 0;
+    const pct = Math.min(100, v / 45 * 100);
+    return `<div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.3rem;">
+      <span style="font-size:.68rem;color:${CLR[i]};width:85px;flex-shrink:0">${name}</span>
+      <div class="bar-wrap" style="flex:1"><div class="bar-fill ${v < 25?'':'warn'}" style="width:${pct}%;background:${v<25?CLR[i]:'var(--orange)'}"></div></div>
+      <span style="font-size:.68rem;color:var(--dim);width:40px;text-align:right">${v.toFixed(1)}°</span>
+    </div>`;
+  }).join('');
+
+  // Per-class alignment bars
+  const pca = cr.per_class_alignment || {};
+  document.getElementById('per-class-bars').innerHTML = INTENTS.map((name, i) => {
+    const v   = pca[i] || 0;
+    const pct = Math.max(0, Math.min(100, (v + 0.3) / 0.6 * 100));
+    return `<div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.4rem;">
+      <span style="font-size:.7rem;color:${CLR[i]};width:95px;flex-shrink:0">${name}</span>
+      <div class="bar-wrap" style="flex:1"><div class="bar-fill" style="width:${pct}%;background:${CLR[i]}"></div></div>
+      <span style="font-size:.7rem;color:var(--dim);width:50px;text-align:right">${v.toFixed(4)}</span>
+    </div>`;
+  }).join('');
+
+  // Stability
+  const st = data.stability || {};
+  document.getElementById('stab-score').textContent   = st.stability_score?.toFixed(4) || '—';
+  document.getElementById('pred-stab').textContent    = st.prediction_stability ? (st.prediction_stability*100).toFixed(1)+'%' : '—';
+  document.getElementById('ang-var-val').textContent  = (st.mean_angular_variance_deg || av).toFixed(1) + '°';
+
+  // Generalization
+  const gn = data.generalization || {};
+  document.getElementById('zeroshot-sdas').textContent = safeNum(gn.zero_shot_sdas);
+  document.getElementById('zeroshot-top1').textContent = gn.zero_shot_top1 ? (gn.zero_shot_top1*100).toFixed(1)+'%' : '—';
+
+  // Direction sphere
+  sphereProtos = cr.subject_mean_dirs ? Object.values(cr.subject_mean_dirs) : null;
+  drawSphere(cr.per_class_alignment || {});
+  drawSubjectOverlay(data);
+}
+
+function drawSubjectOverlay(data) {
+  const c   = document.getElementById('subject-overlay-canvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+  const cr = data.cdas_result || {};
+  const smDirs = cr.subject_mean_dirs || {};
+  const subjs = Object.keys(smDirs);
+  if (!subjs.length) {
+    ctx.fillStyle='#3d5470'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('Run alignment experiment to see subject overlay', c.width/2, c.height/2);
+    return;
+  }
+  const cx = c.width/2, cy = c.height/2, r = Math.min(c.width, c.height)*0.38;
+
+  // Background
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
+  ctx.strokeStyle='#1a2840'; ctx.lineWidth=1; ctx.stroke();
+
+  // For each class, draw arrows from all subjects
+  for (let cls=0; cls<5; cls++) {
+    subjs.forEach((sid, si) => {
+      const d = smDirs[sid];
+      if (!d || !d[cls]) return;
+      const vec = d[cls];   // [D] list
+      const angle = Math.atan2(vec[1]||0, vec[0]||0);
+      const len   = r * 0.7;
+      const alpha = 0.4 + si / subjs.length * 0.5;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + len*Math.cos(angle), cy + len*Math.sin(angle));
+      ctx.strokeStyle = CLR[cls] + Math.round(alpha * 255).toString(16).padStart(2,'0');
+      ctx.lineWidth   = 2; ctx.lineCap='round'; ctx.stroke();
+    });
+    // Class label
+    const d0 = smDirs[subjs[0]];
+    if (d0 && d0[cls]) {
+      const angle = Math.atan2(d0[cls][1]||0, d0[cls][0]||0);
+      ctx.fillStyle = CLR[cls];
+      ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(INTENTS[cls], cx + r*0.85*Math.cos(angle), cy + r*0.85*Math.sin(angle));
+    }
+  }
+  ctx.fillStyle='#3d5470'; ctx.font='9px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('Same-class arrows should point same direction', cx, c.height-5);
+}
+
+function drawSphere(perClassAlign) {
+  const c   = document.getElementById('sphere-canvas');
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
+
+  const n   = 5, W = c.width, H = c.height;
+  const slotW = W / n;
+
+  // Animate rotation
+  if (sphereAnim) cancelAnimationFrame(sphereAnim);
+  const animate = () => {
+    ctx.clearRect(0, 0, W, H);
+    sphereAngle += 0.008;
+
+    for (let i = 0; i < n; i++) {
+      const cx   = i * slotW + slotW / 2;
+      const cy   = H / 2;
+      const r    = Math.min(slotW, H) * 0.34;
+
+      // Sphere outline
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
+      ctx.strokeStyle = '#1a2840'; ctx.lineWidth=1; ctx.stroke();
+      // Equator
+      ctx.beginPath(); ctx.ellipse(cx, cy, r, r*0.15, 0, 0, Math.PI*2);
+      ctx.strokeStyle = '#1a2840'; ctx.lineWidth=0.7; ctx.stroke();
+      // Meridian
+      ctx.beginPath(); ctx.ellipse(cx, cy, r*0.15, r, 0, 0, Math.PI*2);
+      ctx.strokeStyle = '#1a2840'; ctx.lineWidth=0.7; ctx.stroke();
+
+      // Direction arrow (rotating in 3D projection)
+      const theta = sphereAngle + (i / n) * Math.PI * 2;
+      const phi   = 0.4 + i * 0.25;
+      const x3 = Math.sin(phi) * Math.cos(theta);
+      const y3 = Math.cos(phi);
+      const z3 = Math.sin(phi) * Math.sin(theta);
+
+      // Simple 3D → 2D projection
+      const px  = cx + x3 * r * 0.8;
+      const py  = cy - y3 * r * 0.8;
+      const clr = CLR[i];
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(px, py);
+      ctx.strokeStyle = clr; ctx.lineWidth = 3; ctx.lineCap='round'; ctx.stroke();
+
+      // Dot at tip
+      ctx.beginPath(); ctx.arc(px, py, 5, 0, Math.PI*2);
+      ctx.fillStyle = clr; ctx.fill();
+      ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.stroke();
+
+      // Label + alignment score
+      const v = perClassAlign[i];
+      const score = typeof v === 'number' ? v.toFixed(3) : '—';
+      ctx.fillStyle = clr; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(INTENTS[i], cx, cy + r + 16);
+      ctx.fillStyle = '#3d5470'; ctx.font = '9px sans-serif';
+      ctx.fillText(`cos: ${score}`, cx, cy + r + 28);
+    }
+
+    sphereAnim = requestAnimationFrame(animate);
+  };
+  animate();
 }
 
 // ── Figures ────────────────────────────────────────────────────────────────────
@@ -615,60 +888,44 @@ async function loadFigures() {
   const res  = await fetch('/api/figures');
   const figs = await res.json();
   if (!figs.length) return;
-
-  const all    = figs.map(f => `<div class="fig-item"><img src="/figures/${f}" alt="${f}" onclick="window.open('/figures/${f}')"><p>${f}</p></div>`).join('');
-  const adv    = figs.filter(f => f.startsWith('adv_')).map(f =>
-    `<div class="fig-item"><img src="/figures/${f}" alt="${f}" onclick="window.open('/figures/${f}')"><p>${f}</p></div>`).join('');
-
+  const all  = figs.map(f => `<div class="fig-item"><img src="/figures/${f}" alt="${f}" onclick="window.open('/figures/${f}')"><p>${f}</p></div>`).join('');
+  const adv  = figs.filter(f => f.startsWith('adv_') || f.startsWith('align')).map(f =>
+    `<div class="fig-item"><img src="/figures/${f}" onclick="window.open('/figures/${f}')"><p>${f}</p></div>`).join('');
   const g1 = document.getElementById('fig-grid');
-  if (g1) g1.innerHTML = all || '<p style="color:var(--dim);font-size:.8rem;">No figures yet.</p>';
+  if (g1) g1.innerHTML = all || '<p style="color:var(--dim);font-size:.78rem;">No figures yet.</p>';
   const g2 = document.getElementById('adv-fig-grid');
-  if (g2) g2.innerHTML = adv || '<p style="color:var(--dim);font-size:.8rem;">Run Advanced Analysis to generate figures.</p>';
+  if (g2) g2.innerHTML = adv || '<p style="color:var(--dim);font-size:.78rem;">Run analysis to generate figures.</p>';
 }
 
 // ── Real-time EEG ──────────────────────────────────────────────────────────────
-function initRTCanvases() {
-  drawCompass(null);
-  drawTraj([]);
-  drawEEG([]);
-}
+function initRTCanvases() { drawCompass(null); drawTraj([]); drawEEG([]); }
 
 async function startRT() {
-  rtCorrect = 0; rtTotal = 0;
+  rtCorrect = 0; rtTotal = 0; rtDrifts = []; rtStabPreds = [];
   eegBuf = Array.from({length: EEG_CH}, () => []);
-  document.getElementById('rt-step').textContent = '0';
-  document.getElementById('rt-acc').textContent  = '—';
-  document.getElementById('rt-pred').textContent = '—';
-  document.getElementById('rt-conf').textContent = '—';
+  ['rt-step','rt-acc','rt-pred','rt-conf','rt-stab-val','rt-drift','rt-pred-stab'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.textContent = id === 'rt-step' ? '0' : '—';
+  });
+  document.getElementById('stab-ring').style.strokeDashoffset = '251.2';
   renderSimBars(null);
 
   await fetch('/api/realtime/stop', {method:'POST'});
   const res = await fetch('/api/realtime/start', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({duration_s: 20.0, intent_seq:[0,1,2,3,4,0,1,2,3,4]})
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({duration_s:20.0, intent_seq:[0,1,2,3,4,0,1,2,3,4]})
   });
-  if (!res.ok) { alert('Could not start real-time stream.'); return; }
-
+  if (!res.ok) { alert('Could not start stream.'); return; }
   document.getElementById('rt-start-btn').disabled = true;
   document.getElementById('rt-stop-btn').disabled  = false;
-  document.querySelector('.dot.dot-idle, .dot.dot-rt') &&
-    (document.getElementById('hdr-status').textContent = '📡 Streaming');
+  document.getElementById('hdr-status').textContent = '📡 Streaming';
 
   if (rtES) rtES.close();
   rtES = new EventSource('/api/realtime/stream');
   rtES.onmessage = (e) => {
     const d = JSON.parse(e.data);
     if (d.heartbeat) return;
-    if (d.status === 'done' || d.status === 'error') {
-      stopRT();
-      if (d.status === 'error') console.error('RT error:', d.msg);
-      return;
-    }
-    if (d.status === 'training') {
-      document.getElementById('rt-pred').textContent = 'Training...';
-      return;
-    }
+    if (d.status === 'done' || d.status === 'error') { stopRT(); return; }
+    if (d.status === 'training') { document.getElementById('rt-pred').textContent = 'Training...'; return; }
     updateRTDisplay(d);
   };
 }
@@ -687,19 +944,27 @@ function updateRTDisplay(d) {
   document.getElementById('rt-conf').textContent = (d.confidence * 100).toFixed(1) + '%';
 
   if (d.correct !== null) {
-    rtTotal   += 1;
-    rtCorrect += d.correct ? 1 : 0;
-    document.getElementById('rt-acc').textContent =
-      (rtCorrect / rtTotal * 100).toFixed(1) + '%';
+    rtTotal++; rtCorrect += d.correct ? 1 : 0;
+    document.getElementById('rt-acc').textContent = (rtCorrect/rtTotal*100).toFixed(1)+'%';
   }
 
-  // Highlight active intent badge
-  for (let i = 0; i < 5; i++) {
-    const b = document.getElementById('ib-' + i);
-    if (!b) continue;
+  // Stability estimate from confidence variance
+  rtStabPreds.push(d.pred_class);
+  if (rtStabPreds.length > 8) rtStabPreds.shift();
+  if (rtStabPreds.length >= 2) {
+    const stable = rtStabPreds.slice(1).filter((v,i) => v === rtStabPreds[i]).length / (rtStabPreds.length-1);
+    document.getElementById('rt-pred-stab').textContent = (stable*100).toFixed(0)+'%';
+    const stability = stable;
+    document.getElementById('rt-stab-val').textContent  = stable.toFixed(2);
+    const offset = 251.2 * (1 - stable);
+    document.getElementById('stab-ring').style.strokeDashoffset = offset.toString();
+    document.getElementById('stab-ring').style.stroke = stable > 0.7 ? 'var(--cyan)' : stable > 0.4 ? 'var(--orange)' : 'var(--red)';
+  }
+
+  // Intent badges
+  for (let i=0;i<5;i++) {
+    const b = document.getElementById('ib-'+i); if(!b) continue;
     b.classList.toggle('active', i === d.true_label);
-    b.style.boxShadow = (i === d.pred_class)
-      ? `0 0 0 2px ${CLR[i]}55` : '';
   }
 
   renderSimBars(d.all_sims);
@@ -709,120 +974,76 @@ function updateRTDisplay(d) {
 }
 
 function renderSimBars(sims) {
-  const el = document.getElementById('sim-bars');
-  if (!el) return;
-  if (!sims) { el.innerHTML = ''; return; }
-  el.innerHTML = INTENTS.map((name, i) => {
+  const el = document.getElementById('sim-bars'); if(!el) return;
+  if (!sims) { el.innerHTML=''; return; }
+  el.innerHTML = INTENTS.map((name,i) => {
     const v   = sims[i] || 0;
-    const pct = Math.max(0, Math.min(100, (v + 0.3) / 0.6 * 100));
-    return `<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;">
-      <span style="font-size:.7rem;color:${CLR[i]};width:90px;flex-shrink:0">${name}</span>
+    const pct = Math.max(0, Math.min(100, (v+0.3)/0.6*100));
+    return `<div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.28rem;">
+      <span style="font-size:.68rem;color:${CLR[i]};width:80px;flex-shrink:0">${name}</span>
       <div class="bar-wrap" style="flex:1"><div class="bar-fill" style="width:${pct}%;background:${CLR[i]}"></div></div>
-      <span style="font-size:.7rem;color:var(--dim);width:45px;text-align:right">${v.toFixed(3)}</span>
+      <span style="font-size:.68rem;color:var(--dim);width:42px;text-align:right">${v.toFixed(3)}</span>
     </div>`;
   }).join('');
 }
 
 function drawCompass(dir8) {
-  const c  = document.getElementById('compass-canvas');
-  if (!c) return;
-  const cx = c.width/2, cy = c.height/2, r = 85;
+  const c = document.getElementById('compass-canvas'); if(!c) return;
+  const cx=c.width/2, cy=c.height/2, r=78;
   const ctx = c.getContext('2d');
   ctx.clearRect(0,0,c.width,c.height);
-
-  // Background circle
   ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2);
-  ctx.strokeStyle='#1e2d45'; ctx.lineWidth=1.5; ctx.stroke();
-
-  // Tick marks
-  for (let i=0;i<12;i++){
-    const a=i/12*Math.PI*2, l=i%3===0?10:5;
+  ctx.strokeStyle='#1a2840'; ctx.lineWidth=1.5; ctx.stroke();
+  for (let i=0;i<12;i++) {
+    const a=i/12*Math.PI*2, l=i%3===0?9:5;
     ctx.beginPath();
-    ctx.moveTo(cx+(r-l)*Math.cos(a), cy+(r-l)*Math.sin(a));
-    ctx.lineTo(cx+r*Math.cos(a),     cy+r*Math.sin(a));
-    ctx.strokeStyle='#1e2d45'; ctx.lineWidth=1; ctx.stroke();
+    ctx.moveTo(cx+(r-l)*Math.cos(a),cy+(r-l)*Math.sin(a));
+    ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+    ctx.strokeStyle='#1a2840'; ctx.lineWidth=1; ctx.stroke();
   }
-
-  // Labels N/S/E/W
-  ctx.fillStyle='#253850'; ctx.font='10px sans-serif'; ctx.textAlign='center';
-  ctx.fillText('N',cx,cy-r-6); ctx.fillText('S',cx,cy+r+14);
-  ctx.fillText('E',cx+r+8,cy+4); ctx.fillText('W',cx-r-8,cy+4);
-
+  ctx.fillStyle='#1e3048'; ctx.font='9px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('N',cx,cy-r-5); ctx.fillText('S',cx,cy+r+13);
+  ctx.fillText('E',cx+r+7,cy+3); ctx.fillText('W',cx-r-7,cy+3);
   if (!dir8) return;
-
-  // Arrow from first 2 dims as angle
-  const dx = dir8[0], dy = dir8[1];
-  const angle = Math.atan2(dy, dx);
-  const len   = r * 0.72;
-
-  ctx.beginPath();
-  ctx.moveTo(cx,cy);
+  const angle = Math.atan2(dir8[1]||0, dir8[0]||0);
+  const len   = r * 0.7;
+  ctx.beginPath(); ctx.moveTo(cx,cy);
   ctx.lineTo(cx+len*Math.cos(angle), cy+len*Math.sin(angle));
-  ctx.strokeStyle='#3b82f6'; ctx.lineWidth=2.5;
-  ctx.lineCap='round'; ctx.stroke();
-
-  // Arrowhead
-  const ah=12, aw=6;
+  ctx.strokeStyle='var(--blue)'; ctx.lineWidth=2.5; ctx.lineCap='round'; ctx.stroke();
   const ex=cx+len*Math.cos(angle), ey=cy+len*Math.sin(angle);
-  ctx.beginPath();
-  ctx.moveTo(ex, ey);
-  ctx.lineTo(ex-ah*Math.cos(angle-0.3), ey-ah*Math.sin(angle-0.3));
-  ctx.lineTo(ex-ah*Math.cos(angle+0.3), ey-ah*Math.sin(angle+0.3));
-  ctx.closePath();
-  ctx.fillStyle='#3b82f6'; ctx.fill();
-
-  // Confidence ring
-  ctx.beginPath();
-  ctx.arc(cx,cy,8,0,Math.PI*2);
-  ctx.fillStyle='#3b82f620'; ctx.fill();
-  ctx.strokeStyle='#3b82f6'; ctx.lineWidth=1; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ex,ey);
+  ctx.lineTo(ex-11*Math.cos(angle-.3),ey-11*Math.sin(angle-.3));
+  ctx.lineTo(ex-11*Math.cos(angle+.3),ey-11*Math.sin(angle+.3));
+  ctx.closePath(); ctx.fillStyle='var(--blue)'; ctx.fill();
 }
 
 function drawTraj(traj) {
-  const c = document.getElementById('traj-canvas');
-  if (!c) return;
+  const c = document.getElementById('traj-canvas'); if(!c) return;
   const ctx = c.getContext('2d');
   ctx.clearRect(0,0,c.width,c.height);
   if (traj.length < 2) {
-    ctx.fillStyle='#1e2d45'; ctx.font='11px sans-serif'; ctx.textAlign='center';
-    ctx.fillText('Trajectory', c.width/2, c.height/2);
-    return;
+    ctx.fillStyle='#1a2840'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText('Trajectory', c.width/2, c.height/2); return;
   }
-
-  // Auto-scale
-  const xs = traj.map(p=>p[0]), ys = traj.map(p=>p[1]);
-  const pad=20, W=c.width-pad*2, H=c.height-pad*2;
-  const mnx=Math.min(...xs), mxx=Math.max(...xs), mny=Math.min(...ys), mxy=Math.max(...ys);
+  const xs=traj.map(p=>p[0]),ys=traj.map(p=>p[1]);
+  const pad=16, W=c.width-pad*2, H=c.height-pad*2;
+  const mnx=Math.min(...xs),mxx=Math.max(...xs),mny=Math.min(...ys),mxy=Math.max(...ys);
   const rngx=mxx-mnx||1, rngy=mxy-mny||1;
   const sx=p=>pad+(p[0]-mnx)/rngx*W, sy=p=>pad+(p[1]-mny)/rngy*H;
-
   // Grid
-  ctx.strokeStyle='#1e2d45'; ctx.lineWidth=0.5;
-  for (let i=0;i<=4;i++){
-    const x=pad+i/4*W; ctx.beginPath();ctx.moveTo(x,pad);ctx.lineTo(x,pad+H);ctx.stroke();
-    const y=pad+i/4*H; ctx.beginPath();ctx.moveTo(pad,y);ctx.lineTo(pad+W,y);ctx.stroke();
+  ctx.strokeStyle='#0f1826'; ctx.lineWidth=0.5;
+  for(let i=0;i<=4;i++){
+    ctx.beginPath();ctx.moveTo(pad+i/4*W,pad);ctx.lineTo(pad+i/4*W,pad+H);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(pad,pad+i/4*H);ctx.lineTo(pad+W,pad+i/4*H);ctx.stroke();
   }
-
-  // Trail with gradient
   for (let i=1;i<traj.length;i++) {
-    const t   = i/traj.length;
-    const alpha = 0.2 + t*0.8;
-    ctx.beginPath();
-    ctx.moveTo(sx(traj[i-1]), sy(traj[i-1]));
-    ctx.lineTo(sx(traj[i]),   sy(traj[i]));
-    ctx.strokeStyle = `rgba(59,130,246,${alpha})`;
-    ctx.lineWidth   = 1 + t*1.5;
-    ctx.stroke();
+    const t=i/traj.length;
+    ctx.beginPath(); ctx.moveTo(sx(traj[i-1]),sy(traj[i-1])); ctx.lineTo(sx(traj[i]),sy(traj[i]));
+    ctx.strokeStyle=`rgba(59,130,246,${0.2+t*0.8})`; ctx.lineWidth=1+t*1.5; ctx.stroke();
   }
-
-  // Latest point
-  const lp = traj[traj.length-1];
-  ctx.beginPath(); ctx.arc(sx(lp),sy(lp),5,0,Math.PI*2);
-  ctx.fillStyle='#3b82f6'; ctx.fill();
-  ctx.strokeStyle='#fff'; ctx.lineWidth=1.5; ctx.stroke();
-
-  ctx.fillStyle='#4b6280'; ctx.font='9px sans-serif'; ctx.textAlign='left';
-  ctx.fillText('Trajectory',pad,pad-4);
+  const lp=traj[traj.length-1];
+  ctx.beginPath(); ctx.arc(sx(lp),sy(lp),4,0,Math.PI*2);
+  ctx.fillStyle='var(--blue)'; ctx.fill();
 }
 
 function appendEEG(eegData) {
@@ -834,172 +1055,119 @@ function appendEEG(eegData) {
 }
 
 function drawEEG(buf) {
-  const c   = document.getElementById('eeg-canvas');
-  if (!c) return;
-  c.width   = c.offsetWidth * (window.devicePixelRatio||1);
-  c.height  = 180;
-  const ctx = c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-
-  const nCh = EEG_CH, H=c.height, W=c.width;
-  const rowH = H / nCh;
-
-  for (let ch=0;ch<nCh;ch++){
-    const chBuf = (buf[ch]||[]);
-    const y0    = ch*rowH + rowH/2;
-    const scale = rowH * 0.38;
-
-    // Separator
+  const c = document.getElementById('eeg-canvas'); if(!c) return;
+  c.width = c.offsetWidth * (window.devicePixelRatio||1);
+  const ctx = c.getContext('2d'), H=c.height, W=c.width, rowH=H/EEG_CH;
+  ctx.clearRect(0,0,W,H);
+  for (let ch=0;ch<EEG_CH;ch++) {
+    const chBuf=buf[ch]||[], y0=ch*rowH+rowH/2, scale=rowH*0.38;
     ctx.beginPath(); ctx.moveTo(0,ch*rowH); ctx.lineTo(W,ch*rowH);
-    ctx.strokeStyle='#0e1828'; ctx.lineWidth=1; ctx.stroke();
-
-    // Zero line
+    ctx.strokeStyle='#0a1020'; ctx.lineWidth=1; ctx.stroke();
     ctx.beginPath(); ctx.moveTo(0,y0); ctx.lineTo(W,y0);
-    ctx.strokeStyle='#1e2d45'; ctx.lineWidth=0.5; ctx.stroke();
-
-    // Label
-    ctx.fillStyle='#253850'; ctx.font='9px monospace'; ctx.textAlign='left';
-    ctx.fillText(`ch${ch}`, 4, y0-2);
-
+    ctx.strokeStyle='#1a2840'; ctx.lineWidth=0.5; ctx.stroke();
+    ctx.fillStyle='#1e3048'; ctx.font='8px monospace'; ctx.textAlign='left';
+    ctx.fillText(`ch${ch}`, 3, y0-2);
     if (!chBuf.length) continue;
-    const step = W / EEG_MAX;
-    ctx.beginPath();
-    ctx.moveTo(0, y0 - chBuf[0]*scale);
+    const step=W/EEG_MAX;
+    ctx.beginPath(); ctx.moveTo(0, y0-chBuf[0]*scale);
     for (let i=1;i<chBuf.length;i++) {
-      const x = (i - chBuf.length + EEG_MAX) * step;
-      if (x < 0) continue;
-      ctx.lineTo(x, y0 - chBuf[i]*scale);
+      const x=(i-chBuf.length+EEG_MAX)*step; if(x<0) continue;
+      ctx.lineTo(x, y0-chBuf[i]*scale);
     }
-    ctx.strokeStyle = CLR[ch % CLR.length] + 'cc';
-    ctx.lineWidth   = 1; ctx.stroke();
+    ctx.strokeStyle=CLR[ch%CLR.length]+'cc'; ctx.lineWidth=1; ctx.stroke();
   }
 }
 
 // ── Model Explorer ─────────────────────────────────────────────────────────────
-function initExplorer() {}
-
 async function loadTrajectory() {
   const subj = parseInt(document.getElementById('sel-subj').value);
   const cls  = parseInt(document.getElementById('sel-cls').value);
   document.getElementById('exp-subj-lbl').textContent = subj;
-  document.getElementById('exp-sims-area').innerHTML =
-    '<p style="color:var(--dim);font-size:.8rem;">Loading...</p>';
-
-  const res  = await fetch('/api/explorer/trajectory', {
-    method: 'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({subject: subj, cls: cls}),
-  });
+  document.getElementById('exp-sims-area').innerHTML = '<p style="color:var(--dim);font-size:.78rem;">Loading...</p>';
+  const res = await fetch('/api/explorer/trajectory',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({subject:subj, cls})});
   if (!res.ok) {
-    const d = await res.json();
-    document.getElementById('exp-sims-area').innerHTML =
-      `<p style="color:var(--red);font-size:.8rem;">${d.error}</p>`;
+    const d=await res.json();
+    document.getElementById('exp-sims-area').innerHTML=`<p style="color:var(--red);font-size:.78rem;">${d.error}</p>`;
     return;
   }
   const data = await res.json();
   drawExplorerTraj(data.trajectory_2d, data.intent);
-  renderExplorerSims(data.all_sims, data.pred_cls, data.intent);
-  await drawCompareAll(subj);
+  renderExplorerSims(data.all_sims, data.intent);
+  drawCompareAll(subj);
 }
 
 function drawExplorerTraj(traj2d, intent) {
-  const c   = document.getElementById('exp-traj-canvas');
-  const ctx = c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-
+  const c=document.getElementById('exp-traj-canvas');
+  const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+  if (!traj2d||!traj2d.length) return;
   const xs=traj2d.map(p=>p[0]),ys=traj2d.map(p=>p[1]);
-  const pad=30,W=c.width-pad*2,H=c.height-pad*2;
+  const pad=28, W=c.width-pad*2, H=c.height-pad*2;
   const mnx=Math.min(...xs),mxx=Math.max(...xs),mny=Math.min(...ys),mxy=Math.max(...ys);
   const rngx=mxx-mnx||1, rngy=mxy-mny||1;
   const sx=p=>pad+(p[0]-mnx)/rngx*W, sy=p=>pad+(p[1]-mny)/rngy*H;
-
-  // Grid
-  ctx.strokeStyle='#1e2d45';ctx.lineWidth=0.5;
+  ctx.strokeStyle='#0f1826'; ctx.lineWidth=0.5;
   for(let i=0;i<=4;i++){
     ctx.beginPath();ctx.moveTo(pad+i/4*W,pad);ctx.lineTo(pad+i/4*W,pad+H);ctx.stroke();
     ctx.beginPath();ctx.moveTo(pad,pad+i/4*H);ctx.lineTo(pad+W,pad+i/4*H);ctx.stroke();
   }
-
-  // Trajectory patches
   for (let i=1;i<traj2d.length;i++) {
     const t=i/traj2d.length;
-    ctx.beginPath();
-    ctx.moveTo(sx(traj2d[i-1]),sy(traj2d[i-1]));
-    ctx.lineTo(sx(traj2d[i]),  sy(traj2d[i]));
-    ctx.strokeStyle=`rgba(168,85,247,${0.3+t*0.7})`;
-    ctx.lineWidth=2+t*2; ctx.stroke();
-    ctx.beginPath();ctx.arc(sx(traj2d[i]),sy(traj2d[i]),3,0,Math.PI*2);
-    ctx.fillStyle=`rgba(168,85,247,${0.4+t*0.6})`;ctx.fill();
+    ctx.beginPath();ctx.moveTo(sx(traj2d[i-1]),sy(traj2d[i-1]));ctx.lineTo(sx(traj2d[i]),sy(traj2d[i]));
+    ctx.strokeStyle=`rgba(168,85,247,${0.3+t*0.7})`;ctx.lineWidth=2+t*1.5;ctx.stroke();
+    ctx.beginPath();ctx.arc(sx(traj2d[i]),sy(traj2d[i]),2.5,0,Math.PI*2);
+    ctx.fillStyle=`rgba(168,85,247,${0.5+t*0.5})`;ctx.fill();
   }
-
-  // Arrow from first to last
-  const fp=traj2d[0],lp=traj2d[traj2d.length-1];
-  const angle=Math.atan2(sy(lp)-sy(fp),sx(lp)-sx(fp));
-  ctx.beginPath();ctx.moveTo(sx(fp),sy(fp));ctx.lineTo(sx(lp),sy(lp));
-  ctx.strokeStyle='#a855f7';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();
-  ctx.setLineDash([]);
-
-  ctx.fillStyle='#a855f7';ctx.font='10px sans-serif';ctx.textAlign='center';
-  ctx.fillText(`${intent} (${traj2d.length} patches)`,c.width/2,c.height-8);
+  ctx.fillStyle='var(--purple)';ctx.font='10px sans-serif';ctx.textAlign='center';
+  ctx.fillText(`${intent} (${traj2d.length} patches)`, c.width/2, c.height-8);
 }
 
-function renderExplorerSims(sims, predCls, intent) {
-  const el = document.getElementById('exp-sims-area');
-  el.innerHTML = `<p style="margin-bottom:.6rem;font-size:.78rem;color:var(--dim);">
-    Class: <span style="color:var(--purple)">${intent}</span></p>` +
+function renderExplorerSims(sims, intent) {
+  document.getElementById('exp-sims-area').innerHTML = `
+    <p style="margin-bottom:.5rem;font-size:.76rem;color:var(--dim)">Class: <span style="color:var(--purple)">${intent}</span></p>` +
     INTENTS.map((name,i)=>{
-      const v=sims[i]||0;
-      const pct=Math.max(0,Math.min(100,(v+0.3)/0.6*100));
-      return `<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem;">
-        <span style="font-size:.72rem;color:${CLR[i]};width:100px;flex-shrink:0">${name}</span>
+      const v=sims[i]||0, pct=Math.max(0,Math.min(100,(v+0.3)/0.6*100));
+      return `<div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.38rem;">
+        <span style="font-size:.7rem;color:${CLR[i]};width:95px;flex-shrink:0">${name}</span>
         <div class="bar-wrap" style="flex:1"><div class="bar-fill" style="width:${pct}%;background:${CLR[i]}"></div></div>
-        <span style="font-size:.72rem;color:var(--dim);width:50px;text-align:right">${v.toFixed(4)}</span>
+        <span style="font-size:.7rem;color:var(--dim);width:48px;text-align:right">${v.toFixed(4)}</span>
       </div>`;
     }).join('');
 }
 
 async function drawCompareAll(subj) {
-  const c   = document.getElementById('exp-compare-canvas');
-  const ctx = c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-  ctx.fillStyle='#4b6280';ctx.font='11px sans-serif';ctx.textAlign='center';
-  ctx.fillText('Querying all classes...', c.width/2, c.height/2);
-
-  const dirs = [];
-  for (let cls=0; cls<5; cls++){
+  const c=document.getElementById('exp-compare-canvas');
+  const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle='#3d5470';ctx.font='11px sans-serif';ctx.textAlign='center';
+  ctx.fillText('Loading...', c.width/2, c.height/2);
+  const dirs=[];
+  for (let cls=0;cls<5;cls++){
     try {
-      const res = await fetch('/api/explorer/trajectory',{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({subject:subj, cls})});
-      if(res.ok) { const d=await res.json(); dirs.push({cls,dir:d.direction,intent:d.intent}); }
-    } catch(e){}
+      const res=await fetch('/api/explorer/trajectory',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subject:subj,cls})});
+      if(res.ok){const d=await res.json();dirs.push({cls,dir:d.direction,intent:d.intent});}
+    }catch(e){}
   }
-
   ctx.clearRect(0,0,c.width,c.height);
-  if (!dirs.length) { ctx.fillText('No data', c.width/2, c.height/2); return; }
-
-  const W=c.width, H=c.height;
-  const slotW = W/dirs.length;
+  if (!dirs.length){ctx.fillText('No data',c.width/2,c.height/2);return;}
+  const W=c.width, H=c.height, slotW=W/dirs.length;
   dirs.forEach(({cls,dir,intent},idx)=>{
-    const cx=idx*slotW+slotW/2, cy=H/2, r=Math.min(slotW,H)*0.35;
-    // Circle
-    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
-    ctx.strokeStyle=CLR[cls]+'44';ctx.lineWidth=1;ctx.stroke();
-    // Direction arrow from first 2 dims
-    const angle=Math.atan2(dir[1],dir[0]);
-    ctx.beginPath();ctx.moveTo(cx,cy);
-    ctx.lineTo(cx+r*0.8*Math.cos(angle),cy+r*0.8*Math.sin(angle));
+    const cx=idx*slotW+slotW/2, cy=H/2, r=Math.min(slotW,H)*0.34;
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.strokeStyle=CLR[cls]+'44';ctx.lineWidth=1;ctx.stroke();
+    const angle=Math.atan2(dir[1]||0,dir[0]||0);
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+r*0.8*Math.cos(angle),cy+r*0.8*Math.sin(angle));
     ctx.strokeStyle=CLR[cls];ctx.lineWidth=3;ctx.lineCap='round';ctx.stroke();
     ctx.fillStyle=CLR[cls];ctx.font='10px sans-serif';ctx.textAlign='center';
     ctx.fillText(intent,cx,cy+r+16);
-    ctx.fillStyle='#4b6280';ctx.font='9px sans-serif';
-    ctx.fillText(`(${dir[0].toFixed(2)}, ${dir[1].toFixed(2)})`,cx,cy+r+28);
+    ctx.fillStyle='#3d5470';ctx.font='9px sans-serif';
+    ctx.fillText(`(${(dir[0]||0).toFixed(2)},${(dir[1]||0).toFixed(2)})`,cx,cy+r+28);
   });
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────────
 loadResults();
 loadFigures();
+drawSphere({});
 </script>
 </body>
 </html>

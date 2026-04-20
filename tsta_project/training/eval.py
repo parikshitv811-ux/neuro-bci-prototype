@@ -32,12 +32,15 @@ def run_within_subject(ds, cfg: TSTAConfig, device: str, epochs: int = 40,
     print("  PHASE 4A — Within-Subject Training")
     print("=" * 60)
 
-    trainer = TSTATrainer(cfg, device)
+    trainer = TSTATrainer(cfg, device,
+                          n_subjects=ds.n_subjects,
+                          use_align=True, use_proto=True,
+                          use_adv=False, use_smart=False)
     results, models = {}, {}
 
     for subj in np.unique(ds.subjects):
         mask = ds.subjects == subj
-        X_s, y_s = ds.X[mask], ds.y[mask]
+        X_s, y_s, s_s = ds.X[mask], ds.y[mask], ds.subjects[mask]
 
         save_path = (
             f"{save_dir}/tsta_subj{int(subj):02d}.pt"
@@ -46,7 +49,7 @@ def run_within_subject(ds, cfg: TSTAConfig, device: str, epochs: int = 40,
 
         tag = f"[S{int(subj):02d}]"
         model, best_sdas = trainer.train(
-            X_s, y_s, epochs=epochs, tag=tag, save_path=save_path
+            X_s, y_s, subjects=s_s, epochs=epochs, tag=tag, save_path=save_path
         )
 
         # Final full-set evaluation

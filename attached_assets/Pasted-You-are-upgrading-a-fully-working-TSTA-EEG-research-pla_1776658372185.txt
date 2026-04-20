@@ -1,0 +1,317 @@
+You are upgrading a fully working TSTA EEG research platform into a publication-grade, high-impact scientific system.
+
+---
+
+CURRENT STATUS:
+
+* Synthetic + real EEG pipeline works
+* 9-phase research analysis implemented
+* Real-time EEG dashboard exists
+* Strong results:
+
+  * Amplitude invariance ✅
+  * Temporal causality ✅
+  * Geometric structure ✅
+* FAILURE:
+
+  * Cross-subject direction alignment (CDAS too low ~0.02)
+
+---
+
+PRIMARY GOAL:
+
+Fix and prove:
+
+"EEG semantic intent is encoded as a SUBJECT-INVARIANT trajectory direction"
+
+Target:
+CDAS > 0.08 (minimum)
+CDAS > 0.12 (strong/publishable)
+
+---
+
+STRICT RULES:
+
+* DO NOT modify TSTA architecture (patcher, transformer, PLTA, trajectory head)
+* DO NOT fake improvements
+* ONLY modify:
+
+  * preprocessing
+  * training loop
+  * auxiliary losses
+  * batching strategy
+  * evaluation and visualization
+
+---
+
+PHASE 1 — SUBJECT-INVARIANT PREPROCESSING
+
+Update data/preprocess.py:
+
+1. Subject-centered normalization:
+   e = e - mean_embedding_per_subject
+
+2. Whitening per subject:
+   X_white = (X - μ_subject) @ Σ_subject^{-1/2}
+
+3. Channel normalization across subjects:
+   normalize each channel globally
+
+4. Temporal energy normalization:
+   X = X / ||X||_time
+
+Goal:
+Remove subject-specific identity signals.
+
+---
+
+PHASE 2 — DIRECTION ALIGNMENT LOSS
+
+Create:
+tsta_project/training/direction_alignment.py
+
+Compute direction:
+d = normalize(e_T - e_0)
+
+Class mean direction (EMA):
+μ_class = running mean across all subjects
+
+Loss:
+L_align = 1 - cosine(d, μ_class)
+
+Inter-class separation:
+L_sep = max(0, cosine(d, μ_other) - 0.2)
+
+Total loss:
+L_total = InfoNCE + 0.15*L_align + 0.10*L_sep
+
+---
+
+PHASE 3 — PROTOTYPE DIRECTION FIELD
+
+Create:
+tsta_project/training/prototype_field.py
+
+Maintain:
+v_class (global direction per class)
+
+Update:
+v_class = 0.95 * v_class + 0.05 * batch_mean_direction
+
+Loss:
+L_proto = 1 - cosine(d, v_class)
+
+Add:
+L_total += 0.1 * L_proto
+
+---
+
+PHASE 4 — SUBJECT ADVERSARIAL LOSS
+
+Create:
+tsta_project/training/adversarial_subject.py
+
+Classifier:
+subject_pred = classifier(e_T)
+
+Loss:
+L_adv = -CrossEntropy(subject_pred, subject)
+
+Add:
+L_total += 0.02 * L_adv
+
+Goal:
+Remove subject identity from embeddings.
+
+---
+
+PHASE 5 — SMART BATCHING (CRITICAL)
+
+Modify dataloader:
+
+Each batch MUST contain:
+
+* same class from multiple subjects
+* at least 3 subjects per class
+
+Without this, alignment will fail.
+
+---
+
+PHASE 6 — HARD NEGATIVE MINING
+
+For each sample:
+d_neg = most similar direction from wrong class
+
+Loss:
+L_hard = max(0, cos(d, d_neg) - 0.3)
+
+Add:
+L_total += 0.05 * L_hard
+
+---
+
+PHASE 7 — ADVANCED EVALUATION
+
+Update analysis:
+
+Compute:
+
+* CDAS
+* per-class alignment
+* worst subject pair alignment
+* angular variance per class
+
+Targets:
+CDAS > 0.08
+Angular variance < 25 degrees
+
+---
+
+PHASE 8 — GENERALIZATION TEST
+
+1. Train on subjects [1,2,3]
+
+2. Test on subject [4]
+
+3. Zero-shot test:
+
+   * freeze model
+   * test unseen subject without retraining
+
+Measure:
+
+* SDAS
+* direction similarity
+
+---
+
+PHASE 9 — REAL-TIME STABILITY
+
+Using streaming module:
+
+Measure:
+
+* direction variance over time
+* prediction stability
+
+Metric:
+Stability Score = 1 / variance(direction)
+
+---
+
+PHASE 10 — UI UPGRADE (NEURALINK-LEVEL)
+
+Upgrade dashboard:
+
+Add:
+
+1. Alignment Status Panel:
+
+   * CDAS live value
+   * PASS / FAIL indicator
+
+2. Subject Overlay View:
+
+   * same class across subjects overlap
+
+3. 3D Direction Sphere:
+
+   * visualize normalized direction vectors
+
+4. Stability Meter:
+
+   * real-time consistency indicator
+
+5. Geometry Panel:
+
+   * angular separation
+   * variance
+   * prototypes
+
+---
+
+PHASE 11 — GIT REPO CLEANUP
+
+Refactor:
+
+Add:
+
+* /docs/
+* /experiments/
+* /configs/
+
+Ensure:
+
+* no duplicate logic
+* clean imports
+* modular structure
+
+README must include:
+
+* pipeline diagram
+* trajectory explanation
+* results summary
+* reproduction steps
+
+---
+
+FINAL OUTPUT FORMAT:
+
+C2 ALIGNMENT REPORT
+
+Before:
+CDAS = 0.024
+
+After:
+CDAS = X.XXX
+
+Worst-case alignment: X.XXX
+Angular variance: XX°
+
+Conclusion:
+Cross-subject alignment achieved
+
+---
+
+FINAL SUCCESS CRITERIA:
+
+* Same class → same direction across subjects
+* Different class → angular separation
+* Stable under noise and scaling
+* Works on unseen subjects
+* Real-time stable trajectories
+
+---
+
+FINAL CLAIM TO PROVE:
+
+"EEG intent is encoded as a shared geometric direction field across humans"
+
+---
+
+FAILURE CONDITION:
+
+If CDAS does not improve:
+→ hypothesis likely invalid
+→ requires rethinking representation
+
+---
+
+DELIVER:
+
+* updated training pipeline
+* new loss modules
+* improved metrics
+* alignment plots
+* upgraded UI
+* clean Git repo
+* logs proving improvement
+
+---
+
+FOCUS:
+
+This is not model tuning.
+
+This is proving a scientific hypothesis about human brain representation.

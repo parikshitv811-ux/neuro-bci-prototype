@@ -32,14 +32,15 @@ rt_lock       = threading.Lock()
 _rt_thread    = None
 
 ALLOWED_SCRIPTS = {
-    "debug":    ("python3", "-m", "tsta_project.scripts.debug"),
-    "synthetic":("python3", "-m", "tsta_project.scripts.run_synthetic"),
-    "real":     ("python3", "-m", "tsta_project.scripts.run_real"),
-    "full":     ("python3", "-m", "tsta_project.scripts.run_full_pipeline"),
-    "advanced": ("python3", "-m", "tsta_project.scripts.run_advanced"),
-    "research": ("python3", "-m", "tsta_project.scripts.run_research"),
-    "realtime": ("python3", "-m", "tsta_project.scripts.run_realtime"),
-    "demo":     ("python3", "-m", "tsta_project.scripts.demo_mode"),
+    "debug":     ("python3", "-m", "tsta_project.scripts.debug"),
+    "synthetic": ("python3", "-m", "tsta_project.scripts.run_synthetic"),
+    "real":      ("python3", "-m", "tsta_project.scripts.run_real"),
+    "full":      ("python3", "-m", "tsta_project.scripts.run_full_pipeline"),
+    "advanced":  ("python3", "-m", "tsta_project.scripts.run_advanced"),
+    "research":  ("python3", "-m", "tsta_project.scripts.run_research"),
+    "realtime":  ("python3", "-m", "tsta_project.scripts.run_realtime"),
+    "demo":      ("python3", "-m", "tsta_project.scripts.demo_mode"),
+    "alignment": ("python3", "-m", "tsta_project.scripts.run_alignment"),
 }
 
 
@@ -211,6 +212,16 @@ def realtime_stream():
 
 
 # ── Results & figures API ─────────────────────────────────────────────────────
+
+@app.route("/api/alignment")
+def get_alignment():
+    """Return latest CDAS + alignment metrics."""
+    path = "tsta_project/outputs/logs/alignment_results.json"
+    if os.path.exists(path):
+        with open(path) as f:
+            return jsonify(json.load(f))
+    return jsonify({"error": "No alignment results yet. Run Alignment Experiment first."}), 404
+
 
 @app.route("/api/results")
 def get_results():
